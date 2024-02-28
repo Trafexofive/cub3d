@@ -8,21 +8,27 @@ typedef enum {
 
 } t_comp;
 
-typedef struct s_args {
-  char **av;
-  int ac;
-} t_args;
-
 typedef struct s_point // could be renamed to coordinate.
 {
   unsigned int x;
   unsigned int y;
 } t_point;
+typedef struct s_args {
+  char **av;
+  int ac;
+} t_args;
+
+typedef struct s_info {
+  t_point *player_pos;
+  t_point *error_pos; // points to NULL if no error is found, print the map the
+                      // error and the error location
+  t_comp *spawn_position;
+
+} t_info;
 
 typedef struct s_map {
   char **map;
-  t_point *player_pos;
-  t_point *error_pos;
+  t_info *info;
   bool debug;
 
 } t_map;

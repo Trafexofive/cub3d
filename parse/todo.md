@@ -35,3 +35,4 @@ typedef struct s_info
 
 
 ## To-do;
+-- parse for the textures;
