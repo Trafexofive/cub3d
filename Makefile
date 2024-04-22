@@ -1,23 +1,24 @@
 
 CC := cc
 
-NAME	:= push_swap
+NAME	:= cub3d
 
 CFLAGS	:= -Wextra -Wall -Werror
 
-SRCS	:= main.c
+SRCS	:= main.c entry_point
 
-LIBFT := libft/libft.a
+LIBFT := lib/libft/libft.a
 
 OBJS	:= ${SRCS:.c=.o}
 
 all: $(NAME)
 
-$(NAME): $(OBJS)
+library : 
+	@make -C ./lib/libft
+
+$(NAME): $(OBJS) | library
 	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $(NAME)
 
-lib : 
-	@make -C ./libft && make -C ./printf
 
 push:
 	git add .
@@ -28,13 +29,11 @@ push:
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	make clean -C ./libft
-	make clean -C ./printf
+	make clean -C ./lib/libft
 	rm -rf $(OBJS)
 
 fclean: clean
-	make fclean -C ./libft
-	make fclean -C ./printf
+	make fclean -C ./lib/libft
 	rm -rf $(NAME)
 
 re: fclean all
