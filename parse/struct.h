@@ -1,4 +1,5 @@
-
+#include <mlx.h>
+#include <stdbool.h>
 
 typedef enum {
   north = 0,
@@ -20,8 +21,12 @@ typedef struct s_args {
 
 typedef struct s_info {
   t_point *player_pos;
+    void    *mlx_ptr;
+    void    *mlx_window;
+    int win_size_x;
+    int win_size_y;
   t_point *error_pos; // points to NULL if no error is found, print the map the
-                      // error and the error location
+                     // error and the error location
   t_comp *spawn_position;
 
 } t_info;

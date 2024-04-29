@@ -5,7 +5,7 @@ NAME	:= cub3d
 
 CFLAGS	:= -Wextra -Wall -Werror
 
-SRCS	:= main.c entry_point
+SRCS	:= main.c 
 
 LIBFT := lib/libft/libft.a
 
@@ -17,8 +17,7 @@ library :
 	@make -C ./lib/libft
 
 $(NAME): $(OBJS) | library
-	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $(NAME)
-
+	$(CC) $(OBJS) $(LIBFT_A) -lmlx -framework OpenGL -framework AppKit -o $(NAME)
 
 push:
 	git add .
