@@ -1,7 +1,13 @@
 
 ### Cub3d to-do List;
-
-
-- vector graphics;
-- raycasting;
-- 
+>
+>
+>
+- [] vector graphics;
+- [] raycasting;
+- [] function for fps showing 
+- [] debug_menu
+>
+>
+>
+>

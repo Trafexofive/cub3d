@@ -14,6 +14,7 @@ typedef struct s_point // could be renamed to coordinate.
   unsigned int x;
   unsigned int y;
 } t_point;
+
 typedef struct s_args {
   char **av;
   int ac;
