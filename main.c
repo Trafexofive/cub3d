@@ -1,5 +1,6 @@
 
-#include "parse/struct.h"
+#include "inc/struct.h"
+#include "inc/raycast.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -23,7 +24,6 @@ void clear_window(t_info *info) {
 }
 
 // t_map   load_map_data(info)
-// void     raytracer(info)
 
 void render_screen(t_info *info) {
 
@@ -33,7 +33,6 @@ void render_screen(t_info *info) {
   info->mlx_window = window;
   mlx_string_put(info->mlx_ptr, info->mlx_window, 100, 100, 100, "hello world");
   // clear_window(info);
-  raytracer(info);
 }
 
 void *info_init(t_info *info) {
@@ -56,6 +55,8 @@ int main() {
 
   info = malloc(sizeof(t_info));
   entry_point(info);
+
+  free(info);
 
   return 1;
 }
