@@ -22,8 +22,8 @@ typedef struct s_args {
 
 typedef struct s_info {
   t_point *player_pos;
-    void    *mlx_ptr;
-    void    *mlx_window;
+    void    *mlx;
+    void    *mlx_win;
     int win_size_x;
     int win_size_y;
   t_point *error_pos; // points to NULL if no error is found, print the map the
@@ -33,8 +33,16 @@ typedef struct s_info {
 } t_info;
 
 typedef struct s_map {
-  char **map;
   t_info *info;
+  char **map;
   bool debug;
 
 } t_map;
+
+typedef struct	s_data {
+	void	*img;
+	char	*addr;
+	int		bits_per_pixel;
+	int		line_length;
+	int		endian;
+}				t_data;
