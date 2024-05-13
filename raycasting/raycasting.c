@@ -5,7 +5,7 @@
 void renderer(t_map *map) {
   // void    load_textures(t_texture *textures);
   int i = 0;
-  int fd = open("maps/map.cub", RDONLY);
+  int fd = open("maps/map.cub", O_RDONLY);
   char **map = get_next_line(fd);
   while (map[i]) {
     printf("%s\n", map[i]);
