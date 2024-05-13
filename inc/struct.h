@@ -1,5 +1,12 @@
+
+#ifndef STRUCT_H
+# define STRUCT_H
+
 #include <mlx.h>
 #include <stdbool.h>
+#include <unistd.h>
+//#include <fcntl.h>
+
 
 typedef enum {
   north = 0,
@@ -39,10 +46,12 @@ typedef struct s_map {
 
 } t_map;
 
-typedef struct	s_data {
+typedef struct	s_img{
 	void	*img;
 	char	*addr;
 	int		bits_per_pixel;
 	int		line_length;
 	int		endian;
-}				t_data;
+}				t_img;
+
+#endif
