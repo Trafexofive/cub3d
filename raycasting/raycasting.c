@@ -2,18 +2,30 @@
 #include "../inc/raycast.h"
 #include "../inc/struct.h"
 
-void renderer(t_map *map) {
-  // void    load_textures(t_texture *textures);
+void clear_window(t_info *info) { mlx_clear_window(info->mlx, info->mlx_win); }
+
+void    render_minimap(t_map *map)
+{
   int i = 0;
   int fd = open("maps/map.cub", O_RDONLY);
-  char **map = get_next_line(fd);
-  while (map[i]) {
-    printf("%s\n", map[i]);
-    i++;
-  }
+    map->map = malloc (sizeof(char *));
+    while (1)
+    {
+        map->map[i] = get_next_line(fd);
+        printf("%s", map->map[i]);
+        if (map->map[i] == NULL)
+            break;
+        i++;
+    }
+    close(fd);
+
 }
 
-void clear_window(t_info *info) { mlx_clear_window(info->mlx, info->mlx_win); }
+void renderer(t_map *map) {
+  // void    load_textures(t_texture *textures);
+    render_minimap_term(map);
+}
+
 
 t_map load_map_data(t_map *map);
 
@@ -45,10 +57,10 @@ t_map load_map_data(t_map *map);
 //   mlx_put_image_to_window(mlx, mlx_win, img.img, 0, 0);
 // }
 
-void *info_init(t_info *info) {
-  info->mlx_ptr = mlx_init();
-  info->win_size_x = 1280;
-  info->win_size_y = 1080;
-
-  return NULL;
-}
+// void *info_init(t_info *info) {
+//   info->mlx_ptr = mlx_init();
+//   info->win_size_x = 1280;
+//   info->win_size_y = 1080;
+//
+//   return NULL;
+// }

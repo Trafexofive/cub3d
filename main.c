@@ -18,6 +18,7 @@ int main() {
   // img.img = mlx_new_image(info->mlx_ptr, 1920, 1080);
 
     renderer(map);
-  free(info);
+ free(info);
+ free(map);
   return 1;
 }

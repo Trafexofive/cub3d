@@ -5,7 +5,7 @@ NAME	:= cub3d
 
 CFLAGS	:= -Wextra -Wall -Werror
 
-SRCS	:= main.c raycasting/raycasting.c 
+SRCS	:= main.c raycasting/raycasting.c lib/get_next_line/get_next_line.c lib/get_next_line/get_next_line_utils.c
 
 LIBFT := lib/libft/libft.a
 

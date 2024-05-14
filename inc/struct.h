@@ -5,6 +5,8 @@
 #include <mlx.h>
 #include <stdbool.h>
 #include <unistd.h>
+#include <stdlib.h>
+#include "../lib/get_next_line/get_next_line.h"
 //#include <fcntl.h>
 
 

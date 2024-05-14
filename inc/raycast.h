@@ -4,6 +4,8 @@
 #include <math.h>
 #include <mlx.h>
 #include "struct.h"
+#include <fcntl.h>
+#include <stdio.h>
 
 
 void    renderer(t_map *map);
