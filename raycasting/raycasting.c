@@ -4,7 +4,7 @@
 
 void clear_window(t_info *info) { mlx_clear_window(info->mlx, info->mlx_win); }
 
-void    render_minimap(t_map *map)
+void    render_minimap_term(t_map *map)
 {
   int i = 0;
   int fd = open("maps/map.cub", O_RDONLY);

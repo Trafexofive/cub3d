@@ -5,11 +5,13 @@ NAME	:= cub3d
 
 CFLAGS	:= -Wextra -Wall -Werror
 
-SRCS	:= main.c raycasting/raycasting.c lib/get_next_line/get_next_line.c lib/get_next_line/get_next_line_utils.c
+GNL := lib/get_next_line/get_next_line.c lib/get_next_line/get_next_line_utils.c
+
+SRCS := main.c raycasting/raycasting.c $(GNL) 
 
 LIBFT := lib/libft/libft.a
 
-OBJS	:= ${SRCS:.c=.o}
+OBJS := ${SRCS:.c=.o}
 
 all: $(NAME)
 
@@ -30,10 +32,12 @@ push:
 clean:
 	make clean -C ./lib/libft
 	rm -rf $(OBJS)
+	rm -rf ${GNL:.c=.o}
 
 fclean: clean
 	make fclean -C ./lib/libft
 	rm -rf $(NAME)
+	rm -rf ${GNL:.c=.o}
 
 re: fclean all
 
