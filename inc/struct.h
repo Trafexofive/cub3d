@@ -20,8 +20,8 @@ typedef enum {
 
 typedef struct s_point // could be renamed to coordinate.
 {
-  unsigned int x;
-  unsigned int y;
+  float x;
+  float y;
 } t_point;
 
 typedef struct s_args {
@@ -47,6 +47,12 @@ typedef struct s_map {
   bool debug;
 
 } t_map;
+
+// typedef struct s_grid
+// {
+//
+// } t_grid;
+//
 
 typedef struct	s_img{
 	void	*img;
