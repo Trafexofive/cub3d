@@ -4,7 +4,7 @@
 
 #define COLOR 0xFF5733
 #define VER false
-#define HOR false
+#define HOR true
 
 t_map load_map_data(t_map *map);
 
@@ -47,10 +47,33 @@ void    draw_tile(t_info *info, int len, t_point starting_position)
     starting_position.x += len;
   draw_line(info, len, starting_position, VER);
     starting_position.x -= len;
-  //   starting_position.y += len;
   draw_line(info, len, starting_position, HOR);
-  //   starting_position.x += len;
-  // draw_line(info, len, starting_position, HOR);
+    starting_position.y += len;
+  draw_line(info, len, starting_position, HOR);
+}
+
+void    draw_wall_ver(t_info *info, int len , int count, t_point starting_position)
+{
+    int i = 0;
+
+    while (i < count)
+    {
+        draw_tile(info, len, starting_position);
+        starting_position.y += len;
+        i++;
+    } 
+}
+
+void    draw_wall_hor(t_info *info, int len , int count, t_point starting_position)
+{
+    int i = 0;
+
+    while (i < count)
+    {
+        draw_tile(info, len, starting_position);
+        starting_position.x += len;
+        i++;
+    } 
 }
 
 void draw_grid(t_info *info) 
@@ -81,38 +104,6 @@ void render_minimap_term(t_map *map) {
 //
 // }
 
-// void draw_test(t_info *info) {
-//   t_img img;
-//
-//   img.img = mlx_new_image(info->mlx, 32, 32);
-//   img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel,
-//   &img.line_length,
-//                                &img.endian);
-//   mlx_put_image_to_window(info->mlx, info->mlx_win, img.img, 40, 40);
-//   mlx_pixel_put(info->mlx, &img, 40, 40, 0x00FF0000);
-//     fprintf(stderr, "%s\n", "break");
-//
-//   mlx_put_image_to_window(info->mlx, info->mlx_win, img.img, 0, 0);
-//   mlx_put_image_to_window(info->mlx, info->mlx_win, img.img, 0, 0);
-//   mlx_put_image_to_window(info->mlx, info->mlx_win, img.img, 0, 0);
-//   mlx_put_image_to_window(info->mlx, info->mlx_win, img.img, 0, 0);
-//   mlx_put_image_to_window(info->mlx, info->mlx_win, img.img, 0, 0);
-//   mlx_put_image_to_window(info->mlx, info->mlx_win, img.img, 0, 0);
-// }
-
-// void render_screen(t_info *info) {
-//   t_data img;
-//
-//     draw_test(info);
-//   mlx_string_put(info->mlx, info->mlx_win, 100, 100, 100, "hello world");
-//    clear_window(info);
-//
-//   img.img = mlx_new_image(mlx, 1920, 1080);
-//   img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel,
-//   &img.line_length,
-//                                &img.endian);
-// }
-
 void renderer(t_map *map) {
   t_info *info = map->info;
 
@@ -127,6 +118,8 @@ void renderer(t_map *map) {
 
   p.x = 5;
   p.y = 50;
-    draw_tile(info, 100, p);
+    draw_wall_hor(info, 100, 10, p);
+    p.y += 100;
+    draw_wall_hor(info, 100, 10, p);
   mlx_loop(info->mlx);
 }
