@@ -2,10 +2,16 @@
 #include "../inc/raycast.h"
 #include "../inc/struct.h"
 
+#define COLOR 0xFF5733
+#define VER false
+#define HOR false
+
 t_map load_map_data(t_map *map);
 
 void *info_init(t_info *info) {
   info->mlx = mlx_init();
+  info->draw_pos.x = 0;
+  info->draw_pos.y = 0;
   info->win_size_x = 1280;
   info->win_size_y = 1080;
 
@@ -13,6 +19,45 @@ void *info_init(t_info *info) {
 }
 
 void clear_window(t_info *info) { mlx_clear_window(info->mlx, info->mlx_win); }
+
+// left sided draw
+void draw_line(t_info *info, int len, t_point starting_position, bool mode) {
+  int i = 0;
+  int x = starting_position.x;
+  int y = starting_position.y;
+
+  if (mode == true) {
+    while (i < len) {
+      mlx_pixel_put(info->mlx, info->mlx_win, x, y, COLOR);
+      x++;
+      i++;
+    }
+  } else {
+    while (i < len) {
+      mlx_pixel_put(info->mlx, info->mlx_win, x, y, COLOR);
+      y++;
+      i++;
+    }
+  }
+}
+
+void    draw_tile(t_info *info, int len, t_point starting_position)
+{
+  draw_line(info, len, starting_position, VER);
+    starting_position.x += len;
+  draw_line(info, len, starting_position, VER);
+    starting_position.x -= len;
+  //   starting_position.y += len;
+  draw_line(info, len, starting_position, HOR);
+  //   starting_position.x += len;
+  // draw_line(info, len, starting_position, HOR);
+}
+
+void draw_grid(t_info *info) 
+{
+
+    (void) info;
+}
 
 void render_minimap_term(t_map *map) {
   int i = 0;
@@ -26,53 +71,62 @@ void render_minimap_term(t_map *map) {
     i++;
   }
   close(fd);
+  // draw_grid(map);
   // draw_square(map);
 }
 
-void    init_img(t_img img)
-{
+// void    init_img(t_img img)
+// {
+//
+//
+// }
 
+// void draw_test(t_info *info) {
+//   t_img img;
+//
+//   img.img = mlx_new_image(info->mlx, 32, 32);
+//   img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel,
+//   &img.line_length,
+//                                &img.endian);
+//   mlx_put_image_to_window(info->mlx, info->mlx_win, img.img, 40, 40);
+//   mlx_pixel_put(info->mlx, &img, 40, 40, 0x00FF0000);
+//     fprintf(stderr, "%s\n", "break");
+//
+//   mlx_put_image_to_window(info->mlx, info->mlx_win, img.img, 0, 0);
+//   mlx_put_image_to_window(info->mlx, info->mlx_win, img.img, 0, 0);
+//   mlx_put_image_to_window(info->mlx, info->mlx_win, img.img, 0, 0);
+//   mlx_put_image_to_window(info->mlx, info->mlx_win, img.img, 0, 0);
+//   mlx_put_image_to_window(info->mlx, info->mlx_win, img.img, 0, 0);
+//   mlx_put_image_to_window(info->mlx, info->mlx_win, img.img, 0, 0);
+// }
 
-}
-
-void draw_test(t_info *info) {
-  t_img img;
-
-  img.img = mlx_new_image(info->mlx, 32, 32);
-  img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length,
-                               &img.endian);
-  mlx_put_image_to_window(info->mlx, info->mlx_win, img.img, 40, 40);
-  mlx_pixel_put(info->mlx, &img, 40, 40, 0x00FF0000);
-    fprintf(stderr, "%s\n", "break");
-
-  mlx_put_image_to_window(info->mlx, info->mlx_win, img.img, 0, 0);
-  // mlx_put_image_to_window(info->mlx, info->mlx_win, img.img, 0, 0);
-  // mlx_put_image_to_window(info->mlx, info->mlx_win, img.img, 0, 0);
-  // mlx_put_image_to_window(info->mlx, info->mlx_win, img.img, 0, 0);
-  // mlx_put_image_to_window(info->mlx, info->mlx_win, img.img, 0, 0);
-  // mlx_put_image_to_window(info->mlx, info->mlx_win, img.img, 0, 0);
-}
-void render_screen(t_info *info) {
-  // t_data img;
-
-    draw_test(info);
-  // mlx_string_put(info->mlx, info->mlx_win, 100, 100, 100, "hello world");
-  //  clear_window(info);
-
-  // img.img = mlx_new_image(mlx, 1920, 1080);
-  // img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel,
-  // &img.line_length,
-  //                              &img.endian);
-}
+// void render_screen(t_info *info) {
+//   t_data img;
+//
+//     draw_test(info);
+//   mlx_string_put(info->mlx, info->mlx_win, 100, 100, 100, "hello world");
+//    clear_window(info);
+//
+//   img.img = mlx_new_image(mlx, 1920, 1080);
+//   img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel,
+//   &img.line_length,
+//                                &img.endian);
+// }
 
 void renderer(t_map *map) {
-    t_info *info = map->info;
+  t_info *info = map->info;
 
   // void    load_textures(t_texture *textures);
-  //render_minimap_term(map);
+  // render_minimap_term(map);
 
-    info_init(info);
-  info->mlx_win = mlx_new_window(info->mlx, info->win_size_x, info->win_size_y, "hello");
-    draw_test(info);
-    mlx_loop(info->mlx);
+  info_init(info);
+  info->mlx_win =
+      mlx_new_window(info->mlx, info->win_size_x, info->win_size_y, "hello");
+  // draw_test(info);
+  t_point p;
+
+  p.x = 5;
+  p.y = 50;
+    draw_tile(info, 100, p);
+  mlx_loop(info->mlx);
 }
