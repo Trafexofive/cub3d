@@ -5,6 +5,7 @@
 #define COLOR 0xFF5733
 #define VER false
 #define HOR true
+#define TILE_SIZE 100
 
 t_map load_map_data(t_map *map);
 
@@ -41,45 +42,54 @@ void draw_line(t_info *info, int len, t_point starting_position, bool mode) {
   }
 }
 
-void    draw_tile(t_info *info, int len, t_point starting_position)
-{
+void draw_tile(t_info *info, int len, t_point starting_position) {
   draw_line(info, len, starting_position, VER);
-    starting_position.x += len;
+  starting_position.x += len;
   draw_line(info, len, starting_position, VER);
-    starting_position.x -= len;
+  starting_position.x -= len;
   draw_line(info, len, starting_position, HOR);
+  starting_position.y += len;
+  draw_line(info, len, starting_position, HOR);
+}
+
+void draw_wall_ver(t_info *info, int len, int count,
+                   t_point starting_position) {
+  int i = 0;
+
+  while (i < count) {
+    draw_tile(info, len, starting_position);
     starting_position.y += len;
-  draw_line(info, len, starting_position, HOR);
+    i++;
+  }
 }
 
-void    draw_wall_ver(t_info *info, int len , int count, t_point starting_position)
-{
-    int i = 0;
+// typedef struct s_grid
+// {
+//     t_info *info;
+//     int len;
+//     int count
+//
+// } t_grid;
 
-    while (i < count)
-    {
-        draw_tile(info, len, starting_position);
-        starting_position.y += len;
-        i++;
-    } 
+void draw_wall_hor(t_info *info, int len, int count,
+                   t_point starting_position) {
+  int i = 0;
+
+  while (i < count) {
+    draw_tile(info, len, starting_position);
+    starting_position.x += len;
+    i++;
+  }
 }
 
-void    draw_wall_hor(t_info *info, int len , int count, t_point starting_position)
-{
-    int i = 0;
+void draw_grid(t_info *info, int len, int count, t_point starting_position) {
+  int i = 0;
 
-    while (i < count)
-    {
-        draw_tile(info, len, starting_position);
-        starting_position.x += len;
-        i++;
-    } 
-}
-
-void draw_grid(t_info *info) 
-{
-
-    (void) info;
+  while (i < count) {
+    draw_wall_hor(info, len, count, starting_position);
+    starting_position.y += len;
+    i++;
+  }
 }
 
 void render_minimap_term(t_map *map) {
@@ -118,8 +128,7 @@ void renderer(t_map *map) {
 
   p.x = 5;
   p.y = 50;
-    draw_wall_hor(info, 100, 10, p);
-    p.y += 100;
-    draw_wall_hor(info, 100, 10, p);
+  // draw_wall_hor(info, 10, 100, p);
+  draw_grid(info, 10, 100, p);
   mlx_loop(info->mlx);
 }
