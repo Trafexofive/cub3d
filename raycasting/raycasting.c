@@ -91,6 +91,14 @@ void draw_slant(t_info *info, int radius, t_point position, t_point target) {
   }
 }
 
+void    draw_circle(t_info *info, int radius, t_point position)
+{
+    if (!position.x || !position.y)
+        position = info->draw_pos;
+
+
+}
+
 void draw_tile(t_info *info, int len, t_point starting_position) {
   draw_line(info, len, starting_position, VER);
   starting_position.x += len;
@@ -193,6 +201,7 @@ void render_player(t_map *map) {
   p.y = 1500;
 
   draw_slant(info, 10, info->draw_pos, p);
+    draw_circle(info, 10, info->draw_pos);
 }
 
 void renderer(t_map *map) {
@@ -207,11 +216,65 @@ void renderer(t_map *map) {
   // draw_test(info);
   t_point p;
 
-  p.x = 5;
-  p.y = 50;
+    draw_line(info)
   // mlx_loop_hook(info->mlx, ,void *param);
 
   // render_minimap_term(map);
   render_player(map);
   mlx_loop(info->mlx);
 }
+#include <stdio.h>
+
+// Function to draw a pixel at (x, y)
+// In a real graphics environment, you would use a graphics library to draw pixels on the screen.
+void drawPixel(int x, int y) {
+    printf("Drawing pixel at (%d, %d)\n", x, y);
+}
+
+// Function to draw the 8 symmetrical points of the circle
+void drawCirclePoints(int centerX, int centerY, int x, int y) {
+    // Draw points in all eight octants
+    drawPixel(centerX + x, centerY + y); // Octant 1
+    drawPixel(centerX - x, centerY + y); // Octant 4
+    drawPixel(centerX + x, centerY - y); // Octant 8
+    drawPixel(centerX - x, centerY - y); // Octant 5
+    drawPixel(centerX + y, centerY + x); // Octant 2
+    drawPixel(centerX - y, centerY + x); // Octant 3
+    drawPixel(centerX + y, centerY - x); // Octant 7
+    drawPixel(centerX - y, centerY - x); // Octant 6
+}
+
+// Function to draw a circle using Bresenham's Algorithm
+void drawCircle(int centerX, int centerY, int radius) {
+    int x = 0;
+    int y = radius;
+    int d = 3 - 2 * radius;
+
+    // Draw the initial points on the circle
+    drawCirclePoints(centerX, centerY, x, y);
+
+    // Loop to draw the circle using Bresenham's algorithm
+    while (y >= x) {
+        x++;
+        // Update the decision parameter based on its current value
+        if (d > 0) {
+            y--;
+            d = d + 4 * (x - y) + 10;
+        } else {
+            d = d + 4 * x + 6;
+        }
+        // Draw the points for the current (x, y)
+        drawCirclePoints(centerX, centerY, x, y);
+    }
+}
+
+int main() {
+    int centerX = 50; // Example center x-coordinate
+    int centerY = 50; // Example center y-coordinate
+    int radius = 20;  // Example radius
+
+    drawCircle(centerX, centerY, radius);
+
+    return 0;
+}
+
