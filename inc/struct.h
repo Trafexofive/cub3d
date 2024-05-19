@@ -30,7 +30,7 @@ typedef struct s_args {
 } t_args;
 
 typedef struct s_info {
-  t_point *player_pos;
+  t_point player_pos;
     t_point draw_pos;
     void    *mlx;
     void    *mlx_win;
@@ -39,7 +39,6 @@ typedef struct s_info {
   t_point *error_pos; // points to NULL if no error is found, print the map the
                      // error and the error location
   t_comp *spawn_position;
-
 } t_info;
 
 typedef struct s_map {
