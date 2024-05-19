@@ -36,10 +36,17 @@ typedef enum s_keys {
 
 t_map load_map_data(t_map *map);
 
+t_player *player_init(void)
+{
+    t_player *player = malloc (sizeof(t_player));
+    player->spawn.x = 50;
+    player->spawn.y = 50;
+    return (player);
+}
 void *info_init(t_info *info) {
   info->mlx = mlx_init();
-  info->draw_pos.x = 0;
-  info->draw_pos.y = 0;
+  info->draw_pos.x = 100;
+  info->draw_pos.y = 100;
   info->player_pos.x = 0;
   info->player_pos.y = 0;
   info->win_size_x = 1280;
@@ -146,61 +153,6 @@ void draw_grid(t_info *info, int len, int count, t_point starting_position) {
   }
 }
 
-void map_tile_morph(t_map *map) {
-  int i = 0;
-  int j = 0;
-  t_info *info;
-
-  info = map->info;
-
-  int len = 10;
-
-  while (map->map[i]) {
-
-    while (map->map[i][j]) {
-      if (map->map[i][j] == '1') {
-
-        draw_tile(info, len, info->draw_pos);
-      }
-      info->draw_pos.x += len;
-      j++;
-    }
-    info->draw_pos.y += len;
-    info->draw_pos.x = 0;
-    i++;
-    j = 0;
-  }
-}
-
-void render_minimap_term(t_map *map) {
-  int i = 0;
-  int fd = open("maps/map.cub", O_RDONLY);
-  map->map = malloc(sizeof(char *));
-  while (1) {
-    map->map[i] = get_next_line(fd);
-    printf("%s", map->map[i]);
-    if (map->map[i] == NULL)
-      break;
-    i++;
-  }
-  close(fd);
-  map_tile_morph(map);
-}
-
-void render_player(t_map *map) {
-  t_info *info = map->info;
-
-  t_point p;
-  info->draw_pos.x = 400;
-  info->draw_pos.y = 600;
-
-  p.x = 1000;
-  p.y = 1500;
-
-  // draw_slant(info, 10, info->draw_pos, p);
-  // draw_circle(info, 10, info->draw_pos);
-}
-
 void circle_octants(int centerX, int centerY, int x, int y, t_info *info) {
   // Draw points in all eight octants
   mlx_pixel_put(info->mlx, info->mlx_win, centerX + x, centerY + y,
@@ -240,16 +192,71 @@ void drawCircle(int centerX, int centerY, int radius, t_info *info) {
       d = d + 4 * x + 6;
     }
     // Draw the points for the current (x, y)
-    circle_octants(centerX, centerY, x, y , info);
+    circle_octants(centerX, centerY, x, y, info);
   }
+}
+
+void render_player(t_map *map) {
+  t_info *info = map->info;
+  // info->draw_pos.x = 400;
+  // info->draw_pos.y = 600;
+  int centerX = map->player->spawn.x;
+  int centerY = map->player->spawn.y;
+  int radius = 15;
+
+  drawCircle(centerX, centerY, radius, info);
+  // draw_slant(info, 10, info->draw_pos, p);
+  // draw_circle(info, 10, info->draw_pos);
+}
+
+void map_tile_morph(t_map *map) {
+  int i = 0;
+  int j = 0;
+  t_info *info;
+
+  info = map->info;
+
+  int len = 30;
+
+  while (map->map[i]) {
+
+    while (map->map[i][j]) {
+      if (map->map[i][j] == '1') {
+
+        draw_tile(info, len, info->draw_pos);
+      } if (map->map[i][j] == 'N' || map->map[i][j] == 'W' ||
+                 map->map[i][j] == 'S' || map->map[i][j] == 'E') {
+        map->player->spawn.x = info->draw_pos.x;
+        map->player->spawn.y = info->draw_pos.y;
+        render_player(map);
+      }
+      info->draw_pos.x += len;
+      j++;
+    }
+    info->draw_pos.y += len;
+    info->draw_pos.x = 0;
+    i++;
+    j = 0;
+  }
+}
+
+void render_minimap_term(t_map *map) {
+  int i = 0;
+  int fd = open("maps/map.cub", O_RDONLY);
+  map->map = malloc(sizeof(char *));
+  while (1) {
+    map->map[i] = get_next_line(fd);
+    printf("%s", map->map[i]);
+    if (map->map[i] == NULL)
+      break;
+    i++;
+  }
+  close(fd);
+  map_tile_morph(map);
 }
 
 void renderer(t_map *map) {
   t_info *info = map->info;
-  int centerX = 50; // Example center x-coordinate
-  int centerY = 50; // Example center y-coordinate
-  int radius = 20;  // Example radius
-
   // void    load_textures(t_texture *textures);
   // render_minimap_term(map);
 
@@ -258,12 +265,11 @@ void renderer(t_map *map) {
       mlx_new_window(info->mlx, info->win_size_x, info->win_size_y, "Cub3d");
   // draw_test(info);
   // t_point p;
+    map->player = player_init();
 
   // mlx_loop_hook(info->mlx, ,void *param);
 
-  drawCircle(centerX, centerY, radius, info);
-  // render_minimap_term(map);
-  render_player(map);
+  render_minimap_term(map);
   mlx_loop(info->mlx);
 }
 
