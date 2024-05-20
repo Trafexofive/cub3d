@@ -7,7 +7,9 @@ CFLAGS	:= -Wextra -Wall -Werror
 
 GNL := lib/get_next_line/get_next_line.c lib/get_next_line/get_next_line_utils.c
 
-SRCS := main.c raycasting/raycasting.c $(GNL) 
+DRAW := drawing/tool_kit.c	
+
+SRCS := main.c raycasting/raycasting.c $(GNL) $(DRAW) 
 
 LIBFT := lib/libft/libft.a
 

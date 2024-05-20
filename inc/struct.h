@@ -38,8 +38,8 @@ typedef struct s_info {
   t_point draw_pos;
   void *mlx;
   void *mlx_win;
-  int win_size_x;
-  int win_size_y;
+  int win_x;
+  int win_y;
   t_point *error_pos; // points to NULL if no error is found, print the map the
                       // error and the error location
   t_comp *spawn_position;
@@ -66,5 +66,11 @@ typedef struct s_img {
   int line_length;
   int endian;
 } t_img;
+
+
+typedef struct s_texture
+{
+    t_img *img;
+}t_texture;
 
 #endif
