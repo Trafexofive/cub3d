@@ -9,7 +9,9 @@ GNL := lib/get_next_line/get_next_line.c lib/get_next_line/get_next_line_utils.c
 
 DRAW := drawing/tool_kit.c	
 
-SRCS := main.c raycasting/raycasting.c $(GNL) $(DRAW) 
+UTILS := utils/init.c
+
+SRCS := main.c raycasting/raycasting.c $(GNL) $(DRAW) $(UTILS) 
 
 LIBFT := lib/libft/libft.a
 

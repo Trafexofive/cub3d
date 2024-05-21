@@ -15,11 +15,7 @@ int main() {
   // entry_point(info);
 
   renderer(map);
-
-
-    usleep(1000);
   free(info);
-  free(map->player);
   free(map);
   return 1;
 }

@@ -22,26 +22,7 @@
 #include "../inc/macros.h"
 #include "../inc/raycast.h"
 #include "../inc/struct.h"
-
-t_map load_map_data(t_map *map);
-
-t_player *player_init(void) {
-  t_player *player = malloc(sizeof(t_player));
-  player->spawn.x = 50;
-  player->spawn.y = 50;
-  return (player);
-}
-void *info_init(t_info *info) {
-  info->mlx = mlx_init();
-  info->draw_pos.x = 100;
-  info->draw_pos.y = 100;
-  info->player_pos.x = 0;
-  info->player_pos.y = 0;
-  info->win_x = 1980;
-  info->win_y = 1280;
-
-  return NULL;
-}
+#include "../inc/utils.h"
 
 // typedef struct s_grid
 // {
@@ -55,9 +36,11 @@ void render_player(t_map *map) {
   t_info *info = map->info;
   // info->draw_pos.x = 400;
   // info->draw_pos.y = 600;
+  // map->player->spawn.x *= 1.5;
+  // map->player->spawn.y *= 1.5;
   int centerX = map->player->spawn.x;
   int centerY = map->player->spawn.y;
-  int radius = 15;
+  int radius = 10;
 
   drawcircle(centerX, centerY, radius, info);
   // draw_slant(info, 10, info->draw_pos, p);
@@ -82,8 +65,8 @@ void map_tile_morph(t_map *map) {
       }
       if (map->map[i][j] == 'N' || map->map[i][j] == 'W' ||
           map->map[i][j] == 'S' || map->map[i][j] == 'E') {
-        map->player->spawn.x = info->draw_pos.x;
-        map->player->spawn.y = info->draw_pos.y;
+        map->player->spawn.x = info->draw_pos.x + (len / 2);
+        map->player->spawn.y = info->draw_pos.y + (len / 2);
         render_player(map);
       }
       info->draw_pos.x += len;
@@ -134,5 +117,6 @@ void renderer(t_map *map) {
   // hooks(info);
 
   render_minimap_term(map);
+    usleep(1000);
   mlx_loop(info->mlx);
 }
