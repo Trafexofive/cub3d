@@ -14,13 +14,13 @@ t_player *player_init(void) {
 
 void info_init(t_info *info) {
   info->mlx = mlx_init();
-  info->draw_pos.x = 0;
+  info->draw_pos.x = 100;
   info->draw_pos.y = 100;
   info->player_pos.x = 0;
   info->player_pos.y = 0;
     // info->spawn_position = north;
 
-  info->win_x = 1980;
+  info->win_x = 1280;
   info->win_y = 1280;
     return;
 

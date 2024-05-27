@@ -5,6 +5,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+
+void    free_arr(char **arr)
+{
+    int i = 0;
+    while (arr[i] != NULL) {
+        free(arr[i]);
+    }
+}
+
 int main() {
   t_info *info;
   t_map *map;
@@ -17,10 +26,10 @@ int main() {
 
   renderer(map);
 
-
-    usleep(1000);
-  // free(info);
-  // free(map->player);
-  // free(map);
+  usleep(10000);
+  free(info);
+  free(map->player);
+    free_arr(map->map);
+  free(map);
   return 1;
 }

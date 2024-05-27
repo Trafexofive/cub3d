@@ -33,7 +33,6 @@
 // } t_grid;
 
 void render_player(t_map *map) {
-  t_info *info = map->info;
   // info->draw_pos.x = 400;
   // info->draw_pos.y = 600;
   // map->player->spawn.x *= 1.5;
@@ -42,7 +41,7 @@ void render_player(t_map *map) {
   int centerY = map->player->spawn.y;
   int radius = 10;
 
-  drawcircle(centerX, centerY, radius, info);
+  drawcircle(centerX, centerY, radius, map->info);
   // draw_slant(info, 10, info->draw_pos, p);
   // draw_circle(info, 10, info->draw_pos);
 }
@@ -55,6 +54,7 @@ void map_tile_morph(t_map *map) {
   info = map->info;
 
   int len = 30;
+    int tmp = info->draw_pos.x;
 
   while (map->map[i]) {
 
@@ -73,7 +73,7 @@ void map_tile_morph(t_map *map) {
       j++;
     }
     info->draw_pos.y += len;
-    info->draw_pos.x = 0;
+    info->draw_pos.x = tmp;
     i++;
     j = 0;
   }
@@ -117,6 +117,6 @@ void renderer(t_map *map) {
   // hooks(info);
 
   render_minimap_term(map);
-  // usleep(10000);
+  usleep(10000);
   mlx_loop(map->info->mlx);
 }
