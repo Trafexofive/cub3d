@@ -23,15 +23,19 @@ library :
 	@make -C ./lib/libft
 
 $(NAME): $(OBJS) | library
-	$(CC) $(OBJS) $(LIBFT_A) -lmlx -framework OpenGL -framework AppKit -o $(NAME)
+	$(CC) $(OBJS) $(LIBFT_A) -Lmlx_linux -lmlx_Linux -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz -o $(NAME)
+# $(NAME): $(OBJS) | library
+# 	$(CC) $(OBJS) $(LIBFT_A) -lmlx -framework OpenGL -framework AppKit -o $(NAME)
 
 push:
 	git add .
 	git commit -m "Lazy_push"
 	git push
 
-%.o: %.c $(HEADERS) | lib
-	@$(CC) $(CFLAGS) -c $< -o $@
+%.o: %.c $(HEADERS) | library
+	$(CC) -Wall -Wextra -Werror -I/usr/include -Imlx_linux -O3 -c $< -o $@
+# %.o: %.c $(HEADERS) | lib
+# 	@$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
 	make clean -C ./lib/libft

@@ -12,7 +12,7 @@ t_player *player_init(void) {
   return (player);
 }
 
-void *info_init(t_info *info) {
+void info_init(t_info *info) {
   info->mlx = mlx_init();
   info->draw_pos.x = 0;
   info->draw_pos.y = 100;
@@ -22,6 +22,6 @@ void *info_init(t_info *info) {
 
   info->win_x = 1980;
   info->win_y = 1280;
+    return;
 
-  return NULL;
 }

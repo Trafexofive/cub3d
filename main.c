@@ -1,6 +1,7 @@
 
 #include "inc/raycast.h"
 #include "inc/struct.h"
+#include "inc/utils.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -18,8 +19,8 @@ int main() {
 
 
     usleep(1000);
-  free(info);
-  free(map->player);
-  free(map);
+  // free(info);
+  // free(map->player);
+  // free(map);
   return 1;
 }

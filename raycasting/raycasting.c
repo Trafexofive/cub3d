@@ -109,14 +109,14 @@ void render_minimap_term(t_map *map) {
 // void    load_textures(t_texture *textures);
 
 void renderer(t_map *map) {
-  t_info *info = map->info;
 
-  info_init(info);
-  info->mlx_win = mlx_new_window(info->mlx, info->win_x, info->win_y, "Cub3d");
+  info_init(map->info);
+  map->info->mlx_win = mlx_new_window(map->info->mlx, map->info->win_x,
+                                      map->info->win_y, "Cub3d");
   map->player = player_init();
   // hooks(info);
 
   render_minimap_term(map);
-    usleep(1000);
-  mlx_loop(info->mlx);
+  // usleep(10000);
+  mlx_loop(map->info->mlx);
 }
