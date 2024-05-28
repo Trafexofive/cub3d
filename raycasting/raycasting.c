@@ -54,7 +54,7 @@ void map_tile_morph(t_map *map) {
   info = map->info;
 
   int len = 30;
-    int tmp = info->draw_pos.x;
+  int tmp = info->draw_pos.x;
 
   while (map->map[i]) {
 
@@ -82,7 +82,7 @@ void map_tile_morph(t_map *map) {
 void render_minimap_term(t_map *map) {
   int i = 0;
   int fd = open("maps/map.cub", O_RDONLY);
-  map->map = malloc(sizeof(char *));
+  map->map = malloc(20 * sizeof(char *));
   while (1) {
     map->map[i] = get_next_line(fd);
     printf("%s", map->map[i]);
@@ -109,14 +109,7 @@ void render_minimap_term(t_map *map) {
 // void    load_textures(t_texture *textures);
 
 void renderer(t_map *map) {
-
-  info_init(map->info);
-  map->info->mlx_win = mlx_new_window(map->info->mlx, map->info->win_x,
-                                      map->info->win_y, "Cub3d");
-  map->player = player_init();
-  // hooks(info);
+  usleep(100000);
 
   render_minimap_term(map);
-  usleep(10000);
-  mlx_loop(map->info->mlx);
 }
