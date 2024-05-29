@@ -20,6 +20,7 @@ void free_all(t_map *map) {
   free(map->player);
   free_arr(map->map);
   free(map);
+  exit(EXIT_FAILURE);
 }
 
 void player_move_w(t_map *map) { map->player->spawn.y -= MOVE_SPEED; }
@@ -37,9 +38,8 @@ void key_hook(int key, t_map *map) {
     player_move_a(map);
   if (key == D_KEY)
     player_move_d(map);
-  // else if (key == ESC_KEY)
-  //   free_all(game);
-    
+  if (key == ESC_KEY)
+    free_all(map);
 }
 // }
 
@@ -82,6 +82,6 @@ int main() {
   mlx_hook(info->mlx_win, 17, 0, (void *)free_all, map);
   clear_window(info);
   mlx_loop(info->mlx);
-  free_all(map);
+  // free_all(map);
   return 1;
 }
