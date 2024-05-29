@@ -1,7 +1,7 @@
 
-#include "../inc/struct.h"
-#include "../inc/macros.h"
 #include "../inc/draw.h"
+#include "../inc/macros.h"
+#include "../inc/struct.h"
 #include <mlx.h>
 
 void clear_window(t_info *info) { mlx_clear_window(info->mlx, info->mlx_win); }
@@ -42,6 +42,30 @@ void draw_slant(t_info *info, t_point position, t_point target) {
     mlx_pixel_put(info->mlx, info->mlx_win, diff_x, diff_y, COLOR);
     diff_x++;
     diff_y++;
+  }
+}
+
+void draw_anyline(t_map *map, t_point start, t_point end) {
+  int dx = abs(end.x - start.x);
+  int dy = abs(end.y - start.y);
+  int sx = start.x < end.x ? 1 : -1;
+  int sy = start.y < end.y ? 1 : -1;
+  int err = dx - dy;
+
+  while (1) {
+    mlx_pixel_put(map->info->mlx, map->info->mlx_win, start.x, start.y, COLOR);
+
+    if (start.x == end.x && start.y == end.y)
+      break;
+    int e2 = 2 * err;
+    if (e2 > -dy) {
+      err -= dy;
+      start.x += sx;
+    }
+    if (e2 < dx) {
+      err += dx;
+      start.y += sy;
+    }
   }
 }
 

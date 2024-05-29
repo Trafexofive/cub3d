@@ -20,10 +20,10 @@
 # include <stdlib.h>
 # include <fcntl.h>
 
-size_t	ft_strlen(char *s);
-char	*ft_strdup(char *s);
-char	*ft_strjoin(char *s1, char *s2);
-char	*ft_substr(char *s, unsigned int start, size_t len);
+size_t	ft_strlen_(char *s);
+char	*ft_strdup_(char *s);
+char	*ft_strjoin_(char *s1, char *s2);
+char	*ft_substr_(char *s, unsigned int start, size_t len);
 char	*get_next_line(int fd);
 int		ft_find_nl(char *s, int c);
 

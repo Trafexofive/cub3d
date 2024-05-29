@@ -41,7 +41,7 @@ typedef struct s_info {
   int win_x;
   int win_y;
 
-  t_comp spawn_position;
+  t_comp player_dir;
 } t_info;
 
 typedef struct s_map {

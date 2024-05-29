@@ -23,7 +23,7 @@ library :
 	@make -C ./lib/libft
 
 $(NAME): $(OBJS) | library
-	$(CC) $(OBJS) $(LIBFT_A) -Lmlx_linux -lmlx_Linux -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz -o $(NAME)
+	$(CC) $(OBJS) $(LIBFT) -Lmlx_linux -lmlx_Linux -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz -o $(NAME)
 # $(NAME): $(OBJS) | library
 # 	$(CC) $(OBJS) $(LIBFT_A) -lmlx -framework OpenGL -framework AppKit -o $(NAME)
 

@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdio.h>
 
 static int	ft_num_len(int num)
 {
@@ -69,5 +70,6 @@ char	*ft_itoa(int num)
 	}
 	if (ft_is_negative(num) == 1)
 		num_str[0] = '-';
+    
 	return (num_str);
 }

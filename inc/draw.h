@@ -15,5 +15,6 @@ void draw_wall_hor(t_info *info, int len, int count, t_point starting_position);
 void draw_grid(t_info *info, int len, int count, t_point starting_position);
 void circle_octants(int centerX, int centerY, int x, int y, t_info *info);
 void drawcircle(int centerx, int centery, int radius, t_info *info);
+void draw_anyline(t_map *, t_point , t_point);
 
 #endif

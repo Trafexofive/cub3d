@@ -49,7 +49,7 @@ static char	*ft_cleanup_line(char *appended_line)
 	if (appended_line[i] == '\0') 
 		return (NULL);
 	else
-		line = ft_substr(appended_line, i + 1, ft_strlen(appended_line) - i);
+		line = ft_substr_(appended_line, i + 1, ft_strlen_(appended_line) - i);
 	if (*line == '\0')
 	{
 		free(line);
@@ -77,9 +77,9 @@ static char	*ft_append_line(int fd, char *read_buffer, char *static_buffer)
 			break ;
 		read_buffer[bread] = '\0';
 		if (!static_buffer)
-			static_buffer = ft_strdup("");
+			static_buffer = ft_strdup_("");
 		temp = static_buffer;
-		static_buffer = ft_strjoin(temp, read_buffer);
+		static_buffer = ft_strjoin_(temp, read_buffer);
 		free(temp);
 		temp = NULL;
 		if (ft_find_nl(read_buffer, '\n') == 1)

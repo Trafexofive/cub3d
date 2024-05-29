@@ -1,4 +1,5 @@
 
+#include "inc/macros.h"
 #include "inc/raycast.h"
 #include "inc/struct.h"
 #include "inc/utils.h"
@@ -21,15 +22,50 @@ void free_all(t_map *map) {
   free(map);
 }
 
-void key_hook(t_map *map) {
-  (void)map;
-  return;
+void player_move_w(t_map *map) {
+  map->player->spawn.y = +1;
+}
+
+void key_hook(int key, t_map *map) {
+  printf("key value = %X\n", key);
+  map->player->spawn.y = +1;
+  if (key == W_KEY)
+    player_move_w(map);
+  //   else if (key == S_KEY &&
+  //            check_collision(game->map[game->p_pos.y + 1][game->p_pos.x],
+  //            game))
+  //     player_move(game, 0, 1);
+  //   else if (key == A_KEY &&
+  //            check_collision(game->map[game->p_pos.y][game->p_pos.x - 1],
+  //            game))
+  //     player_move(game, -1, 0);
+  //   else if (key == D_KEY &&
+  //            check_collision(game->map[game->p_pos.y][game->p_pos.x + 1],
+  //            game))
+  //     player_move(game, +1, 0);
+  //   else if (key == ESC_KEY)
+  //     free_all(game);
+  // }
 }
 
 void new_window(t_map *map) {
 
   map->info->mlx_win = mlx_new_window(map->info->mlx, map->info->win_x,
                                       map->info->win_y, "Cub3d");
+}
+
+void init_minimap(t_map *map) {
+  int i = 0;
+  int fd = open("maps/map.cub", O_RDONLY);
+  map->map = malloc(20 * sizeof(char *));
+  while (1) {
+    map->map[i] = get_next_line(fd);
+    printf("%s", map->map[i]);
+    if (map->map[i] == NULL)
+      break;
+    i++;
+  }
+  close(fd);
 }
 
 int main() {
@@ -42,12 +78,10 @@ int main() {
   map->info = info;
   info_init(map->info);
   map->player = player_init();
-  // entry_point(info);
-
-  // renderer(map);
 
   // open_window(map);
   new_window(map);
+  init_minimap(map);
   mlx_loop_hook(map->info->mlx, (void *)renderer, map);
   mlx_key_hook(info->mlx_win, (void *)key_hook, &map);
   mlx_hook(info->mlx_win, 17, 0, (void *)free_all, map);
