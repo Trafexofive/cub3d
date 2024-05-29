@@ -22,28 +22,26 @@ void free_all(t_map *map) {
   free(map);
 }
 
-void player_move_w(t_map *map) { map->player->spawn.y += 1; }
+void player_move_w(t_map *map) { map->player->spawn.y -= 3; }
+void player_move_s(t_map *map) { map->player->spawn.y += 3; }
+void player_move_a(t_map *map) { map->player->spawn.x -= 3; }
+void player_move_d(t_map *map) { map->player->spawn.x += 3; }
 
 void key_hook(int key, t_map *map) {
   printf("key value = %X\n", key);
   if (key == W_KEY)
     player_move_w(map);
-  //   else if (key == S_KEY &&
-  //            check_collision(game->map[game->p_pos.y + 1][game->p_pos.x],
-  //            game))
-  //     player_move(game, 0, 1);
-  //   else if (key == A_KEY &&
-  //            check_collision(game->map[game->p_pos.y][game->p_pos.x - 1],
-  //            game))
-  //     player_move(game, -1, 0);
-  //   else if (key == D_KEY &&
-  //            check_collision(game->map[game->p_pos.y][game->p_pos.x + 1],
-  //            game))
-  //     player_move(game, +1, 0);
-  //   else if (key == ESC_KEY)
-  //     free_all(game);
-  // }
+  if (key == S_KEY)
+    player_move_s(map);
+  if (key == A_KEY)
+    player_move_a(map);
+  if (key == D_KEY)
+    player_move_d(map);
+  // else if (key == ESC_KEY)
+  //   free_all(game);
+    
 }
+// }
 
 void new_window(t_map *map) {
 
