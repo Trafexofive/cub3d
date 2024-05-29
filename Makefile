@@ -11,7 +11,7 @@ DRAW := drawing/tool_kit.c
 
 UTILS := utils/init.c
 
-SRCS := main.c raycasting/raycasting.c $(GNL) $(DRAW) $(UTILS) 
+SRCS := main.c garbage/garbage.c raycasting/raycasting.c $(GNL) $(DRAW) $(UTILS) 
 
 LIBFT := lib/libft/libft.a
 
