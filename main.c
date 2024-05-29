@@ -22,13 +22,10 @@ void free_all(t_map *map) {
   free(map);
 }
 
-void player_move_w(t_map *map) {
-  map->player->spawn.y = +1;
-}
+void player_move_w(t_map *map) { map->player->spawn.y += 1; }
 
 void key_hook(int key, t_map *map) {
   printf("key value = %X\n", key);
-  map->player->spawn.y = +1;
   if (key == W_KEY)
     player_move_w(map);
   //   else if (key == S_KEY &&
@@ -83,7 +80,7 @@ int main() {
   new_window(map);
   init_minimap(map);
   mlx_loop_hook(map->info->mlx, (void *)renderer, map);
-  mlx_key_hook(info->mlx_win, (void *)key_hook, &map);
+  mlx_key_hook(info->mlx_win, (void *)key_hook, map);
   mlx_hook(info->mlx_win, 17, 0, (void *)free_all, map);
   clear_window(info);
   mlx_loop(info->mlx);

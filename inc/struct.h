@@ -30,6 +30,7 @@ typedef struct s_args {
 
 typedef struct s_player {
   t_point spawn;
+    bool    spawned;
 
 } t_player;
 

@@ -22,14 +22,14 @@ void render_player(t_map *map) {
   // map->player->spawn.y *= 1.5;
   int centerX = map->player->spawn.x;
   int centerY = map->player->spawn.y;
-  t_point relative = map->player->spawn;
-  relative.y = map->player->spawn.y + TILE_SIZE;
+  // t_point relative = map->player->spawn;
+  // relative.y = map->player->spawn.y + TILE_SIZE;
 
   int radius = 10;
 
   drawcircle(centerX, centerY, radius, map->info);
 
-  draw_anyline(map, map->player->spawn, relative);
+  // draw_anyline(map, map->player->spawn, relative);
   // draw_slant(info, 10, info->draw_pos, p);
   // draw_circle(info, 10, info->draw_pos);
 }
@@ -62,14 +62,17 @@ void map_tile_morph(t_map *map) {
       if (map->map[i][j] == '1') {
 
         draw_tile(info, len, info->draw_pos);
+      } else if (map->map[i][j] == 'N' || map->map[i][j] == 'W' ||
+                 map->map[i][j] == 'S' || map->map[i][j] == 'E') {
+        if (map->player->spawned == false) {
+          map->player->spawn.x = info->draw_pos.x + (len / 2);
+          map->player->spawn.y = info->draw_pos.y + (len / 2);
+          update_player_dir(map, i, j);
+          render_player(map);
+          map->player->spawned = true;
+        }
       }
-      if (map->map[i][j] == 'N' || map->map[i][j] == 'W' ||
-          map->map[i][j] == 'S' || map->map[i][j] == 'E') {
-        map->player->spawn.x = info->draw_pos.x + (len / 2);
-        map->player->spawn.y = info->draw_pos.y + (len / 2);
-        update_player_dir(map, i, j);
-        render_player(map);
-      }
+      render_player(map);
       info->draw_pos.x += len;
       j++;
     }
@@ -125,6 +128,7 @@ void renderer(t_map *map) {
   fps(map);
   // draw_anyline(map, a, b);
   map_tile_morph(map);
+  render_player(map);
   usleep(FPS);
   reset_player_info(map->info);
   clear_window(map->info);
