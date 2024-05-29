@@ -6,7 +6,7 @@
 #define VER false
 #define HOR true
 #define FPS 100000
-#define TILE_SIZE 100
+#define TILE_SIZE 50
 #define MOVE_SPEED 2
 
 // typedef enum s_keys {

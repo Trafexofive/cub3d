@@ -46,6 +46,11 @@ void update_player_dir(t_map *map, int i, int j) {
     map->info->player_dir = east;
 }
 
+void print_point(t_point point) {
+  printf("x = %d\n", point.x);
+  printf("y = %d\n", point.y);
+}
+
 void map_tile_morph(t_map *map) {
   int i = 0;
   int j = 0;
@@ -53,7 +58,7 @@ void map_tile_morph(t_map *map) {
 
   info = map->info;
 
-  int len = 30;
+  int len = TILE_SIZE;
   int tmp = info->draw_pos.x;
 
   while (map->map[i]) {
@@ -62,6 +67,7 @@ void map_tile_morph(t_map *map) {
       if (map->map[i][j] == '1') {
 
         draw_tile(info, len, info->draw_pos);
+
       } else if (map->map[i][j] == 'N' || map->map[i][j] == 'W' ||
                  map->map[i][j] == 'S' || map->map[i][j] == 'E') {
         if (map->player->spawned == false) {
@@ -76,6 +82,7 @@ void map_tile_morph(t_map *map) {
       info->draw_pos.x += len;
       j++;
     }
+    // print_point(info->draw_pos);
     info->draw_pos.y += len;
     info->draw_pos.x = tmp;
     i++;
@@ -105,8 +112,10 @@ void fps(t_map *map) {
   string = ft_itoa(frames);
   mlx_string_put(map->info->mlx, map->info->mlx_win, 150, 50, COLOR, string);
   mlx_string_put(map->info->mlx, map->info->mlx_win, 40, 50, COLOR, "frames :");
-  printf("%s\n", string);
-  frames++;
+  if (frames == 60)
+    frames = 0;
+  else
+    frames++;
   free(string);
 }
 
@@ -125,11 +134,12 @@ void renderer(t_map *map) {
   // b.x = 100;
   // b.y = 200;
 
-  fps(map);
   // draw_anyline(map, a, b);
+  clear_window(map->info);
+  usleep(100000);
+  fps(map);
   map_tile_morph(map);
   render_player(map);
-  usleep(FPS);
+  // usleep(10000);
   reset_player_info(map->info);
-  clear_window(map->info);
 }
