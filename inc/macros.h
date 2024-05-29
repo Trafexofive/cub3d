@@ -7,6 +7,7 @@
 #define HOR true
 #define FPS 100000
 #define TILE_SIZE 100
+#define MOVE_SPEED 2
 
 // typedef enum s_keys {
 //   W_KEY = 0x0D,

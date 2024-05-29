@@ -22,10 +22,10 @@ void free_all(t_map *map) {
   free(map);
 }
 
-void player_move_w(t_map *map) { map->player->spawn.y -= 3; }
-void player_move_s(t_map *map) { map->player->spawn.y += 3; }
-void player_move_a(t_map *map) { map->player->spawn.x -= 3; }
-void player_move_d(t_map *map) { map->player->spawn.x += 3; }
+void player_move_w(t_map *map) { map->player->spawn.y -= MOVE_SPEED; }
+void player_move_s(t_map *map) { map->player->spawn.y += MOVE_SPEED; }
+void player_move_a(t_map *map) { map->player->spawn.x -= MOVE_SPEED; }
+void player_move_d(t_map *map) { map->player->spawn.x += MOVE_SPEED; }
 
 void key_hook(int key, t_map *map) {
   printf("key value = %X\n", key);
