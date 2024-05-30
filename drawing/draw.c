@@ -32,7 +32,6 @@ void test(t_map *map) {
     double angle_rad = degrees_to_radians(angle_deg);
     t_point end = calculate_endpoint(center, angle_rad, length);
     i++;
-    draw_line(center, end);
+    draw_anyline(center, end);
   }
-  return 0;
 }

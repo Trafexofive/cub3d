@@ -12,7 +12,6 @@
 void    renderer(t_map *map);
 t_map   load_map_data(t_map *map);
 void    clear_window(t_info *info);
-
-
+void    raycaster(t_map *map);
 
 #endif

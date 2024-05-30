@@ -109,6 +109,11 @@ void reset_player_info(t_info *info) {
   info->draw_pos.y = 100;
 }
 
+// void    raycaster(t_map *map)
+// {
+//
+// }
+
 void renderer(t_map *map) {
 
   clear_window(map->info);
@@ -116,5 +121,6 @@ void renderer(t_map *map) {
   fps(map);
   map_tile_morph(map);
   render_player(map);
+  raycaster(map);
   reset_player_info(map->info);
 }
