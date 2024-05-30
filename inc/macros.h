@@ -8,6 +8,7 @@
 #define FPS 100000
 #define TILE_SIZE 30
 #define MOVE_SPEED 2
+#define HIT_BOX 10
 
 typedef enum s_keys {
   W_KEY = 0x0D,

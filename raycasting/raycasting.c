@@ -16,22 +16,7 @@
 // } t_grid;
 
 void render_player(t_map *map) {
-  // info->draw_pos.x = 400;
-  // info->draw_pos.y = 600;
-  // map->player->spawn.x *= 1.5;
-  // map->player->spawn.y *= 1.5;
-  int centerX = map->player->spawn.x;
-  int centerY = map->player->spawn.y;
-  // t_point relative = map->player->spawn;
-  // relative.y = map->player->spawn.y + TILE_SIZE;
-
-  int radius = 10;
-
-  drawcircle(centerX, centerY, radius, map->info);
-
-  // draw_anyline(map, map->player->spawn, relative);
-  // draw_slant(info, 10, info->draw_pos, p);
-  // draw_circle(info, 10, info->draw_pos);
+  drawcircle(map->player->spawn.y, map->player->spawn.x, HIT_BOX, map->info);
 }
 
 void update_player_dir(t_map *map, int i, int j) {
@@ -126,20 +111,10 @@ void reset_player_info(t_info *info) {
 
 void renderer(t_map *map) {
 
-  // t_point a;
-  // t_point b;
-  //
-  // a.x = 50;
-  // a.y = 50;
-  // b.x = 100;
-  // b.y = 200;
-
-  // draw_anyline(map, a, b);
   clear_window(map->info);
   usleep(100000);
   fps(map);
   map_tile_morph(map);
   render_player(map);
-  // usleep(10000);
   reset_player_info(map->info);
 }
