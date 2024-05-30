@@ -63,25 +63,32 @@ void init_minimap(t_map *map) {
   close(fd);
 }
 
-int main() {
+bool game_init(t_map *map) {
+
+  new_window(map);
+  init_minimap(map);
+  mlx_loop_hook(map->info->mlx, (void *)renderer, map);
+  mlx_key_hook(map->info->mlx_win, (void *)key_hook, map);
+  mlx_hook(map->info->mlx_win, 17, 0, (void *)free_all, map);
+  clear_window(map->info);
+  mlx_loop(map->info->mlx);
+  return true;
+}
+
+t_map *vars_init() {
+
   t_info *info;
   t_map *map;
-  // void *mlx;
 
   info = malloc(sizeof(t_info));
   map = malloc(sizeof(t_map));
   map->info = info;
   info_init(map->info);
   map->player = player_init();
+  return (map);
+}
 
-  // open_window(map);
-  new_window(map);
-  init_minimap(map);
-  mlx_loop_hook(map->info->mlx, (void *)renderer, map);
-  mlx_key_hook(info->mlx_win, (void *)key_hook, map);
-  mlx_hook(info->mlx_win, 17, 0, (void *)free_all, map);
-  clear_window(info);
-  mlx_loop(info->mlx);
-  // free_all(map);
+int main() {
+  game_init(vars_init());
   return 1;
 }
