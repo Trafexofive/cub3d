@@ -21,6 +21,6 @@ void info_init(t_info *info) {
   // info->spawn_position = north;
 
   info->win_x = 1280;
-  info->win_y = 1280;
+  info->win_y = 1000;
   return;
 }
