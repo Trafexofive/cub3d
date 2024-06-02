@@ -16,7 +16,7 @@
 // } t_grid;
 
 void render_player(t_map *map) {
-  drawcircle(map->player->spawn.y, map->player->spawn.x, HIT_BOX, map->info);
+  drawcircle(map->player->spawn.x, map->player->spawn.y, HIT_BOX, map->info);
 }
 
 void update_player_dir(t_map *map, int i, int j) {
@@ -63,7 +63,6 @@ void map_tile_morph(t_map *map) {
           map->player->spawned = true;
         }
       }
-      render_player(map);
       info->draw_pos.x += len;
       j++;
     }
@@ -121,6 +120,6 @@ void renderer(t_map *map) {
   fps(map);
   map_tile_morph(map);
   render_player(map);
-  raycaster(map);
+  // raycaster(map);
   reset_player_info(map->info);
 }

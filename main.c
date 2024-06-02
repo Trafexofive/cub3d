@@ -43,6 +43,7 @@ void key_hook(int key, t_map *map) {
 }
 // }
 
+//make map an arr to make it possible creating multiple windows and pulling them by index
 void new_window(t_map *map) {
 
   map->info->mlx_win = mlx_new_window(map->info->mlx, map->info->win_x,
