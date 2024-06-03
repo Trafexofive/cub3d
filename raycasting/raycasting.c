@@ -113,12 +113,15 @@ void reset_player_info(t_info *info) {
 //
 // }
 
+
 void renderer(t_map *map) {
 
   clear_window(map->info);
-  usleep(100000);
+  // mlx_hook(map->info->mlx_win, 119, 0, (void *) player_move_w, map);
+  // usleep(100000);
   fps(map);
   map_tile_morph(map);
+  test(map);
   render_player(map);
   // raycaster(map);
   reset_player_info(map->info);

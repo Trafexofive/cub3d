@@ -1,6 +1,7 @@
 
 #include "../inc/macros.h"
 #include "../inc/struct.h"
+#include "../inc/draw.h"
 #include <math.h>
 #include <stdio.h>
 
@@ -12,8 +13,8 @@ typedef struct {
 
 double degrees_to_radians(double degrees) { return degrees * (M_PI / 180.0); }
 
-Point calculate_endpoint(t_point start, double angle, double length) {
-  Point end;
+t_point calculate_endpoint(t_point start, double angle, double length) {
+  t_point end;
   end.x = start.x + (int)(length * cos(angle));
   end.y = start.y + (int)(length * sin(angle));
   return end;
@@ -21,9 +22,9 @@ Point calculate_endpoint(t_point start, double angle, double length) {
 
 void test(t_map *map) {
 
-  t_point center = {100, 100}; // Center point
+  t_point center = map->player->spawn;// Center point
   double length = 50;          // Length of each line
-  int num_lines = 12;          // Number of lines to draw
+  int num_lines = 50;          // Number of lines to draw
   double angle_increment = 360.0 / num_lines;
   int i = 0;
 
@@ -32,6 +33,7 @@ void test(t_map *map) {
     double angle_rad = degrees_to_radians(angle_deg);
     t_point end = calculate_endpoint(center, angle_rad, length);
     i++;
-    draw_anyline(center, end);
+    draw_anyline(map, center, end);
   }
+        usleep(100);
 }

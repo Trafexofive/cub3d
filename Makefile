@@ -7,7 +7,7 @@ CFLAGS	:= -Wextra -Wall -Werror
 
 GNL := lib/get_next_line/get_next_line.c lib/get_next_line/get_next_line_utils.c
 
-DRAW := drawing/tool_kit.c	
+DRAW := drawing/tool_kit.c drawing/draw.c	
 
 UTILS := utils/init.c
 

@@ -15,12 +15,17 @@ void free_arr(char **arr) {
 
 void free_all(t_map *map) {
 
-  mlx_destroy_window(map->info->mlx, map->info->mlx_win);
+  void *mlx;
+  void *mlx_win;
+
+  mlx = map->info->mlx;
+  mlx_win = map->info->mlx_win;
+
+  mlx_destroy_window(mlx, mlx_win);
   free(map->info);
   free(map->player);
   free_arr(map->map);
   free(map);
-  exit(EXIT_FAILURE);
 }
 
 void player_move_w(t_map *map) { map->player->spawn.y -= MOVE_SPEED; }
@@ -30,6 +35,7 @@ void player_move_d(t_map *map) { map->player->spawn.x += MOVE_SPEED; }
 
 void key_hook(int key, t_map *map) {
   printf("key value = %X\n", key);
+  printf("decimal key value = %d\n", key);
   if (key == W_KEY)
     player_move_w(map);
   if (key == S_KEY)
@@ -43,7 +49,8 @@ void key_hook(int key, t_map *map) {
 }
 // }
 
-//make map an arr to make it possible creating multiple windows and pulling them by index
+// make map an arr to make it possible creating multiple windows and pulling
+// them by index
 void new_window(t_map *map) {
 
   map->info->mlx_win = mlx_new_window(map->info->mlx, map->info->win_x,
@@ -67,9 +74,10 @@ void init_minimap(t_map *map) {
 bool game_init(t_map *map) {
 
   new_window(map);
+  // mlx_do_sync(map->info->mlx);
   init_minimap(map);
   mlx_loop_hook(map->info->mlx, (void *)renderer, map);
-  mlx_key_hook(map->info->mlx_win, (void *)key_hook, map);
+  // mlx_key_hook(map->info->mlx_win, (void *)key_hook, map);
   mlx_hook(map->info->mlx_win, 17, 0, (void *)free_all, map);
   clear_window(map->info);
   mlx_loop(map->info->mlx);

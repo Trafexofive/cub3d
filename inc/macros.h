@@ -10,6 +10,8 @@
 #define MOVE_SPEED 2
 #define HIT_BOX 10
 
+
+
 // typedef enum s_keys {
 //   W_KEY = 0x0D,
 //   S_KEY = 0x01,
@@ -20,7 +22,9 @@
 // macos
 
 typedef enum s_keys {
-  W_KEY = 0x77,
+
+  // W_KEY = 0x77,
+  W_KEY = -559684896,
   S_KEY = 0x73,
   A_KEY = 0x61,
   D_KEY = 0x64,
