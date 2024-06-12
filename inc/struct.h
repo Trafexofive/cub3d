@@ -29,8 +29,10 @@ typedef struct s_args {
 } t_args;
 
 typedef struct s_player {
+  double dirX, dirY;     // Player's direction vector
+  double planeX, planeY; // Camera plane
   t_point spawn;
-    bool    spawned;
+  bool spawned;
 
 } t_player;
 
@@ -67,10 +69,8 @@ typedef struct s_img {
   int endian;
 } t_img;
 
-
-typedef struct s_texture
-{
-    t_img *img;
-}t_texture;
+typedef struct s_texture {
+  t_img *img;
+} t_texture;
 
 #endif

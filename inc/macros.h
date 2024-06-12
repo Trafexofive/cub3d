@@ -9,6 +9,8 @@
 #define TILE_SIZE 30
 #define MOVE_SPEED 2
 #define HIT_BOX 10
+#define SCREEN_WIDTH 1980
+#define SCREEN_HEIGHT 1280
 
 
 

@@ -53,8 +53,8 @@ void key_hook(int key, t_map *map) {
 // them by index
 void new_window(t_map *map) {
 
-  map->info->mlx_win = mlx_new_window(map->info->mlx, map->info->win_x,
-                                      map->info->win_y, "Cub3d");
+  map->info->mlx_win = mlx_new_window(map->info->mlx, SCREEN_WIDTH,
+                                      SCREEN_HEIGHT, "Cub3d");
 }
 
 void init_minimap(t_map *map) {
