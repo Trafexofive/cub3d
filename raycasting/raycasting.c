@@ -16,7 +16,7 @@
 // } t_grid;
 
 void render_player(t_map *map) {
-  drawcircle(map->player->spawn.x, map->player->spawn.y, HIT_BOX, map->info);
+  drawcircle(map->player->spawn.x, map->player->spawn.y, HIT_BOX, map->mlx);
 }
 
 void update_player_dir(t_map *map, int i, int j) {
@@ -40,8 +40,11 @@ void map_tile_morph(t_map *map) {
   int i = 0;
   int j = 0;
   t_info *info;
+  t_mlx *mlx;
+  
 
   info = map->info;
+  mlx = map->mlx;
 
   int len = TILE_SIZE;
   int tmp = info->draw_pos.x;
@@ -51,7 +54,7 @@ void map_tile_morph(t_map *map) {
     while (map->map[i][j]) {
       if (map->map[i][j] == '1') {
 
-        draw_tile(info, len, info->draw_pos);
+        draw_tile(mlx, len, info->draw_pos);
 
       } else if (map->map[i][j] == 'N' || map->map[i][j] == 'W' ||
                  map->map[i][j] == 'S' || map->map[i][j] == 'E') {
@@ -110,7 +113,6 @@ void renderer(t_map *map) {
 
   // fps(map);
   map_tile_morph(map);
-  test(map);
   render_player(map);
   // raycaster(map);
   reset_player_info(map->info);

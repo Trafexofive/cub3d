@@ -8,7 +8,6 @@
 
 void clear_window(t_info *info);
 void draw_line(t_mlx *mlx, int len, t_point starting_position, bool mode);
-void draw_anyline(t_mlx *map, t_point start, t_point end);
 void draw_slant(t_info *info, t_point position, t_point target);
 void draw_tile(t_mlx *mlx, int len, t_point starting_position);
 void draw_wall_ver(t_mlx *mlx, int len, int count, t_point starting_position);
