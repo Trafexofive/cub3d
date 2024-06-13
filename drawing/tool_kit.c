@@ -7,20 +7,20 @@
 void clear_window(t_info *info) { mlx_clear_window(info->mlx, info->mlx_win); }
 
 // left sided draw
-void draw_line(t_info *info, int len, t_point starting_position, bool mode) {
+void draw_line(t_mlx *mlx, int len, t_point starting_position, bool mode) {
   int i = 0;
   int x = starting_position.x;
   int y = starting_position.y;
 
   if (mode == true) {
     while (i < len) {
-      mlx_pixel_put(info->mlx, info->mlx_win, x, y, COLOR);
+      mlx_pixel_put(mlx->mlx, mlx->mlx_win, x, y, COLOR);
       x++;
       i++;
     }
   } else {
     while (i < len) {
-      mlx_pixel_put(info->mlx, info->mlx_win, x, y, COLOR);
+      mlx_pixel_put(mlx->mlx, mlx->mlx_win, x, y, COLOR);
       y++;
       i++;
     }
@@ -51,9 +51,10 @@ void draw_anyline(t_map *map, t_point start, t_point end) {
   int sx = start.x < end.x ? 1 : -1;
   int sy = start.y < end.y ? 1 : -1;
   int err = dx - dy;
+  t_mlx *mlx = map->mlx;
 
   while (1) {
-    mlx_pixel_put(map->info->mlx, map->info->mlx_win, start.x, start.y, COLOR);
+    mlx_pixel_put(mlx->mlx, mlx->mlx_win, start.x, start.y, COLOR);
 
     if (start.x == end.x && start.y == end.y)
       break;
@@ -69,75 +70,75 @@ void draw_anyline(t_map *map, t_point start, t_point end) {
   }
 }
 
-void draw_tile(t_info *info, int len, t_point starting_position) {
-  draw_line(info, len, starting_position, VER);
+void draw_tile(t_mlx *mlx , int len, t_point starting_position) {
+  draw_line(mlx , len, starting_position, VER);
   starting_position.x += len;
-  draw_line(info, len, starting_position, VER);
+  draw_line(mlx, len, starting_position, VER);
   starting_position.x -= len;
-  draw_line(info, len, starting_position, HOR);
+  draw_line(mlx, len, starting_position, HOR);
   starting_position.y += len;
-  draw_line(info, len, starting_position, HOR);
+  draw_line(mlx, len, starting_position, HOR);
 }
 
-void draw_wall_ver(t_info *info, int len, int count,
+void draw_wall_ver(t_mlx *mlx, int len, int count,
                    t_point starting_position) {
   int i = 0;
 
   while (i < count) {
-    draw_tile(info, len, starting_position);
+    draw_tile(mlx, len, starting_position);
     starting_position.y += len;
     i++;
   }
 }
 
-void draw_wall_hor(t_info *info, int len, int count,
+void draw_wall_hor(t_mlx *mlx, int len, int count,
                    t_point starting_position) {
   int i = 0;
 
   while (i < count) {
-    draw_tile(info, len, starting_position);
+    draw_tile(mlx, len, starting_position);
     starting_position.x += len;
     i++;
   }
 }
 
-void draw_grid(t_info *info, int len, int count, t_point starting_position) {
+void draw_grid(t_mlx *mlx , int len, int count, t_point starting_position) {
   int i = 0;
 
   while (i < count) {
-    draw_wall_hor(info, len, count, starting_position);
+    draw_wall_hor(mlx, len, count, starting_position);
     starting_position.y += len;
     i++;
   }
 }
 
-void circle_octants(int centerX, int centerY, int x, int y, t_info *info) {
+void circle_octants(int centerX, int centerY, int x, int y, t_mlx *mlx) {
   // Draw points in all eight octants
-  mlx_pixel_put(info->mlx, info->mlx_win, centerX + x, centerY + y,
+  mlx_pixel_put(mlx->mlx, mlx->mlx_win, centerX + x, centerY + y,
                 COLOR); // Octant 1
-  mlx_pixel_put(info->mlx, info->mlx_win, centerX + x, centerY - y,
+  mlx_pixel_put(mlx->mlx, mlx->mlx_win, centerX + x, centerY - y,
                 COLOR); // Octant 1
-  mlx_pixel_put(info->mlx, info->mlx_win, centerX - x, centerY - y,
+  mlx_pixel_put(mlx->mlx, mlx->mlx_win, centerX - x, centerY - y,
                 COLOR); // Octant 1
-  mlx_pixel_put(info->mlx, info->mlx_win, centerX - x, centerY + y,
+  mlx_pixel_put(mlx->mlx, mlx->mlx_win, centerX - x, centerY + y,
                 COLOR); // Octant 1
-  mlx_pixel_put(info->mlx, info->mlx_win, centerX + y, centerY + x,
+  mlx_pixel_put(mlx->mlx, mlx->mlx_win, centerX + y, centerY + x,
                 COLOR); // Octant 1
-  mlx_pixel_put(info->mlx, info->mlx_win, centerX - y, centerY + x,
+  mlx_pixel_put(mlx->mlx, mlx->mlx_win, centerX - y, centerY + x,
                 COLOR); // Octant 1
-  mlx_pixel_put(info->mlx, info->mlx_win, centerX - y, centerY - x,
+  mlx_pixel_put(mlx->mlx, mlx->mlx_win, centerX - y, centerY - x,
                 COLOR); // Octant 1
-  mlx_pixel_put(info->mlx, info->mlx_win, centerX + y, centerY - x,
+  mlx_pixel_put(mlx->mlx, mlx->mlx_win, centerX + y, centerY - x,
                 COLOR); // Octant 1
 }
 
-void drawcircle(int centerx, int centery, int radius, t_info *info) {
+void drawcircle(int centerx, int centery, int radius, t_mlx *mlx) {
   int x = 0;
   int y = radius;
   int d = 3 - 2 * radius;
 
   // Draw the initial points on the circle
-  circle_octants(centerx, centery, x, y, info);
+  circle_octants(centerx, centery, x, y, mlx);
 
   // Loop to draw the circle using Bresenham's algorithm
   while (y >= x) {
@@ -150,6 +151,6 @@ void drawcircle(int centerx, int centery, int radius, t_info *info) {
       d = d + 4 * x + 6;
     }
     // Draw the points for the current (x, y)
-    circle_octants(centerx, centery, x, y, info);
+    circle_octants(centerx, centery, x, y, mlx);
   }
 }

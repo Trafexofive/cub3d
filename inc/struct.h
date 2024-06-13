@@ -32,9 +32,15 @@ typedef struct s_player {
   double dirX, dirY;     // Player's direction vector
   double planeX, planeY; // Camera plane
   t_point spawn;
+  t_point position;
   bool spawned;
 
 } t_player;
+
+typedef struct s_mlx {
+  void *mlx;
+  void *mlx_win;
+}t_mlx;
 
 typedef struct s_info {
   t_point player_pos;
@@ -50,6 +56,7 @@ typedef struct s_info {
 typedef struct s_map {
   t_player *player;
   t_info *info;
+  t_mlx *mlx;
   char **map;
   bool debug;
 

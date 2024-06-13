@@ -18,8 +18,8 @@ void free_all(t_map *map) {
   void *mlx;
   void *mlx_win;
 
-  mlx = map->info->mlx;
-  mlx_win = map->info->mlx_win;
+  mlx = map->mlx->mlx;
+  mlx_win = map->mlx->mlx_win;
 
   mlx_destroy_window(mlx, mlx_win);
   free(map->info);
@@ -53,8 +53,8 @@ void key_hook(int key, t_map *map) {
 // them by index
 void new_window(t_map *map) {
 
-  map->info->mlx_win = mlx_new_window(map->info->mlx, SCREEN_WIDTH,
-                                      SCREEN_HEIGHT, "Cub3d");
+  map->mlx->mlx_win =
+      mlx_new_window(map->mlx->mlx, SCREEN_WIDTH, SCREEN_HEIGHT, "Cub3d");
 }
 
 void init_minimap(t_map *map) {
@@ -73,25 +73,36 @@ void init_minimap(t_map *map) {
 
 bool game_init(t_map *map) {
 
+  t_mlx *mlx;
+
+  mlx = map->mlx;
   new_window(map);
   // mlx_do_sync(map->info->mlx);
   init_minimap(map);
-  mlx_loop_hook(map->info->mlx, (void *)renderer, map);
-  // mlx_key_hook(map->info->mlx_win, (void *)key_hook, map);
-  mlx_hook(map->info->mlx_win, 17, 0, (void *)free_all, map);
+  mlx_loop_hook(mlx->mlx, (void *)renderer, map);
+  mlx_hook(mlx->mlx_win, 17, 0, (void *)free_all, map);
+  mlx_key_hook(mlx->mlx_win, (void *)key_hook, map);
   clear_window(map->info);
-  mlx_loop(map->info->mlx);
+  mlx_loop(mlx->mlx);
   return true;
 }
+
+void init_mlx(t_mlx *mlx) { mlx->mlx = mlx_init(); }
 
 t_map *vars_init() {
 
   t_info *info;
   t_map *map;
+  t_mlx *mlx;
 
   info = malloc(sizeof(t_info));
   map = malloc(sizeof(t_map));
+  mlx = malloc(sizeof(t_mlx));
+
   map->info = info;
+  init_mlx(mlx);
+  map->mlx = mlx;
+
   info_init(map->info);
   map->player = player_init();
   return (map);

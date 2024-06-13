@@ -74,19 +74,6 @@ void map_tile_morph(t_map *map) {
   }
 }
 
-//
-// void new_image(t_img img, t_info *info) {
-//   img.img = mlx_new_image(info->mlx, info->win_x - 1, info->win_y - 1);
-// }
-
-// void    hooks(t_info *info)
-// {
-//   mlx_loop_hook(info->mlx, ,void *param);
-//
-// }
-//
-//
-
 // void    load_textures(t_texture *textures);
 
 void fps(t_map *map) {
@@ -108,22 +95,23 @@ void reset_player_info(t_info *info) {
   info->draw_pos.y = 100;
 }
 
-void raycaster(t_map *map, int x) {
-
-}
+// void raycaster(t_map *map) {
+//
+// }
 
 
 void renderer(t_map *map) {
 
-  clear_window(map->info);
+    t_mlx *mlx = map->mlx;
+  // clear_window(map->info);
+  mlx_clear_window(mlx->mlx, mlx->mlx_win);
   // mlx_hook(map->info->mlx_win, 119, 0, (void *) player_move_w, map);
   // usleep(100000);
 
-  fps(map);
+  // fps(map);
   map_tile_morph(map);
   test(map);
   render_player(map);
-  cast_rays(map);
   // raycaster(map);
   reset_player_info(map->info);
 }
