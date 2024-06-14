@@ -22,8 +22,12 @@ all: $(NAME)
 library : 
 	@make -C ./lib/libft
 
-# $(NAME): $(OBJS) | library
-# 	$(CC) $(OBJS) $(LIBFT) -Lmlx_linux -lmlx_Linux -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz -o $(NAME)
+# linux :
+# 	$(NAME): $(OBJS) | library
+# 		$(CC) $(OBJS) $(LIBFT) -Lmlx_linux -lmlx_Linux -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz -o $(NAME)
+# 	%.o: %.c $(HEADERS) | library
+# 		$(CC) -Wall -Wextra -Werror -I/usr/include -Imlx_linux -O3 -c $< -o $@
+
 $(NAME): $(OBJS) | library
 	$(CC) $(OBJS) $(LIBFT) -lmlx -framework OpenGL -framework AppKit -o $(NAME)
 
@@ -32,9 +36,7 @@ push:
 	git commit -m "Lazy_push"
 	git push
 
-# %.o: %.c $(HEADERS) | library
-# 	$(CC) -Wall -Wextra -Werror -I/usr/include -Imlx_linux -O3 -c $< -o $@
-%.o: %.c $(HEADERS) | lib
+%.o: %.c $(HEADERS) | library
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
