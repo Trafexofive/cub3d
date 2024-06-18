@@ -82,10 +82,11 @@ void map_tile_morph(t_map *map) {
 void fps(t_map *map) {
   static int frames = 0;
   char *string;
+  t_mlx *mlx = map->mlx;
 
   string = ft_itoa(frames);
-  mlx_string_put(map->info->mlx, map->info->mlx_win, 150, 50, COLOR, string);
-  mlx_string_put(map->info->mlx, map->info->mlx_win, 40, 50, COLOR, "frames :");
+  mlx_string_put(mlx->mlx, mlx->mlx_win, 150, 50, COLOR, string);
+  mlx_string_put(mlx->mlx, mlx->mlx_win, 40, 50, COLOR, "frames :");
   if (frames == 60)
     frames = 0;
   else

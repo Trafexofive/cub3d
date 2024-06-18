@@ -6,7 +6,7 @@
 #include <mlx.h>
 #include <stdio.h>
 
-void clear_window(t_info *info);
+void clear_window(t_mlx *mlx);
 void draw_line(t_mlx *mlx, int len, t_point starting_position, bool mode);
 void draw_slant(t_info *info, t_point position, t_point target);
 void draw_tile(t_mlx *mlx, int len, t_point starting_position);

@@ -17,17 +17,17 @@ LIBFT := lib/libft/libft.a
 
 OBJS := ${SRCS:.c=.o}
 
-UNAME_S := $(shell uname -s)
+OS := $(shell uname -s)
 
 all: library $(NAME)
 
 library:
 	@make -C ./lib/libft
 
-ifeq ($(UNAME_S), Linux)
+ifeq ($(OS), Linux)
     $(NAME): $(OBJS) $(LIBFT)
 		$(CC) $(OBJS) $(LIBFT) -Lmlx_linux -lmlx_Linux -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz -o $(NAME)
-else ifeq ($(UNAME_S), Darwin)
+else ifeq ($(OS), Darwin)
     $(NAME): $(OBJS) $(LIBFT)
 		$(CC) $(OBJS) $(LIBFT) -lmlx -framework OpenGL -framework AppKit -o $(NAME)
 endif

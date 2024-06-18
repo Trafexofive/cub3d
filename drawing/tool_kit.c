@@ -4,7 +4,7 @@
 #include "../inc/struct.h"
 #include <mlx.h>
 
-void clear_window(t_info *info) { mlx_clear_window(info->mlx, info->mlx_win); }
+void clear_window(t_mlx *mlx) { mlx_clear_window(mlx->mlx, mlx->mlx_win); }
 
 // left sided draw
 void draw_line(t_mlx *mlx, int len, t_point starting_position, bool mode) {

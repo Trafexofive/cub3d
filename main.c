@@ -51,10 +51,10 @@ void key_hook(int key, t_map *map) {
 
 // make map an arr to make it possible creating multiple windows and pulling
 // them by index
-void new_window(t_map *map) {
+void new_window(t_mlx *mlx) {
 
-  map->mlx->mlx_win =
-      mlx_new_window(map->mlx->mlx, SCREEN_WIDTH, SCREEN_HEIGHT, "Cub3d");
+  mlx->mlx_win =
+      mlx_new_window(mlx->mlx, SCREEN_WIDTH, SCREEN_HEIGHT, "Cub3d");
 }
 
 void init_minimap(t_map *map) {
@@ -76,13 +76,14 @@ bool game_init(t_map *map) {
   t_mlx *mlx;
 
   mlx = map->mlx;
-  new_window(map);
+  new_window(mlx);
   // mlx_do_sync(map->info->mlx);
   init_minimap(map);
   mlx_loop_hook(mlx->mlx, (void *)renderer, map);
   mlx_hook(mlx->mlx_win, 17, 0, (void *)free_all, map);
   mlx_key_hook(mlx->mlx_win, (void *)key_hook, map);
   clear_window(map->info);
+  exit(EXIT_FAILURE);
   mlx_loop(mlx->mlx);
   return true;
 }
