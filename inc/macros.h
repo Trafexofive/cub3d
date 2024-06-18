@@ -26,7 +26,7 @@
 typedef enum s_keys {
 
   // W_KEY = 0x77,
-  W_KEY = -559684896,
+  W_KEY = 0x77,
   S_KEY = 0x73,
   A_KEY = 0x61,
   D_KEY = 0x64,
