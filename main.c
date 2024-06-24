@@ -82,7 +82,6 @@ bool game_init(t_map *map) {
   mlx_loop_hook(mlx->mlx, (void *)renderer, map);
   mlx_hook(mlx->mlx_win, 17, 0, (void *)free_all, map);
   mlx_key_hook(mlx->mlx_win, (void *)key_hook, map);
-  // exit(EXIT_FAILURE);
   clear_window(mlx);
   mlx_loop(mlx->mlx);
   return true;
