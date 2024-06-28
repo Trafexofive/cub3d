@@ -29,7 +29,7 @@ ifeq ($(OS), Linux)
 		$(CC) $(OBJS) $(LIBFT) -Lmlx_linux -lmlx_Linux -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz -o $(NAME)
 else ifeq ($(OS), Darwin)
     $(NAME): $(OBJS) $(LIBFT)
-		$(CC) $(OBJS) $(LIBFT) -lmlx -framework OpenGL -framework AppKit -o $(NAME)
+		$(CC) -D__OSX__ $(OBJS) $(LIBFT) -lmlx -framework OpenGL -framework AppKit -o $(NAME)
 endif
 
 %.o: %.c

@@ -24,6 +24,7 @@ typedef enum s_keys {
 
 #endif
 
+#define NIL 0
 #define COLOR 0xFF5733
 #define GREEN 0x00FF4D
 #define VER false

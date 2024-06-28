@@ -27,7 +27,6 @@ typedef struct s_args {
   char **av;
   int ac;
 } t_args;
-
 typedef struct s_player {
   double dirX, dirY;     // Player's direction vector
   double planeX, planeY; // Camera plane
@@ -41,7 +40,7 @@ typedef struct s_player {
 typedef struct s_mlx {
   void *mlx;
   void *mlx_win;
-}t_mlx;
+} t_mlx;
 
 typedef struct s_info {
   t_point player_pos;
@@ -54,6 +53,8 @@ typedef struct s_info {
   t_comp player_dir;
 } t_info;
 
+
+//rename to compositioning struct, map should only contain map related content
 typedef struct s_map {
   t_player *player;
   t_info *info;
@@ -62,6 +63,7 @@ typedef struct s_map {
   bool debug;
 
 } t_map;
+
 
 // typedef struct s_grid
 // {
