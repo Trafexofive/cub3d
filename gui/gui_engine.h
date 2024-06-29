@@ -1,10 +1,12 @@
+#include "../inc/struct.h"
+#include "../inc/macros.h"
+
 #ifndef GUI
 #define GUI
 
 //----------------------------------- MACROS
 //
 
-#include <typeinfo>
 #define DEFAULT_WIDTH 20
 #define DEFAULT_HEIGHT 20
 
@@ -14,11 +16,6 @@ typedef struct s_pos // could be renamed to coordinate.
   int y;
 } t_pos;
 
-typedef struct s_mlx {
-  void *mlx;
-  void *mlx_win;
-} t_mlx;
-
 typedef struct s_box {
   int height;
   int width;
@@ -26,9 +23,9 @@ typedef struct s_box {
 } t_box;
 
 typedef enum {
-  text_only = 0,
+  default = 0,
   button = 1,
-
+  text_only = 2,
 
 } t_type;
 
@@ -40,6 +37,7 @@ typedef struct s_element {
   bool selected;
   bool visibility;
   bool hoverable; // if not jump to next element
+  bool overlap;
 
   t_box dimensions;
   t_pos position;
@@ -47,5 +45,11 @@ typedef struct s_element {
   s_element *next;
 
 } t_elem;
+
+//------------------------------------------
+//
+
+// void draw_box(t_mlx *mlx, t_box box);
+t_elem *instantiate_element(t_elem *head, t_type type);
 
 #endif

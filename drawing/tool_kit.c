@@ -27,6 +27,7 @@ void draw_line(t_mlx *mlx, int len, t_point starting_position, bool mode) {
   }
 }
 
+
 void draw_slant(t_info *info, t_point position, t_point target) {
   int diff_x = target.x - position.x + 1;
   int diff_y = target.y - position.y + 1;

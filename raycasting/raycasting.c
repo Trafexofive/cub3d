@@ -3,7 +3,7 @@
 #include "../inc/macros.h"
 #include "../inc/raycast.h"
 #include "../inc/struct.h"
-#include "gui/gui_engine.h"
+#include "../gui/gui_engine.h"
 #include "../inc/utils.h"
 #include "../lib/libft/libft.h"
 #include <stdio.h>
@@ -109,14 +109,13 @@ void reset_player_info(t_info *info) {
 void renderer(t_map *map) {
 
     t_mlx *mlx = map->mlx;
-  // clear_window(map->info);
-  mlx_clear_window(mlx->mlx, mlx->mlx_win);
+  clear_window(mlx);
   // mlx_hook(map->info->mlx_win, 119, 0, (void *) player_move_w, map);
   // usleep(100000);
 
   // fps(map);
-  map_tile_morph(map);
-  render_player(map);
+  // map_tile_morph(map);
+  // render_player(map);
   // raycaster(map);
   reset_player_info(map->info);
 }
