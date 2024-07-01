@@ -15,7 +15,17 @@ void element_init(t_elem *element) {
   element->next = NULL;
 }
 
-// void draw_box(t_mlx *mlx, t_box box) {}
+
+void draw_box(t_mlx *mlx , t_box box, t_point starting_position) {
+  draw_line(mlx , box.height, starting_position, VER);
+  starting_position.x += box.height;
+  draw_line(mlx, box.height, starting_position, VER);
+  starting_position.x -= box.height;
+  draw_line(mlx, box.width, starting_position, HOR);
+  starting_position.y += box.width;
+  draw_line(mlx, box.width, starting_position, HOR);
+}
+
 
 t_elem *instantiate_element(t_elem *head, t_type type) {
   t_elem *new_element;
@@ -39,6 +49,7 @@ t_elem *instantiate_element(t_elem *head, t_type type) {
 bool render_ui(t_elem *elements, t_mlx *mlx) {
 
   clear_window(mlx);
+  draw_box()
   // render_elements(elements);
 }
 
