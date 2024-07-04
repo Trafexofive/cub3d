@@ -15,9 +15,8 @@ void element_init(t_elem *element) {
   element->next = NULL;
 }
 
-
-void draw_box(t_mlx *mlx , t_box box, t_point starting_position) {
-  draw_line(mlx , box.height, starting_position, VER);
+void draw_box(t_mlx *mlx, t_box box, t_point starting_position) {
+  draw_line(mlx, box.height, starting_position, VER);
   starting_position.x += box.height;
   draw_line(mlx, box.height, starting_position, VER);
   starting_position.x -= box.height;
@@ -26,18 +25,18 @@ void draw_box(t_mlx *mlx , t_box box, t_point starting_position) {
   draw_line(mlx, box.width, starting_position, HOR);
 }
 
-
 t_elem *instantiate_element(t_elem *head, t_type type) {
   t_elem *new_element;
 
-  while (head->next) {
-    head = head->next;
+  if (type == DEFAULT) {
+    while (head->next) {
+      head = head->next;
+    }
+    new_element = malloc(sizeof(t_elem));
+    element_init(new_element);
+    head->next = new_element;
   }
-  new_element = malloc(sizeof(t_elem));
-  element_init(new_element);
-  head->next = new_element;
   // if (type == default)
-
   return (new_element);
 }
 
@@ -47,9 +46,15 @@ t_elem *instantiate_element(t_elem *head, t_type type) {
 // }
 
 bool render_ui(t_elem *elements, t_mlx *mlx) {
+  t_box box;
+  t_point p;
 
+  p.x = 100;
+  p.y = 100;
+  box.width = 30;
+  box.height = 10;
   clear_window(mlx);
-  draw_box()
+  draw_box(mlx, box, p);
   // render_elements(elements);
 }
 
@@ -57,6 +62,6 @@ void entry_point(t_mlx *mlx) {
   t_elem *elements;
 
   elements->next = NULL;
-  instantiate_element(elements, 0);
+  instantiate_element(elements, DEFAULT);
   render_ui(elements, mlx);
 }

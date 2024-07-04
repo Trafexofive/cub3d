@@ -23,9 +23,9 @@ typedef struct s_box {
 } t_box;
 
 typedef enum {
-  default = 0,
-  button = 1,
-  text_only = 2,
+  DEFAULT = 0,
+  BUTTON = 1,
+  TEXT = 2
 
 } t_type;
 
@@ -42,7 +42,7 @@ typedef struct s_element {
   t_box dimensions;
   t_pos position;
 
-  s_element *next;
+  struct s_element *next;
 
 } t_elem;
 
