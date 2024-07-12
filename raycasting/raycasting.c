@@ -113,6 +113,7 @@ void renderer(t_map *map) {
   // mlx_hook(map->info->mlx_win, 119, 0, (void *) player_move_w, map);
   // usleep(100000);
 
+  gui_entry_point(mlx);
   // fps(map);
   // map_tile_morph(map);
   // render_player(map);

@@ -15,19 +15,21 @@ void element_init(t_elem *element) {
   element->next = NULL;
 }
 
-void draw_box(t_mlx *mlx, t_box box, t_point starting_position) {
+void draw_box(t_mlx *mlx, t_elem *elements, t_point starting_position) {
+    t_box box = elements->dimensions;
   draw_line(mlx, box.height, starting_position, VER);
-  starting_position.x += box.height;
+  starting_position.x += box.width;
   draw_line(mlx, box.height, starting_position, VER);
-  starting_position.x -= box.height;
+  starting_position.x -= box.width;
   draw_line(mlx, box.width, starting_position, HOR);
-  starting_position.y += box.width;
+  starting_position.y += box.height;
   draw_line(mlx, box.width, starting_position, HOR);
 }
 
 t_elem *instantiate_element(t_elem *head, t_type type) {
   t_elem *new_element;
 
+  new_element = NULL;
   if (type == DEFAULT) {
     while (head->next) {
       head = head->next;
@@ -35,15 +37,13 @@ t_elem *instantiate_element(t_elem *head, t_type type) {
     new_element = malloc(sizeof(t_elem));
     element_init(new_element);
     head->next = new_element;
+    head->next->next = NULL;
   }
   // if (type == default)
   return (new_element);
 }
 
-// void    render_elements(t_elem *elements)
-// {
-//
-// }
+void render_elements(t_elem *elements) { (void)elements; }
 
 bool render_ui(t_elem *elements, t_mlx *mlx) {
   t_box box;
@@ -51,17 +51,28 @@ bool render_ui(t_elem *elements, t_mlx *mlx) {
 
   p.x = 100;
   p.y = 100;
-  box.width = 30;
-  box.height = 10;
-  clear_window(mlx);
-  draw_box(mlx, box, p);
-  // render_elements(elements);
+  box.width = 300;
+  box.height = 100;
+  elements->dimensions = box;
+  // clear_window(mlx);
+  draw_box(mlx, elements, p);
+  p.x += 400;
+  draw_box(mlx, elements, p);
+  p.x += 400;
+  draw_box(mlx, elements, p);
+  p.x += 400;
+  draw_box(mlx, elements, p);
+  p.x += 400;
+  render_elements(elements);
+  return (true);
 }
 
-void entry_point(t_mlx *mlx) {
+void gui_entry_point(t_mlx *mlx) {
   t_elem *elements;
 
-  elements->next = NULL;
+  elements = malloc(sizeof(t_elem));
+  element_init(elements);
+  // puts("hello");
   instantiate_element(elements, DEFAULT);
   render_ui(elements, mlx);
 }
