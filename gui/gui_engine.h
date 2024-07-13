@@ -52,7 +52,7 @@ typedef struct s_element {
 //
 
 // void draw_box(t_mlx *mlx, t_box box);
-t_elem *instantiate_element(t_elem *head, t_type type);
+t_elem *instantiate_element(t_elem *head, t_type type, t_mlx *);
 void gui_entry_point(t_mlx *);
 
 

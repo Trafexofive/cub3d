@@ -4,19 +4,22 @@
 #include "../inc/macros.h"
 #include "../inc/struct.h"
 
-void element_init(t_elem *element) {
+void element_init(t_elem *element, t_mlx *mlx) {
+  element->mlx = mlx;
   element->async_priority = 0;
   element->selected = NIL;
-  element->visibility = NIL;
+  element->visibility = true;
   element->dimensions.width = DEFAULT_WIDTH;
   element->dimensions.height = DEFAULT_HEIGHT;
   element->position.x = 10;
   element->position.y = 10;
   element->next = NULL;
+  element->type = BUTTON;
 }
 
 void draw_box(t_mlx *mlx, t_elem *elements, t_point starting_position) {
   t_box box = elements->dimensions;
+  puts("hello");
   draw_line(mlx, box.height, starting_position, VER);
   starting_position.x += box.width;
   draw_line(mlx, box.height, starting_position, VER);
@@ -26,7 +29,7 @@ void draw_box(t_mlx *mlx, t_elem *elements, t_point starting_position) {
   draw_line(mlx, box.width, starting_position, HOR);
 }
 
-t_elem *instantiate_element(t_elem *head, t_type type) {
+t_elem *instantiate_element(t_elem *head, t_type type, t_mlx *mlx) {
   t_elem *new_element;
 
   new_element = NULL;
@@ -35,7 +38,7 @@ t_elem *instantiate_element(t_elem *head, t_type type) {
       head = head->next;
     }
     new_element = malloc(sizeof(t_elem));
-    element_init(new_element);
+    element_init(new_element, mlx);
     head->next = new_element;
     head->next->next = NULL;
   }
@@ -71,13 +74,16 @@ void render_elements(t_elem *elements) {
       render_selected_button(elements);
     else if (elements->type == MENU)
       render_menu(elements);
+    else if (elements->selected == NIL && elements->type == BUTTON)
+        render_button(elements);
 
   } else {
     return;
   }
 }
 
-bool render_ui(t_elem *elements) { // remove t_mlx from args already passing it in struct
+bool render_ui(t_elem *elements) {
+  // remove t_mlx from args already passing it in struct
   t_box box;
   t_point p;
 
@@ -98,10 +104,12 @@ bool render_ui(t_elem *elements) { // remove t_mlx from args already passing it 
 void gui_entry_point(t_mlx *mlx) {
   t_elem *elements;
 
-  //need to make the mlx struct work somehow, lazy thing to do is to pass it to every single instance, however there could be ways to improve it
+  // need to make the mlx struct work somehow, lazy thing to do is to pass it to
+  // every single instance, however there could be ways to improve it
   elements = malloc(sizeof(t_elem));
-  element_init(elements);
+  element_init(elements, mlx);
   // puts("hello");
-  instantiate_element(elements, DEFAULT);
+  instantiate_element(elements, DEFAULT, mlx);
+  instantiate_element(elements, DEFAULT, mlx);
   render_ui(elements);
 }
