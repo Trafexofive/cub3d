@@ -9,6 +9,8 @@
 
 #define DEFAULT_WIDTH 20
 #define DEFAULT_HEIGHT 20
+#define DEFAULT_MENU_HEIGHT 200
+#define DEFAULT_MENU_WIDTH 400
 
 // typedef struct s_point// could be renamed to coordinate.
 // {
@@ -36,6 +38,7 @@ typedef struct s_element {
   int async_priority;
 
   bool selected;
+  void *data;
   bool visibility;
   bool hoverable; // if not jump to next element
   bool overlap;
@@ -45,6 +48,7 @@ typedef struct s_element {
   int   type;
 
   struct s_element *next;
+  struct s_element *prev;
 
 } t_elem;
 

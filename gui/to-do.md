@@ -6,6 +6,7 @@
   - safety functions to deny elements from being drawn eg. not allowing draws based on pos. and window dimensions
 - tiling and smart stacking  support in mind
 - highlighting boxes, and centerered text
+- en
 
 + Security
   - implementing main scene as well as border control

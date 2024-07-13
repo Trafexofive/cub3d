@@ -53,7 +53,11 @@ void render_button(t_elem *elements) {
   draw_box(mlx, elements, p);
 }
 
-void render_menu(t_elem *elements) { (void)elements; }
+void render_menu(t_elem *elements) { 
+
+    // when current element is menu, disable visibility for for all other buttons or make menus have pointer arrays for there own buttons;
+
+    (void)elements; }
 
 void render_selected_button(t_elem *elements) {
   // t_box box = elements->dimensions;
@@ -110,6 +114,7 @@ void gui_entry_point(t_mlx *mlx) {
   element_init(elements, mlx);
   // puts("hello");
   instantiate_element(elements, DEFAULT, mlx);
-  instantiate_element(elements, DEFAULT, mlx);
+    
+  instantiate_element(elements, MENU, mlx);
   render_ui(elements);
 }
