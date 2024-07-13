@@ -10,11 +10,11 @@
 #define DEFAULT_WIDTH 20
 #define DEFAULT_HEIGHT 20
 
-typedef struct s_pos // could be renamed to coordinate.
-{
-  int x;
-  int y;
-} t_pos;
+// typedef struct s_point// could be renamed to coordinate.
+// {
+//   int x;
+//   int y;
+// } t_point;
 
 typedef struct s_box {
   int height;
@@ -25,7 +25,8 @@ typedef struct s_box {
 typedef enum {
   DEFAULT = 0,
   BUTTON = 1,
-  TEXT = 2
+  TEXT = 2,
+  MENU = 3
 
 } t_type;
 
@@ -40,7 +41,8 @@ typedef struct s_element {
   bool overlap;
 
   t_box dimensions;
-  t_pos position;
+  t_point position;
+  int   type;
 
   struct s_element *next;
 
