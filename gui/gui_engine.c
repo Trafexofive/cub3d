@@ -53,11 +53,13 @@ void render_button(t_elem *elements) {
   draw_box(mlx, elements, p);
 }
 
-void render_menu(t_elem *elements) { 
+void render_menu(t_elem *elements) {
 
-    // when current element is menu, disable visibility for for all other buttons or make menus have pointer arrays for there own buttons;
+  // when current element is menu, disable visibility for for all other buttons
+  // or make menus have pointer arrays for there own buttons;
 
-    (void)elements; }
+  (void)elements;
+}
 
 void render_selected_button(t_elem *elements) {
   // t_box box = elements->dimensions;
@@ -79,17 +81,14 @@ void render_elements(t_elem *elements) {
     else if (elements->type == MENU)
       render_menu(elements);
     else if (elements->selected == NIL && elements->type == BUTTON)
-        render_button(elements);
+      render_button(elements);
 
   } else {
     return;
   }
 }
 
-t_element   *instatiate_menu(t_elem *elements, t_type type, t_mlx *mlx)
-{
-
-}
+// t_elem *instantiate_menu(t_elem *elements, t_type type, t_mlx *mlx);
 
 bool render_ui(t_elem *elements) {
   // remove t_mlx from args already passing it in struct
@@ -119,8 +118,8 @@ void gui_entry_point(t_mlx *mlx) {
   element_init(elements, mlx);
   // puts("hello");
   instantiate_element(elements, DEFAULT, mlx);
-    
-  instantiate_menu(elements, MENU, mlx);
-  instantiate_menu(elements, MENU, mlx);
+
+  // instantiate_menu(elements, MENU, mlx);
+  // instantiate_menu(elements, MENU, mlx);
   render_ui(elements);
 }

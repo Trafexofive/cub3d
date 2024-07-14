@@ -1,9 +1,9 @@
 
+#include "../gui/gui_engine.h"
 #include "../inc/draw.h"
 #include "../inc/macros.h"
 #include "../inc/raycast.h"
 #include "../inc/struct.h"
-#include "../gui/gui_engine.h"
 #include "../inc/utils.h"
 #include "../lib/libft/libft.h"
 #include <stdio.h>
@@ -42,7 +42,6 @@ void map_tile_morph(t_map *map) {
   int j = 0;
   t_info *info;
   t_mlx *mlx;
-  
 
   info = map->info;
   mlx = map->mlx;
@@ -100,15 +99,23 @@ void reset_player_info(t_info *info) {
   info->draw_pos.y = 100;
 }
 
-// void raycaster(t_map *map) {
-//     cast_rays(map);
+// void cast_rays(t_map *map) {
+//   int w = SCREEN_WIDTH;
+//   double posX = 22, posY = 12;      // x and y start position
+//   double dirX = -1, dirY = 0;       // initial direction vector
+//   double planeX = 0, planeY = 0.66; // the 2d raycaster version of camera plane
+//   t_point camera;
+//   int x = 0;
 //
+//   camera.x = 2 * x / w - 1;
+//   while ()
 // }
 
+// void raycaster(t_map *map) { cast_rays(map); }
 
 void renderer(t_map *map) {
 
-    t_mlx *mlx = map->mlx;
+  t_mlx *mlx = map->mlx;
   clear_window(mlx);
   // mlx_hook(map->info->mlx_win, 119, 0, (void *) player_move_w, map);
   // usleep(100000);
