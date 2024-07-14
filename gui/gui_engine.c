@@ -86,6 +86,11 @@ void render_elements(t_elem *elements) {
   }
 }
 
+t_element   *instatiate_menu(t_elem *elements, t_type type, t_mlx *mlx)
+{
+
+}
+
 bool render_ui(t_elem *elements) {
   // remove t_mlx from args already passing it in struct
   t_box box;
@@ -115,6 +120,7 @@ void gui_entry_point(t_mlx *mlx) {
   // puts("hello");
   instantiate_element(elements, DEFAULT, mlx);
     
-  instantiate_element(elements, MENU, mlx);
+  instantiate_menu(elements, MENU, mlx);
+  instantiate_menu(elements, MENU, mlx);
   render_ui(elements);
 }
