@@ -103,9 +103,8 @@ void reset_player_info(t_info *info) {
 //   int w = SCREEN_WIDTH;
 //   double posX = 22, posY = 12;      // x and y start position
 //   double dirX = -1, dirY = 0;       // initial direction vector
-//   double planeX = 0, planeY = 0.66; // the 2d raycaster version of camera plane
-//   t_point camera;
-//   int x = 0;
+//   double planeX = 0, planeY = 0.66; // the 2d raycaster version of camera
+//   plane t_point camera; int x = 0;
 //
 //   camera.x = 2 * x / w - 1;
 //   while ()
@@ -114,13 +113,15 @@ void reset_player_info(t_info *info) {
 // void raycaster(t_map *map) { cast_rays(map); }
 
 void renderer(t_map *map) {
+  t_menu *menu;
 
+  menu = map->current_menu;
   t_mlx *mlx = map->mlx;
+  menu->mlx = mlx;
   clear_window(mlx);
-  mlx_hook(mlx->mlx_win, 119, 0, (void *) player_move_w, map);
-  // usleep(100000);
+  usleep(10000);
 
-  gui_entry_point(mlx);
+  gui_entry_point(menu);
   // fps(map);
   // map_tile_morph(map);
   // render_player(map);

@@ -70,8 +70,9 @@ typedef struct s_menu {
 
 // void draw_box(t_mlx *mlx, t_box box);
 t_elem *instantiate_element(t_menu *menu, t_type type, t_mlx *);
-void gui_entry_point(t_mlx *);
+void gui_entry_point(t_menu *);
 void scroll_down(t_elem *, t_menu *);
-void scroll_up(t_elem *, t_menu);
+void scroll_up(t_elem *, t_menu *);
+void navigation_key_hook(int key, t_menu *menu);
 
 #endif

@@ -1,7 +1,7 @@
 
+#include "gui/gui_engine.h"
 #include "inc/macros.h"
 #include "inc/raycast.h"
-#include "gui/gui_engine.h"
 #include "inc/struct.h"
 #include "inc/utils.h"
 #include <stdio.h>
@@ -34,9 +34,7 @@ void player_move_s(t_map *map) { map->player->spawn.y += MOVE_SPEED; }
 void player_move_a(t_map *map) { map->player->spawn.x -= MOVE_SPEED; }
 void player_move_d(t_map *map) { map->player->spawn.x += MOVE_SPEED; }
 
-void key_hook(int key, t_map *map) {
-  t_menu *menu;
-  menu = map->current_menu;
+static void key_hook(int key, t_map *map) {
   printf("key value = %X\n", key);
   printf("decimal key value = %d\n", key);
 
@@ -48,14 +46,9 @@ void key_hook(int key, t_map *map) {
     player_move_a(map);
   if (key == D_KEY)
     player_move_d(map);
-  if (key == J_KEY)
-    scroll_down(menu);
-  if (key == K_KEY)
-    scroll_up(menu);
   if (key == ESC_KEY)
     free_all(map);
 }
-// }
 
 // make map an arr to make it possible creating multiple windows and pulling
 // them by index
@@ -80,15 +73,20 @@ void init_minimap(t_map *map) {
 
 bool game_init(t_map *map) {
 
+  t_menu *menu;
   t_mlx *mlx;
 
+  menu = malloc(sizeof(t_menu));
   mlx = map->mlx;
+  menu->mlx = mlx;
+  map->current_menu = menu;
   new_window(mlx);
   // mlx_do_sync(map->info->mlx);
   init_minimap(map);
   mlx_loop_hook(mlx->mlx, (void *)renderer, map);
   mlx_hook(mlx->mlx_win, 17, 0, (void *)free_all, map);
   mlx_key_hook(mlx->mlx_win, (void *)key_hook, map);
+  mlx_key_hook(mlx->mlx_win, (void *)navigation_key_hook, menu);
   clear_window(mlx);
   mlx_loop(mlx->mlx);
   return true;

@@ -5,14 +5,13 @@
 
 void scroll_down(t_elem *element, t_menu *menu)
 {
+    puts("IN SCROLL DOWN");
     element->selected = false;
     element->next->selected = true;
     menu->selected = element->next;
-    
-
 }
 
-void scroll_up(t_elem *element)
+void scroll_up(t_elem *element, t_menu *menu)
 {
     element->selected = false;
     element->prev->selected = true;

@@ -6,6 +6,18 @@
 #include "../lib/libft/libft.h"
 #include <stdio.h>
 
+void navigation_key_hook(int key, t_menu *menu) {
+  printf("key value = %X\n", key);
+  printf("decimal key value = %d\n", key);
+
+  if (key == J_KEY)
+    scroll_down(menu->selected, menu);
+  if (key == K_KEY)
+    scroll_up(menu->selected, menu);
+  // if (key == ESC_KEY)
+  //   free_all(map);
+}
+
 void element_init(t_elem *element, t_mlx *mlx) {
   element->mlx = mlx;
   element->async_priority = 0;
@@ -46,7 +58,6 @@ t_elem *instantiate_element(t_menu *menu, t_type type, t_mlx *mlx) {
 
   new_element = NULL;
   if (!menu->head) {
-    puts("instanriated button");
     new_element = malloc(sizeof(t_elem));
     element_init(new_element, mlx);
     return (new_element);
@@ -68,10 +79,10 @@ t_elem *instantiate_element(t_menu *menu, t_type type, t_mlx *mlx) {
 void render_button(t_elem *elements) {
   t_mlx *mlx = elements->mlx;
   t_point p = elements->position;
-  t_box box = elements->dimensions;
+  // t_box box = elements->dimensions;
 
-  printf("box W :%d\n", box.width);
-  printf("box H :%d\n", box.height);
+  // printf("box W :%d\n", box.width);
+  // printf("box H :%d\n", box.height);
   draw_box(mlx, elements, p);
 }
 
@@ -91,6 +102,7 @@ void render_selected_button(t_elem *elements) {
 }
 
 void render_elements(t_menu *menu, t_elem *elements) {
+    (void) menu;
   if (elements->visibility == true) {
     if (elements->selected == true && elements->type == BUTTON)
       render_selected_button(elements);
@@ -127,18 +139,20 @@ void menu_init(t_menu *menu, t_mlx *mlx) {
   menu->mlx = mlx;
 }
 
-void gui_entry_point(t_mlx *mlx) {
-  t_menu *menu;
+void gui_entry_point(t_menu *menu) {
 
   t_elem *elem_ptr;
+  t_mlx *mlx = menu->mlx;
   // need to make the mlx struct work somehow, lazy thing to do is to pass it to
   // every single instance, however there could be ways to improve it
-  menu = malloc(sizeof(t_menu));
+
   menu_init(menu, mlx);
   menu->head = instantiate_element(menu, DEFAULT, mlx);
   instantiate_element(menu, DEFAULT, mlx);
   elem_ptr = instantiate_element(menu, DEFAULT, mlx);
   elem_ptr->selected = true;
+  menu->selected = elem_ptr;
+
   instantiate_element(menu, DEFAULT, mlx);
   instantiate_element(menu, DEFAULT, mlx);
   instantiate_element(menu, DEFAULT, mlx);
