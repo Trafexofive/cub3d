@@ -46,7 +46,7 @@ t_elem *instantiate_element(t_menu *menu, t_type type, t_mlx *mlx) {
 
   new_element = NULL;
   if (!menu->head) {
-  puts("instanriated button");
+    puts("instanriated button");
     new_element = malloc(sizeof(t_elem));
     element_init(new_element, mlx);
     return (new_element);
@@ -60,7 +60,7 @@ t_elem *instantiate_element(t_menu *menu, t_type type, t_mlx *mlx) {
   new_element = malloc(sizeof(t_elem));
   element_init(new_element, mlx);
   head->next = new_element;
-  head->next->prev = head;
+  new_element->prev = head;
   // if (type == default)
   return (new_element);
 }
@@ -68,7 +68,10 @@ t_elem *instantiate_element(t_menu *menu, t_type type, t_mlx *mlx) {
 void render_button(t_elem *elements) {
   t_mlx *mlx = elements->mlx;
   t_point p = elements->position;
+  t_box box = elements->dimensions;
 
+  printf("box W :%d\n", box.width);
+  printf("box H :%d\n", box.height);
   draw_box(mlx, elements, p);
 }
 
@@ -81,16 +84,19 @@ void render_menu(t_elem *elements) {
 }
 
 void render_selected_button(t_elem *elements) {
-  // t_box box = elements->dimensions;
+    t_point pos = elements->position;
 
   render_button(elements);
-  // draw_line(mlx, box.height, starting_position, VER);
-  // starting_position.x += box.width;
-  // draw_line(mlx, box.height, starting_position, VER);
-  // starting_position.x -= box.width;
-  // draw_line(mlx, box.width, starting_position, HOR);
-  // starting_position.y += box.height;
-  // draw_line(mlx, box.width, starting_position, HOR);
+  elements->dimensions.height *= SCALE_FACTOR;
+  elements->dimensions.width *= SCALE_FACTOR;
+  elements->position.x /= SCALE_FACTOR;
+  drawcircle(elements->position.x, elements->position.y, 13, elements->mlx);
+  // elements->position.y /= SCALE_FACTOR;
+  // printf("scaled box W :%d\n", box.width);
+  // printf("scaled box H :%d\n", box.height);
+  // render_button(elements);
+  elements->position = pos;
+
 }
 
 void render_elements(t_elem *elements) {
@@ -131,13 +137,15 @@ void menu_init(t_menu *menu, t_mlx *mlx) {
 void gui_entry_point(t_mlx *mlx) {
   t_menu *menu;
 
+  t_elem *elem_ptr;
   // need to make the mlx struct work somehow, lazy thing to do is to pass it to
   // every single instance, however there could be ways to improve it
   menu = malloc(sizeof(t_menu));
   menu_init(menu, mlx);
   menu->head = instantiate_element(menu, DEFAULT, mlx);
   instantiate_element(menu, DEFAULT, mlx);
-  instantiate_element(menu, DEFAULT, mlx);
+  elem_ptr = instantiate_element(menu, DEFAULT, mlx);
+  elem_ptr->selected = true;
   instantiate_element(menu, DEFAULT, mlx);
   instantiate_element(menu, DEFAULT, mlx);
   instantiate_element(menu, DEFAULT, mlx);
