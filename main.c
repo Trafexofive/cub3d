@@ -1,7 +1,7 @@
 
-#include "gui/gui_engine.h"
 #include "inc/macros.h"
 #include "inc/raycast.h"
+#include "gui/gui_engine.h"
 #include "inc/struct.h"
 #include "inc/utils.h"
 #include <stdio.h>
@@ -35,8 +35,8 @@ void player_move_a(t_map *map) { map->player->spawn.x -= MOVE_SPEED; }
 void player_move_d(t_map *map) { map->player->spawn.x += MOVE_SPEED; }
 
 void key_hook(int key, t_map *map) {
-    t_menu *menu;
-    menu = map->current_menu;
+  t_menu *menu;
+  menu = map->current_menu;
   printf("key value = %X\n", key);
   printf("decimal key value = %d\n", key);
 
@@ -52,8 +52,8 @@ void key_hook(int key, t_map *map) {
     scroll_down(menu);
   if (key == K_KEY)
     scroll_up(menu);
-    if (key == ESC_KEY)
-      free_all(map);
+  if (key == ESC_KEY)
+    free_all(map);
 }
 // }
 

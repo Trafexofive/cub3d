@@ -1,5 +1,3 @@
-#include "../inc/macros.h"
-#include "../inc/struct.h"
 
 #ifndef GUI
 #define GUI
@@ -7,6 +5,10 @@
 //----------------------------------- MACROS
 //
 
+#include "../inc/macros.h"
+#include "../inc/mlx_struct.h"
+#include "../inc/struct.h"
+#include <stdbool.h>
 #define DEFAULT_WIDTH 20
 #define DEFAULT_HEIGHT 20
 #define DEFAULT_MENU_HEIGHT 200
@@ -53,17 +55,21 @@ typedef struct s_element {
 } t_elem;
 
 typedef struct s_menu {
-  char **name;
+  t_mlx *mlx;
+  const char *name;
 
   t_elem *head;
   t_elem *selected;
+
+  struct s_menu *next;
+  struct s_menu *prev;
 
 } t_menu;
 //------------------------------------------
 //
 
 // void draw_box(t_mlx *mlx, t_box box);
-t_elem *instantiate_element(t_elem *head, t_type type, t_mlx *);
+t_elem *instantiate_element(t_menu *menu, t_type type, t_mlx *);
 void gui_entry_point(t_mlx *);
 void scroll_down(t_menu *menu);
 void scroll_up(t_menu *menu);

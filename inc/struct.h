@@ -3,8 +3,10 @@
 #define STRUCT_H
 
 #include "../lib/get_next_line/get_next_line.h"
+
+#include "../inc/mlx_struct.h"
+#include "../lib/libft/libft.h"
 #include <mlx.h>
-#include "../gui/gui_engine.h"
 #include <stdbool.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -38,11 +40,6 @@ typedef struct s_player {
 
 } t_player;
 
-typedef struct s_mlx {
-  void *mlx;
-  void *mlx_win;
-} t_mlx;
-
 typedef struct s_info {
   t_point player_pos;
   t_point draw_pos;
@@ -54,19 +51,17 @@ typedef struct s_info {
   t_comp player_dir;
 } t_info;
 
-
-//rename to compositioning struct, map should only contain map related content
+// rename to compositioning struct, map should only contain map related content
 typedef struct s_map {
   t_player *player;
   t_info *info;
   t_mlx *mlx;
   char **map;
-  t_menu **menus;
-  t_menu *current_menu;
+  struct s_menu **menus;
+  struct s_menu *current_menu;
   bool debug;
 
 } t_map;
-
 
 // typedef struct s_grid
 // {

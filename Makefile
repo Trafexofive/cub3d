@@ -11,7 +11,7 @@ DRAW := drawing/tool_kit.c drawing/draw.c
 
 UTILS := utils/init.c
 
-GUI := gui/gui_engine.c
+GUI := gui/gui_engine.c gui/navigation.c
 
 SRCS := main.c raycasting/raycasting.c $(GNL) $(DRAW) $(UTILS) $(GUI)
 
