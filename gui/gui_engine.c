@@ -4,14 +4,15 @@
 #include "../inc/macros.h"
 #include "../inc/struct.h"
 #include "../lib/libft/libft.h"
+#include <stdio.h>
 
 void element_init(t_elem *element, t_mlx *mlx) {
   element->mlx = mlx;
   element->async_priority = 0;
   element->selected = NIL;
   element->visibility = true;
-  element->dimensions.width = DEFAULT_WIDTH;
-  element->dimensions.height = DEFAULT_HEIGHT;
+  element->dimensions.width = DEFAULT_ELEMENT_WIDTH;
+  element->dimensions.height = DEFAULT_ELEMENT_HEIGHT;
   element->position.x = 10;
   element->position.y = 10;
   element->next = NULL;
@@ -43,16 +44,15 @@ t_elem *instantiate_element(t_menu *menu, t_type type, t_mlx *mlx) {
   t_elem *new_element;
   t_elem *head;
 
-  puts("instanriated button");
   new_element = NULL;
   if (!menu->head) {
+  puts("instanriated button");
     new_element = malloc(sizeof(t_elem));
     element_init(new_element, mlx);
     return (new_element);
   } else
     head = menu->head;
 
-  int i = 0;
   while (head->next) {
     head = head->next;
   }
@@ -60,7 +60,7 @@ t_elem *instantiate_element(t_menu *menu, t_type type, t_mlx *mlx) {
   new_element = malloc(sizeof(t_elem));
   element_init(new_element, mlx);
   head->next = new_element;
-  head->next->next = NULL;
+  head->next->prev = head;
   // if (type == default)
   return (new_element);
 }
@@ -94,18 +94,7 @@ void render_selected_button(t_elem *elements) {
 }
 
 void render_elements(t_elem *elements) {
-  t_box box;
-  t_point p;
-
-  p.x = 100;
-  p.y = 100;
-  box.width = 300;
-  box.height = 100;
-  elements->position = p;
-  elements->dimensions = box;
-  elements->visibility = true;
   if (elements->visibility == true) {
-    p.x += 120;
     if (elements->selected == true && elements->type == BUTTON)
       render_selected_button(elements);
     else if (elements->type == MENU)
@@ -114,7 +103,6 @@ void render_elements(t_elem *elements) {
       render_button(elements);
 
   } else {
-    p.x += 120;
     return;
   }
 }
@@ -123,11 +111,12 @@ void render_elements(t_elem *elements) {
 bool render_ui(t_elem *elements) {
   // remove t_mlx from args already passing it in struct
 
-  if (elements)
-    render_elements(elements);
-  while (elements->next) {
+  while (elements) {
     render_elements(elements);
     elements = elements->next;
+    if (elements == NULL)
+      break;
+    elements->position.x = 320 + elements->prev->position.x;
   }
   return (true);
 }
@@ -147,6 +136,9 @@ void gui_entry_point(t_mlx *mlx) {
   menu = malloc(sizeof(t_menu));
   menu_init(menu, mlx);
   menu->head = instantiate_element(menu, DEFAULT, mlx);
+  instantiate_element(menu, DEFAULT, mlx);
+  instantiate_element(menu, DEFAULT, mlx);
+  instantiate_element(menu, DEFAULT, mlx);
   instantiate_element(menu, DEFAULT, mlx);
   instantiate_element(menu, DEFAULT, mlx);
   instantiate_element(menu, DEFAULT, mlx);

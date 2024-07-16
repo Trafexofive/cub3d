@@ -38,5 +38,6 @@ typedef enum s_keys {
 #define SCALE_FACTOR 0.7
 #define SCREEN_WIDTH 1980
 #define SCREEN_HEIGHT 1280
-
+#define DEFAULT_ELEMENT_WIDTH 300
+#define DEFAULT_ELEMENT_HEIGHT 100
 #endif
