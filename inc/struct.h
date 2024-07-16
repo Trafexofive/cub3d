@@ -4,6 +4,7 @@
 
 #include "../lib/get_next_line/get_next_line.h"
 #include <mlx.h>
+#include "../gui/gui_engine.h"
 #include <stdbool.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -60,6 +61,8 @@ typedef struct s_map {
   t_info *info;
   t_mlx *mlx;
   char **map;
+  t_menu **menus;
+  t_menu *current_menu;
   bool debug;
 
 } t_map;

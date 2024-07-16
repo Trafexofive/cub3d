@@ -9,6 +9,8 @@ typedef enum s_keys {
   S_KEY = 0x73,
   A_KEY = 0x61,
   D_KEY = 0x64,
+  J_KEY = 0x106,
+  K_KEY = 0x107,
   ESC_KEY = 0xFF1B,
 } t_keys;
 

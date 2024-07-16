@@ -19,7 +19,6 @@ void element_init(t_elem *element, t_mlx *mlx) {
 
 void draw_box(t_mlx *mlx, t_elem *elements, t_point starting_position) {
   t_box box = elements->dimensions;
-  puts("hello");
   draw_line(mlx, box.height, starting_position, VER);
   starting_position.x += box.width;
   draw_line(mlx, box.height, starting_position, VER);
@@ -88,8 +87,13 @@ void render_elements(t_elem *elements) {
   }
 }
 
-// t_elem *instantiate_menu(t_elem *elements, t_type type, t_mlx *mlx);
-
+// t_elem *instantiate_menu(t_elem *elements, t_type type, t_mlx *mlx, int scale)
+// {
+//      
+//     
+//
+// }
+//
 bool render_ui(t_elem *elements) {
   // remove t_mlx from args already passing it in struct
   t_box box;
@@ -119,7 +123,5 @@ void gui_entry_point(t_mlx *mlx) {
   // puts("hello");
   instantiate_element(elements, DEFAULT, mlx);
 
-  // instantiate_menu(elements, MENU, mlx);
-  // instantiate_menu(elements, MENU, mlx);
   render_ui(elements);
 }

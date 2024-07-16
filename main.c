@@ -1,4 +1,5 @@
 
+#include "gui/gui_engine.h"
 #include "inc/macros.h"
 #include "inc/raycast.h"
 #include "inc/struct.h"
@@ -34,8 +35,11 @@ void player_move_a(t_map *map) { map->player->spawn.x -= MOVE_SPEED; }
 void player_move_d(t_map *map) { map->player->spawn.x += MOVE_SPEED; }
 
 void key_hook(int key, t_map *map) {
+    t_menu *menu;
+    menu = map->current_menu;
   printf("key value = %X\n", key);
   printf("decimal key value = %d\n", key);
+
   if (key == W_KEY)
     player_move_w(map);
   if (key == S_KEY)
@@ -44,8 +48,12 @@ void key_hook(int key, t_map *map) {
     player_move_a(map);
   if (key == D_KEY)
     player_move_d(map);
-  if (key == ESC_KEY)
-    free_all(map);
+  if (key == J_KEY)
+    scroll_down(menu);
+  if (key == K_KEY)
+    scroll_up(menu);
+    if (key == ESC_KEY)
+      free_all(map);
 }
 // }
 
@@ -53,8 +61,7 @@ void key_hook(int key, t_map *map) {
 // them by index
 void new_window(t_mlx *mlx) {
 
-  mlx->mlx_win =
-      mlx_new_window(mlx->mlx, SCREEN_WIDTH, SCREEN_HEIGHT, "Cub3d");
+  mlx->mlx_win = mlx_new_window(mlx->mlx, SCREEN_WIDTH, SCREEN_HEIGHT, "Cub3d");
 }
 
 void init_minimap(t_map *map) {

@@ -117,7 +117,7 @@ void renderer(t_map *map) {
 
   t_mlx *mlx = map->mlx;
   clear_window(mlx);
-  // mlx_hook(map->info->mlx_win, 119, 0, (void *) player_move_w, map);
+  mlx_hook(mlx->mlx_win, 119, 0, (void *) player_move_w, map);
   // usleep(100000);
 
   gui_entry_point(mlx);
