@@ -75,16 +75,8 @@ void render_button(t_elem *elements) {
   draw_box(mlx, elements, p);
 }
 
-void render_menu(t_elem *elements) {
-
-  // when current element is menu, disable visibility for for all other buttons
-  // or make menus have pointer arrays for there own buttons;
-
-  (void)elements;
-}
-
 void render_selected_button(t_elem *elements) {
-    t_point pos = elements->position;
+  t_point pos = elements->position;
 
   render_button(elements);
   elements->dimensions.height *= SCALE_FACTOR;
@@ -96,15 +88,14 @@ void render_selected_button(t_elem *elements) {
   // printf("scaled box H :%d\n", box.height);
   // render_button(elements);
   elements->position = pos;
-
 }
 
-void render_elements(t_elem *elements) {
+void render_elements(t_menu *menu, t_elem *elements) {
   if (elements->visibility == true) {
     if (elements->selected == true && elements->type == BUTTON)
       render_selected_button(elements);
-    else if (elements->type == MENU)
-      render_menu(elements);
+    // else if (elements->type == MENU)
+    //   render_menu(menu);
     else if (elements->selected == NIL && elements->type == BUTTON)
       render_button(elements);
 
@@ -113,12 +104,12 @@ void render_elements(t_elem *elements) {
   }
 }
 
-//
-bool render_ui(t_elem *elements) {
+bool render_ui(t_menu *menu) {
   // remove t_mlx from args already passing it in struct
+  t_elem *elements = menu->head;
 
   while (elements) {
-    render_elements(elements);
+    render_elements(menu, elements);
     elements = elements->next;
     if (elements == NULL)
       break;
@@ -126,6 +117,8 @@ bool render_ui(t_elem *elements) {
   }
   return (true);
 }
+
+//
 
 void menu_init(t_menu *menu, t_mlx *mlx) {
   menu->next = NULL;
@@ -153,5 +146,5 @@ void gui_entry_point(t_mlx *mlx) {
   instantiate_element(menu, DEFAULT, mlx);
   instantiate_element(menu, DEFAULT, mlx);
 
-  render_ui(menu->head);
+  render_ui(menu);
 }

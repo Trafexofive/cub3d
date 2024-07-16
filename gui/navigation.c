@@ -3,14 +3,19 @@
 
 
 
-void scroll_down(t_menu *menu)
+void scroll_down(t_elem *element, t_menu *menu)
 {
-    menu->selected = menu->selected->next;
+    element->selected = false;
+    element->next->selected = true;
+    menu->selected = element->next;
+    
 
 }
 
-void scroll_up(t_menu *menu)
+void scroll_up(t_elem *element)
 {
-    menu->selected = menu->selected->prev;
+    element->selected = false;
+    element->prev->selected = true;
+    menu->selected = element->prev;
 
 }
