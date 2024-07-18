@@ -110,7 +110,11 @@ void reset_player_info(t_info *info) {
 //   while ()
 // }
 
-// void raycaster(t_map *map) { cast_rays(map); }
+void raycaster(t_map *map) { 
+
+    cast_rays(map); 
+
+}
 
 void renderer(t_map *map) {
   t_menu *menu;
@@ -121,10 +125,10 @@ void renderer(t_map *map) {
   clear_window(mlx);
   usleep(10000);
 
-  gui_entry_point(menu);
+  // gui_entry_point(menu);
   // fps(map);
   // map_tile_morph(map);
   // render_player(map);
-  // raycaster(map);
+  raycaster(map);
   reset_player_info(map->info);
 }
