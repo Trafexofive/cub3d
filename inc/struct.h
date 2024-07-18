@@ -30,6 +30,14 @@ typedef struct s_args {
   char **av;
   int ac;
 } t_args;
+
+typedef struct s_game_vars {
+    t_point draw_cursor;
+    t_point player_position;
+    // t_angle player_fov;
+    
+}t_game;
+
 typedef struct s_player {
   double dirX, dirY;     // Player's direction vector
   double planeX, planeY; // Camera plane
@@ -40,38 +48,10 @@ typedef struct s_player {
 
 } t_player;
 
-
-//better info struct
-//
-
-typedef struct s_info {
-  // t_point player_pos; player info in player struct
-  // t_point draw_pos; irrelevent to infop
-  t_mlx *mlx;
-  t_map *map; // could have multiple maps
-// maybe a game var struct could be implemented
-  // int win_x; drawing function shouldnt rely on info struct, they should be stand alone.
-  // int win_y; better defined as macros
-
-  // t_comp player_dir; also relevent to player struct
-} t_info;
-
-typedef struct s_info {
-  t_point player_pos;
-  t_point draw_pos;
-  void *mlx;
-  void *mlx_win;
-  int win_x;
-  int win_y;
-
-  t_comp player_dir;
-} t_info;
-
 // rename to compositioning struct, map should only contain map related content
 typedef struct s_map {
-    //reconstruction of the map struct needed only relevent info should stay.
+  // reconstruction of the map struct needed only relevent info should stay.
   t_player *player;
-  t_info *info;
   t_mlx *mlx;
   char **map;
   struct s_menu **menus;
@@ -79,6 +59,30 @@ typedef struct s_map {
   bool debug;
 
 } t_map;
+// better info struct
+//
+
+// for spawnables (enemies / players)
+//  typedef struct s_entities {
+//
+//
+//  }t_entities;
+
+
+typedef struct s_info {
+  // t_point player_pos; player info in player struct
+  // t_point draw_pos; irrelevent to infop
+  t_mlx *mlx;
+  t_map *map; // could have multiple maps
+  t_player *player;
+  t_game *vars;
+  // maybe a game var struct could be implemented
+  // int win_x; drawing function shouldnt rely on info struct, they should be
+  // stand alone. int win_y; better defined as macros
+
+  // t_comp player_dir; also relevent to player struct
+} t_info;
+
 
 // typedef struct s_grid
 // {

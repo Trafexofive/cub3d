@@ -8,13 +8,6 @@
 #include "../lib/libft/libft.h"
 #include <stdio.h>
 
-// typedef struct s_grid
-// {
-//     t_info *info;
-//     int len;
-//     int count
-//
-// } t_grid;
 
 void render_player(t_map *map) {
   drawcircle(map->player->spawn.x, map->player->spawn.y, HIT_BOX, map->mlx);
@@ -94,9 +87,10 @@ void fps(t_map *map) {
   free(string);
 }
 
-void reset_player_info(t_info *info) {
-  info->draw_pos.x = 100;
-  info->draw_pos.y = 100;
+void reset_player_info(t_player *player) {
+    player->position.x = 0;
+    player->position.y = 0;
+    
 }
 
 // void cast_rays(t_map *map) {
@@ -110,15 +104,19 @@ void reset_player_info(t_info *info) {
 //   while ()
 // }
 
-void raycaster(t_map *map) { 
+void raycaster(t_info *info) { 
 
-    cast_rays(map); 
+    // cast_rays(info->map); 
+    (void) info;
 
 }
 
-void renderer(t_map *map) {
+void renderer(t_info *info) {
   t_menu *menu;
+  t_map *map;
+  t_player *player = info->player;
 
+  map = info->map;
   menu = map->current_menu;
   t_mlx *mlx = map->mlx;
   menu->mlx = mlx;
@@ -129,6 +127,6 @@ void renderer(t_map *map) {
   // fps(map);
   // map_tile_morph(map);
   // render_player(map);
-  raycaster(map);
-  reset_player_info(map->info);
+  raycaster(info);
+  reset_player_info(player);
 }
