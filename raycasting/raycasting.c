@@ -15,14 +15,14 @@ void render_player(t_map *map) {
 
 void update_player_dir(t_map *map, int i, int j) {
   if (map->map[i][j] == 'N') {
-    map->info->player_dir = north;
+    map->player->player_dir = north;
   }
   if (map->map[i][j] == 'W')
-    map->info->player_dir = west;
+    map->player->player_dir = west;
   if (map->map[i][j] == 'S')
-    map->info->player_dir = south;
+    map->player->player_dir = south;
   if (map->map[i][j] == 'E')
-    map->info->player_dir = east;
+    map->player->player_dir = east;
 }
 
 void print_point(t_point point) {
@@ -30,41 +30,44 @@ void print_point(t_point point) {
   printf("y = %d\n", point.y);
 }
 
-void map_tile_morph(t_map *map) {
+void map_tile_morph(t_info *info) {
   int i = 0;
   int j = 0;
-  t_info *info;
   t_mlx *mlx;
+  t_point draw_pos;
+  t_map *map = info->map;
 
-  info = map->info;
-  mlx = map->mlx;
+  draw_pos.x = 0;
+  draw_pos.y = 0;
+
+  mlx = info->mlx;
 
   int len = TILE_SIZE;
-  int tmp = info->draw_pos.x;
+  int tmp = draw_pos.x;
 
   while (map->map[i]) {
 
     while (map->map[i][j]) {
       if (map->map[i][j] == '1') {
 
-        draw_tile(mlx, len, info->draw_pos);
+        draw_tile(mlx, len, draw_pos);
 
       } else if (map->map[i][j] == 'N' || map->map[i][j] == 'W' ||
                  map->map[i][j] == 'S' || map->map[i][j] == 'E') {
         if (map->player->spawned == false) {
-          map->player->spawn.x = info->draw_pos.x + (len / 2);
-          map->player->spawn.y = info->draw_pos.y + (len / 2);
+          map->player->spawn.x = draw_pos.x + (len / 2);
+          map->player->spawn.y = draw_pos.y + (len / 2);
           update_player_dir(map, i, j);
           render_player(map);
           map->player->spawned = true;
         }
       }
-      info->draw_pos.x += len;
+      draw_pos.x += len;
       j++;
     }
     // print_point(info->draw_pos);
-    info->draw_pos.y += len;
-    info->draw_pos.x = tmp;
+    draw_pos.y += len;
+    draw_pos.x = tmp;
     i++;
     j = 0;
   }
@@ -117,6 +120,7 @@ void renderer(t_info *info) {
   t_player *player = info->player;
 
   map = info->map;
+  map->player = player;
   menu = map->current_menu;
   t_mlx *mlx = map->mlx;
   menu->mlx = mlx;
