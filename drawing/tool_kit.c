@@ -40,7 +40,7 @@ void draw_slant(t_info *info, t_point position, t_point target) {
 
   (void)position;
   while (diff_x < 100) {
-    mlx_pixel_put(info->mlx, info->mlx_win, diff_x, diff_y, COLOR);
+    mlx_pixel_put(info->mlx->mlx, info->mlx->mlx_win, diff_x, diff_y, COLOR);
     diff_x++;
     diff_y++;
   }
