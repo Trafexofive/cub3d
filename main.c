@@ -30,24 +30,24 @@ void free_all(t_info *info) {
   free(info->map);
 }
 
-void player_move_w(t_map *map) { map->player->spawn.y -= MOVE_SPEED; }
-void player_move_s(t_map *map) { map->player->spawn.y += MOVE_SPEED; }
-void player_move_a(t_map *map) { map->player->spawn.x -= MOVE_SPEED; }
-void player_move_d(t_map *map) { map->player->spawn.x += MOVE_SPEED; }
+void player_move_w(t_player *player) { player->vector.start.y -= MOVE_SPEED; }
+void player_move_s(t_player *player) { player->vector.start.y += MOVE_SPEED; }
+void player_move_a(t_player *player) { player->vector.start.x -= MOVE_SPEED; }
+void player_move_d(t_player *player) { player->vector.start.x += MOVE_SPEED; }
 //
-static void key_hook(int key, t_info *info) {
+void key_hook(int key, t_info *info) {
   printf("key value = %X\n", key);
   printf("decimal key value = %d\n", key);
-  t_map *map = info->map;
+  t_player *player = info->player;
 
   if (key == W_KEY)
-    player_move_w(map);
+    player_move_w(player);
   if (key == S_KEY)
-    player_move_s(map);
+    player_move_s(player);
   if (key == A_KEY)
-    player_move_a(map);
+    player_move_a(player);
   if (key == D_KEY)
-    player_move_d(map);
+    player_move_d(player);
   if (key == ESC_KEY)
     free_all(info);
 }
@@ -89,7 +89,7 @@ bool game_init(t_info *info) {
   init_minimap(map, "maps/map.cub");
   mlx_loop_hook(mlx->mlx, (void *)renderer, info);
   mlx_hook(mlx->mlx_win, 17, 0, (void *)free_all, info);
-  mlx_key_hook(mlx->mlx_win, (void *)key_hook, map);
+  mlx_key_hook(mlx->mlx_win, (void *)key_hook, info);
   // mlx_key_hook(mlx->mlx_win, (void *)navigation_key_hook, menu);
   clear_window(mlx);
   mlx_loop(mlx->mlx);
@@ -115,6 +115,7 @@ t_info *vars_init() {
 
   // info_init(info);
   info->player = player_init();
+  info->player->vector.len = -1;
   return (info);
 }
 

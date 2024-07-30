@@ -92,8 +92,8 @@ void draw_slant(t_info *info, t_point position, t_point target) {
 }
 
 void draw_anyline(t_map *map, t_point start, t_point end) {
-  int dx = abs(end.x - start.x);
-  int dy = abs(end.y - start.y);
+  int dx = fabs(end.x - start.x);
+  int dy = fabs(end.y - start.y);
   int sx = start.x < end.x ? 1 : -1;
   int sy = start.y < end.y ? 1 : -1;
   int err = dx - dy;

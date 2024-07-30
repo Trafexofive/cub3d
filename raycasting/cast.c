@@ -1,8 +1,8 @@
 
+#include "../inc/draw.h"
 #include "../inc/macros.h"
 #include "../inc/mlx_struct.h"
 #include "../inc/struct.h"
-#include "../inc/draw.h"
 
 #include <math.h>
 #include <mlx.h>
@@ -22,25 +22,19 @@ int world_map[MAP_H][MAP_W] = {
     {1, 0, 1, 0, 0, 1, 0, 1}, {1, 0, 1, 0, 0, 1, 0, 1},
     {1, 0, 1, 0, 0, 0, 0, 1}, {1, 1, 1, 1, 1, 1, 1, 1}};
 
-typedef struct {
-  double x;
-  double y;
-} vec2;
+void draw_line2(t_vector vector, t_info *info) {
 
-
-static void draw_line2(t_vector vector, t_info *info) {
-    
-    int x1 = vector.start.x;
-    int y1 = vector.start.y;
-    int x2 = vector.end.x;
-    int y2 = vector.end.y;
+  int x1 = vector.start.x;
+  int y1 = vector.start.y;
+  int x2 = vector.end.x;
+  int y2 = vector.end.y;
 
   int dx = abs(x2 - x1), sx = x1 < x2 ? 1 : -1;
   int dy = -abs(y2 - y1), sy = y1 < y2 ? 1 : -1;
   int err = dx + dy, e2;
 
   while (1) {
-        mlx_pixel_put(info->mlx->mlx, info->mlx->mlx_win, x1, y1, COLOR);
+    mlx_pixel_put(info->mlx->mlx, info->mlx->mlx_win, x1, y1, COLOR);
     if (x1 == x2 && y1 == y2)
       break;
     e2 = 2 * err;
@@ -55,15 +49,15 @@ static void draw_line2(t_vector vector, t_info *info) {
   }
 }
 
-t_vector visual_raycast(vec2 pos, double angle) {
-  vec2 dir = {cos(angle), sin(angle)};
-  vec2 ray_step = {fabs(TILE_SIZE / dir.x), fabs(TILE_SIZE / dir.y)};
+t_vector visual_raycast(t_point pos, double angle) {
+  t_point dir = {cos(angle), sin(angle)};
+  t_point ray_step = {fabs(TILE_SIZE / dir.x), fabs(TILE_SIZE / dir.y)};
 
   int map_x = (int)(pos.x / TILE_SIZE);
   int map_y = (int)(pos.y / TILE_SIZE);
 
-  vec2 ray_len;
-  vec2 step;
+  t_point ray_len;
+  t_point step;
 
   if (dir.x < 0) {
     step.x = -1;
@@ -127,25 +121,28 @@ void render_map(t_info *info) {
   }
 }
 
-
 void test_cast(t_info *info) {
-  vec2 player_pos = {4.5 * TILE_SIZE, 4.5 * TILE_SIZE};
+  if (info->player->vector.len == -1)
+  {
+    info->player->vector.start.x = 4.5 * TILE_SIZE;
+    info->player->vector.start.y = 4.5 * TILE_SIZE;
+    info->player->vector.len = -2;
+
+  }
+
   static double player_angle = 0.1;
   t_vector vector;
-
 
   usleep(5000);
   render_map(info);
   player_angle += 0.01;
   printf("p angle : %f\n", player_angle);
 
-  vector = visual_raycast(player_pos, player_angle);
+  vector = visual_raycast(info->player->vector.start, player_angle);
   draw_line2(vector, info);
   drawcircle(vector.end.x, vector.end.y, 13, info->mlx);
   usleep(1000);
 
   // In a real application, you'd have a game loop here
   // and you'd update the player position and angle based on input
-
 }
-

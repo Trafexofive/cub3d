@@ -22,8 +22,8 @@ typedef enum {
 
 typedef struct s_point // could be renamed to coordinate.
 {
-  int x;
-  int y;
+  double x;
+  double y;
 } t_point;
 
 typedef struct s_vector {
@@ -31,11 +31,6 @@ typedef struct s_vector {
     t_point end;
     double  len;
 } t_vector;
-
-typedef struct s_args {
-  char **av;
-  int ac;
-} t_args;
 
 typedef struct s_game_vars {
     t_point draw_cursor;
@@ -50,6 +45,7 @@ typedef struct s_player {
   t_point spawn;
   t_comp player_dir;
   t_point position;
+  t_vector vector;
   bool spawned;
 
 } t_player;
@@ -65,9 +61,6 @@ typedef struct s_map {
   bool debug;
 
 } t_map;
-// better info struct
-//
-
 // for spawnables (enemies / players)
 //  typedef struct s_entities {
 //
@@ -86,15 +79,8 @@ typedef struct s_info {
   // int win_x; drawing function shouldnt rely on info struct, they should be
   // stand alone. int win_y; better defined as macros
 
-  // t_comp player_dir; also relevent to player struct
 } t_info;
 
-
-// typedef struct s_grid
-// {
-//
-// } t_grid;
-//
 
 typedef struct s_img {
   void *img;

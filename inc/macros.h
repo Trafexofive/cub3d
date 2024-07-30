@@ -1,7 +1,7 @@
 #ifndef MACROS_H
 #define MACROS_H
 
-#ifndef __OSX__
+// #ifndef __OSX__
 
 typedef enum s_keys {
 
@@ -14,17 +14,15 @@ typedef enum s_keys {
   ESC_KEY = 0xFF1B,
 } t_keys;
 
-#else
 
-typedef enum s_keys {
-  W_KEY = 0x0D,
-  S_KEY = 0x01,
-  A_KEY = 0x00,
-  D_KEY = 0x02,
-  ESC_KEY = 0x35,
-} t_keys;
-
-#endif
+// typedef enum s_keys {
+//   W_KEY = 0x0D,
+//   S_KEY = 0x01,
+//   A_KEY = 0x00,
+//   D_KEY = 0x02,
+//   ESC_KEY = 0x35,
+// } t_keys;
+//
 
 #define NIL 0
 #define COLOR 0xFF5733

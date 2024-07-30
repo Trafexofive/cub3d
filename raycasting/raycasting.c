@@ -26,8 +26,8 @@ void update_player_dir(t_map *map, int i, int j) {
 }
 
 void print_point(t_point point) {
-  printf("x = %d\n", point.x);
-  printf("y = %d\n", point.y);
+  printf("x = %f\n", point.x);
+  printf("y = %f\n", point.y);
 }
 
 void map_tile_morph(t_info *info) {
@@ -125,8 +125,7 @@ void renderer(t_info *info) {
   // map->player = player;
   // menu = map->current_menu;
   t_mlx *mlx = info->mlx;
-  fprintf(stderr,"mlx = %p\n", mlx->mlx);
-  puts("break");
+  // fprintf(stderr,"mlx = %p\n", mlx->mlx);
   // menu->mlx = mlx;
   clear_window(mlx);
 
