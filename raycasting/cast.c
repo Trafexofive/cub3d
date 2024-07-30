@@ -11,8 +11,8 @@
 
 #define MAP_W 8
 #define MAP_H 8
-#define SCREEN_W 320
-#define SCREEN_H 200
+#define SCREEN_W (MAP_W * TILE_SIZE)
+#define SCREEN_H (MAP_H * TILE_SIZE)
 
 int world_map[MAP_H][MAP_W] = {
     {1, 1, 1, 1, 1, 1, 1, 1}, {1, 0, 0, 0, 0, 0, 0, 1},
@@ -25,8 +25,29 @@ typedef struct {
   double y;
 } vec2;
 
-void cast_ray(vec2 pos, double angle, int *wall_height, t_info *info) {
-  (void)info;
+
+static void draw_line(int x1, int y1, int x2, int y2, t_info *info) {
+  int dx = abs(x2 - x1), sx = x1 < x2 ? 1 : -1;
+  int dy = -abs(y2 - y1), sy = y1 < y2 ? 1 : -1;
+  int err = dx + dy, e2;
+
+  while (1) {
+        mlx_pixel_put(info->mlx->mlx, info->mlx->mlx_win, x1, y1, COLOR);
+    if (x1 == x2 && y1 == y2)
+      break;
+    e2 = 2 * err;
+    if (e2 >= dy) {
+      err += dy;
+      x1 += sx;
+    }
+    if (e2 <= dx) {
+      err += dx;
+      y1 += sy;
+    }
+  }
+}
+
+void visual_raycast(vec2 pos, double angle, t_info *info) {
   vec2 dir = {cos(angle), sin(angle)};
   vec2 ray_step = {fabs(TILE_SIZE / dir.x), fabs(TILE_SIZE / dir.y)};
 
@@ -52,8 +73,8 @@ void cast_ray(vec2 pos, double angle, int *wall_height, t_info *info) {
     ray_len.y = (pos.y - map_y * TILE_SIZE) * ray_step.y / TILE_SIZE;
   }
 
-  double dist = 0;
   int hit = 0;
+  double dist = 0;
 
   while (!hit && map_x >= 0 && map_x < MAP_W && map_y >= 0 && map_y < MAP_H) {
     if (ray_len.x < ray_len.y) {
@@ -72,51 +93,43 @@ void cast_ray(vec2 pos, double angle, int *wall_height, t_info *info) {
     }
   }
 
-  if (hit) {
-    *wall_height = (int)(SCREEN_H / (dist / TILE_SIZE + 0.00001));
-  } else {
-    *wall_height = 0;
-  }
+  // Draw the ray
+  int end_x = pos.x + dir.x * dist;
+  int end_y = pos.y + dir.y * dist;
+  draw_line((int)pos.x, (int)pos.y, end_x, end_y, info);
 }
 
-void render_frame(vec2 player_pos, double player_angle, t_info *info) {
-  for (int x = 0; x < SCREEN_W; x++) {
-    double ray_angle =
-        player_angle - atan2(1, 1) + (x / (double)SCREEN_W) * atan2(1, 0.5);
-    int wall_height;
-    cast_ray(player_pos, ray_angle, &wall_height, info);
-
-    if (wall_height > 0) {
-      int draw_start = (SCREEN_H - wall_height) / 2;
-      int draw_end = draw_start + wall_height;
-
-      if (draw_start < 0)
-        draw_start = 0;
-      if (draw_end >= SCREEN_H)
-        draw_end = SCREEN_H - 1;
-
-      for (int y = draw_start; y <= draw_end; y++) {
-        mlx_pixel_put(info->mlx->mlx, info->mlx->mlx_win, x, y, COLOR);
+void render_map(t_info *info) {
+  for (int y = 0; y < MAP_H; y++) {
+    for (int x = 0; x < MAP_W; x++) {
+      if (world_map[y][x] == 1) {
+        // Draw a filled square for walls
+        for (int dy = 0; dy < TILE_SIZE; dy++) {
+          for (int dx = 0; dx < TILE_SIZE; dx++) {
+            mlx_pixel_put(info->mlx->mlx, info->mlx->mlx_win,
+                          x * TILE_SIZE + dx, y * TILE_SIZE + dy, COLOR);
+          }
+        }
       }
     }
   }
 }
 
+
 void test_cast(t_info *info) {
-  vec2 player_pos = {
-      4.5 * TILE_SIZE,
-      4.5 * TILE_SIZE}; // Player starts in the middle of tile (4,4)
-  double player_angle = 0.0;
+  vec2 player_pos = {4.5 * TILE_SIZE, 4.5 * TILE_SIZE};
+  static double player_angle = 0.1;
 
-  while (1) {
-    render_frame(player_pos, player_angle, info);
+  usleep(5000);
+  render_map(info);
+  player_angle += 0.1;
+  printf("p angle : %f\n", player_angle);
 
-    // Handle player movement and rotation here
-    // This part depends on your input handling system
+  visual_raycast(player_pos, player_angle, info);
+  usleep(1000);
 
-    // Example movement (you'll need to implement actual input handling):
-    // player_pos.x += cos(player_angle) * move_speed;
-    // player_pos.y += sin(player_angle) * move_speed;
-    // player_angle += rotation_speed;
-  }
+  // In a real application, you'd have a game loop here
+  // and you'd update the player position and angle based on input
+
 }
+

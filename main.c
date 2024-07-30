@@ -84,7 +84,7 @@ bool game_init(t_info *info) {
   mlx = info->mlx;
   // menu->mlx = mlx;
   // map->current_menu = menu;
-  new_window(mlx);
+  new_window(info->mlx);
   // mlx_do_sync(map->info->mlx);
   // init_minimap(map, "map_path");
   mlx_loop_hook(mlx->mlx, (void *)renderer, info);
