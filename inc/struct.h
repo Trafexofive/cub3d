@@ -26,6 +26,12 @@ typedef struct s_point // could be renamed to coordinate.
   int y;
 } t_point;
 
+typedef struct s_vector {
+    t_point start;
+    t_point end;
+    double  len;
+} t_vector;
+
 typedef struct s_args {
   char **av;
   int ac;
@@ -34,7 +40,7 @@ typedef struct s_args {
 typedef struct s_game_vars {
     t_point draw_cursor;
     t_point player_position;
-    // t_angle player_fov;
+    double player_fov;
     
 }t_game;
 
