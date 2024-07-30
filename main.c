@@ -14,6 +14,7 @@ void free_arr(char **arr) {
   }
 }
 
+
 void free_all(t_info *info) {
 
   void *mlx;
@@ -33,24 +34,24 @@ void player_move_w(t_map *map) { map->player->spawn.y -= MOVE_SPEED; }
 void player_move_s(t_map *map) { map->player->spawn.y += MOVE_SPEED; }
 void player_move_a(t_map *map) { map->player->spawn.x -= MOVE_SPEED; }
 void player_move_d(t_map *map) { map->player->spawn.x += MOVE_SPEED; }
-
-static void key_hook(int key, t_info *info) {
-  printf("key value = %X\n", key);
-  printf("decimal key value = %d\n", key);
-  t_map *map = info->map;
-
-  if (key == W_KEY)
-    player_move_w(map);
-  if (key == S_KEY)
-    player_move_s(map);
-  if (key == A_KEY)
-    player_move_a(map);
-  if (key == D_KEY)
-    player_move_d(map);
-  if (key == ESC_KEY)
-    free_all(info);
-}
-
+//
+// static void key_hook(int key, t_info *info) {
+//   printf("key value = %X\n", key);
+//   printf("decimal key value = %d\n", key);
+//   t_map *map = info->map;
+//
+//   if (key == W_KEY)
+//     player_move_w(map);
+//   if (key == S_KEY)
+//     player_move_s(map);
+//   if (key == A_KEY)
+//     player_move_a(map);
+//   if (key == D_KEY)
+//     player_move_d(map);
+//   if (key == ESC_KEY)
+//     free_all(info);
+// }
+//
 // make map an arr to make it possible creating multiple windows and pulling
 // them by index
 void new_window(t_mlx *mlx) {
@@ -58,8 +59,9 @@ void new_window(t_mlx *mlx) {
   mlx->mlx_win = mlx_new_window(mlx->mlx, SCREEN_WIDTH, SCREEN_HEIGHT, "Cub3d");
 }
 
-void init_minimap(t_map *map) {
+void init_minimap(t_map *map, const char *map_path) {
   int i = 0;
+  (void) map_path;
   int fd = open("maps/map.cub", O_RDONLY);
   map->map = malloc(20 * sizeof(char *));
   while (1) {
@@ -76,7 +78,7 @@ bool game_init(t_info *info) {
 
   // t_menu *menu;
   t_mlx *mlx;
-  t_map *map = info->map;
+  // t_map *map = info->map;
 
   // menu = malloc(sizeof(t_menu));
   mlx = info->mlx;
@@ -84,10 +86,10 @@ bool game_init(t_info *info) {
   // map->current_menu = menu;
   new_window(mlx);
   // mlx_do_sync(map->info->mlx);
-  init_minimap(map);
-  mlx_loop_hook(mlx->mlx, (void *)renderer, map);
+  // init_minimap(map, "map_path");
+  mlx_loop_hook(mlx->mlx, (void *)renderer, info);
   mlx_hook(mlx->mlx_win, 17, 0, (void *)free_all, info);
-  mlx_key_hook(mlx->mlx_win, (void *)key_hook, map);
+  // mlx_key_hook(mlx->mlx_win, (void *)key_hook, map);
   // mlx_key_hook(mlx->mlx_win, (void *)navigation_key_hook, menu);
   clear_window(mlx);
   mlx_loop(mlx->mlx);
@@ -108,6 +110,7 @@ t_info *vars_init() {
 
   init_mlx(mlx);
   map->mlx = mlx;
+  info->mlx = mlx;
   info->map = map;
 
   // info_init(info);

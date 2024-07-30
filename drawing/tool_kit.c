@@ -2,7 +2,52 @@
 #include "../inc/draw.h"
 #include "../inc/macros.h"
 #include "../inc/struct.h"
+#include <math.h>
 #include <mlx.h>
+
+// in IT computer graphics vectors are considered as points. 
+
+t_point add_vector(t_point start, t_point end)
+{
+    t_point vector;
+
+    vector.x = start.x + end.x;
+    vector.y = start.y + end.y;
+    return (vector);
+
+}
+//return = (v1.x - v2.x).(v1.y - v2.y)
+t_point subtract_vector(t_point start, t_point end)
+{
+    // returns the vecter pointing at start pos from end pos
+    t_point vector;
+
+    vector.x = start.x - end.x;
+    vector.y = start.y - end.y;
+    return (vector);
+}
+
+int vector_len(t_point vector)
+{
+    int len;
+    int x  = vector.x;
+    int y  = vector.y;
+
+    len = sqrt((x * x) + (y * y));
+
+    return (len);
+}
+
+int vector_len_sqrt(t_point vector)
+{
+    int len;
+    int x  = vector.x;
+    int y  = vector.y;
+
+    len = (x * x) + (y * y);
+
+    return (len);
+}
 
 void clear_window(t_mlx *mlx) { mlx_clear_window(mlx->mlx, mlx->mlx_win); }
 

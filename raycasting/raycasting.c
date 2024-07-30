@@ -97,40 +97,43 @@ void reset_player_info(t_player *player) {
 }
 
 // void cast_rays(t_map *map) {
-//   int w = SCREEN_WIDTH;
-//   double posX = 22, posY = 12;      // x and y start position
-//   double dirX = -1, dirY = 0;       // initial direction vector
-//   double planeX = 0, planeY = 0.66; // the 2d raycaster version of camera
-//   plane t_point camera; int x = 0;
-//
-//   camera.x = 2 * x / w - 1;
-//   while ()
+//   // int w = SCREEN_WIDTH;
+//   // double posX = 22, posY = 12;      // x and y start position
+//   // double dirX = -1, dirY = 0;       // initial direction vector
+//   // double planeX = 0, planeY = 0.66; // the 2d raycaster version of camera
+//   // plane t_point camera; int x = 0;
+//   //
+//   // camera.x = 2 * x / w - 1;
 // }
 
 void raycaster(t_info *info) { 
+    // t_player    *player = info->player;
+
+    
+    test_cast(info);
 
     // cast_rays(info->map); 
-    (void) info;
 
 }
 
 void renderer(t_info *info) {
-  t_menu *menu;
-  t_map *map;
-  t_player *player = info->player;
+  // t_menu *menu;
+  // t_map *map;
+  // t_player *player = info->player;
 
-  map = info->map;
-  map->player = player;
-  menu = map->current_menu;
-  t_mlx *mlx = map->mlx;
-  menu->mlx = mlx;
+  // map = info->map;
+  // map->player = player;
+  // menu = map->current_menu;
+  t_mlx *mlx = info->mlx;
+  fprintf(stderr,"mlx = %p\n", mlx->mlx);
+  puts("break");
+  // menu->mlx = mlx;
   clear_window(mlx);
-  usleep(10000);
 
   // gui_entry_point(menu);
   // fps(map);
   // map_tile_morph(map);
   // render_player(map);
   raycaster(info);
-  reset_player_info(player);
+  // reset_player_info(player);
 }

@@ -32,7 +32,7 @@ typedef enum s_keys {
 #define VER false
 #define HOR true
 #define FPS 100000
-#define TILE_SIZE 30
+#define TILE_SIZE 64
 #define MOVE_SPEED 2
 #define HIT_BOX 10
 #define SCALE_FACTOR 0.7
