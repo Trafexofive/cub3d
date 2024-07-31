@@ -45,6 +45,7 @@ typedef struct s_player {
   t_point spawn;
   t_comp player_dir;
   t_point position;
+  t_vector last_ray;
   t_vector vector;
   bool spawned;
 
