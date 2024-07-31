@@ -143,6 +143,4 @@ void test_cast(t_info *info) {
   drawcircle(vector.end.x, vector.end.y, 13, info->mlx);
   usleep(1000);
 
-  // In a real application, you'd have a game loop here
-  // and you'd update the player position and angle based on input
 }
