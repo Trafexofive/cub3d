@@ -117,6 +117,7 @@ void raycaster(t_info *info) {
 }
 
 void renderer(t_info *info) {
+
   // t_menu *menu;
   // t_map *map;
   // t_player *player = info->player;
@@ -125,6 +126,7 @@ void renderer(t_info *info) {
   // map->player = player;
   // menu = map->current_menu;
   t_mlx *mlx = info->mlx;
+  clear_window(mlx);
   // fprintf(stderr,"mlx = %p\n", mlx->mlx);
   // menu->mlx = mlx;
   // clear_window(mlx);
@@ -134,5 +136,7 @@ void renderer(t_info *info) {
   // map_tile_morph(map);
   // render_player(map);
   raycaster(info);
+  mlx_put_image_to_window(mlx->mlx, mlx->mlx_win, info->img.img, 0, 0);
+
   // reset_player_info(player);
 }

@@ -36,8 +36,15 @@ void player_move_a(t_player *player) { player->vector.start.x -= MOVE_SPEED; }
 void player_move_d(t_player *player) { player->vector.start.x += MOVE_SPEED; }
 void player_look_left(t_player *player) {
 
-  if (player->angle > 2 * M_PI)
-    player->angle -= 2 * M_PI;
+  // if (player->angle > 2 * M_PI)
+    player->angle -= 0.1;
+}
+
+void player_look_right(t_player *player) {
+
+  // if (player->angle <= 2 * M_PI)
+    // player->angle += 2 * M_PI;
+    player->angle += 0.1;
 }
 //
 void key_hook(int key, t_info *info) {
@@ -53,6 +60,10 @@ void key_hook(int key, t_info *info) {
     player_move_a(player);
   if (key == D_KEY)
     player_move_d(player);
+  if (key == RIGHT_KEY)
+    player_look_right(player);
+  if (key == LEFT_KEY)
+    player_look_left(player);
   if (key == ESC_KEY)
     free_all(info);
 }
@@ -114,7 +125,6 @@ bool game_init(t_info *info) {
     return false;
   image.addr = mlx_get_data_addr(image.img, &image.bpp, &image.line_length,
                                  &image.endian);
-  mlx_put_image_to_window(mlx->mlx, mlx->mlx_win, info->img.img, 0, 0);
   info->img = image;
 
   // assign RGB value to a pixel
