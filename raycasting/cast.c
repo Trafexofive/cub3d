@@ -9,8 +9,16 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-#define MAP_W 18
-#define MAP_H 18
+#define MAP_W 30
+#define MAP_H 30
+
+// double  angle_add(double angle, double angle_to_add)
+// {
+//     double new_angle = (angle + angle_to_add) ;
+//     new_angle = new_angle % 360.0;
+//
+//     return (new_angle);
+// }
 
 void draw_line2(t_vector vector, t_info *info) {
   int x1 = vector.start.x;
@@ -31,7 +39,6 @@ void draw_line2(t_vector vector, t_info *info) {
     point.x = x1;
     point.y = y1;
     put_pixel(image, point, COLOR);
-    // image.addr[y1 * (image.line_length / 4) + x1] = COLOR;
     if (x1 == x2 && y1 == y2)
       break;
     e2 = 2 * err;
@@ -62,7 +69,6 @@ void fill_image(t_info *info, int color) {
     point.y += 1;
   }
 }
-
 
 void clear_image(t_info *info) {
   t_img *image = &info->img;
@@ -184,22 +190,27 @@ void test_cast(t_info *info) {
   }
   t_player *player = info->player;
 
+  clear_image(info);
   t_vector vector;
   // int ray_count = 0;
 
   // render_map(info);
   double dist;
 
-  clear_image(info);
+  t_vector test;
+  test.start.x = 500;
+  test.start.y = 500;
+  test.end.x = 1000;
+  test.end.y = 1000;
+  draw_line2(test, info);
   double fov = M_PI / 1.5; // 60 degree field of view
   for (int x = 0; x < SCREEN_WIDTH; x++) {
     double ray_angle =
         player->angle - fov / 2 + (x / (double)SCREEN_WIDTH) * fov;
     dist = visual_raycast(info->player->vector.start, ray_angle, &vector, info);
-    // draw_line2(vector, info);
+    draw_line2(vector, info);
+    dist = dist;
     draw_wall_strip(info, x, dist, ray_angle);
-    // ray_count++;
-    // printf("ray count : %d\n", ray_count);
   }
 
   // visual_raycast(info->player->vector.start, player_angle, &vector);
@@ -212,4 +223,3 @@ void test_cast(t_info *info) {
   // usleep(150000);
 }
 
-// Assume main function and other necessary setup code is elsewhere

@@ -30,10 +30,50 @@ void free_all(t_info *info) {
   free(info->map);
 }
 
+void update_player_position(t_player *player, double move_speed, double strafe_speed) {
+    double move_x = cos(player->angle) * move_speed;
+    double move_y = sin(player->angle) * move_speed;
+    double strafe_x = cos(player->angle + M_PI/2) * strafe_speed;
+    double strafe_y = sin(player->angle + M_PI/2) * strafe_speed;
+
+    player->vector.start.x += move_x + strafe_x;
+    player->vector.start.y += move_y + strafe_y;
+}
+
+void handle_player_movement(t_player *player, int key) {
+    double move_speed = 5.0; // Adjust this value to change movement speed
+    // double rotation_speed = 0.1; // Adjust this value to change rotation speed
+
+    if (key == W_KEY)
+        update_player_position(player, move_speed, 0);
+    if (key == S_KEY)
+        update_player_position(player, -move_speed, 0);
+    if (key == A_KEY)
+        update_player_position(player, 0, -move_speed);
+    if (key == D_KEY)
+        update_player_position(player, 0, move_speed);
+    
+    // if (info->keys[LEFT_KEY]) {
+    //     player->angle -= rotation_speed;
+    //     if (player->angle < 0) player->angle += 2 * M_PI;
+    // }
+    // if (info->keys[RIGHT_KEY]) {
+    //     player->angle += rotation_speed;
+    //     if (player->angle > 2 * M_PI) player->angle -= 2 * M_PI;
+    // }
+
+    // Add any additional key handling here if needed
+    // For example:
+    // if (info->keys[J_KEY]) { ... }
+    // if (info->keys[K_KEY]) { ... }
+    // if (info->keys[ESC_KEY]) { ... }
+}
+
 void player_move_w(t_player *player) { player->vector.start.y -= MOVE_SPEED; }
 void player_move_s(t_player *player) { player->vector.start.y += MOVE_SPEED; }
 void player_move_a(t_player *player) { player->vector.start.x -= MOVE_SPEED; }
 void player_move_d(t_player *player) { player->vector.start.x += MOVE_SPEED; }
+
 void player_look_left(t_player *player) {
 
   // if (player->angle > 2 * M_PI)
@@ -52,20 +92,16 @@ void key_hook(int key, t_info *info) {
   printf("decimal key value = %d\n", key);
   t_player *player = info->player;
 
-  if (key == W_KEY)
-    player_move_w(player);
-  if (key == S_KEY)
-    player_move_s(player);
-  if (key == A_KEY)
-    player_move_a(player);
-  if (key == D_KEY)
-    player_move_d(player);
   if (key == RIGHT_KEY)
     player_look_right(player);
-  if (key == LEFT_KEY)
+  else if (key == LEFT_KEY)
     player_look_left(player);
-  if (key == ESC_KEY)
+  else if (key == ESC_KEY)
     free_all(info);
+  else {
+      handle_player_movement(player, key);
+
+  }
 }
 //
 // make map an arr to make it possible creating multiple windows and pulling
