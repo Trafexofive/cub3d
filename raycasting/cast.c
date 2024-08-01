@@ -143,21 +143,23 @@ void test_cast(t_info *info) {
 
     static double player_angle = 0.1;
     t_vector vector;
-    double dist;
+    // double dist;
+    int ray_count = 0;
 
-    // render_map(info);
+    render_map(info);
 
-    double fov = M_PI / 1.5;  // 60 degree field of view
+    double fov = M_PI / 1.3;  // 60 degree field of view
     for (int x = 0; x < SCREEN_WIDTH; x++) {
         double ray_angle = player_angle - fov / 2 + (x / (double)SCREEN_WIDTH) * fov;
-        dist = visual_raycast(info->player->vector.start, ray_angle, &vector);
-        draw_wall_strip(info, x, dist, ray_angle);
+        visual_raycast(info->player->vector.start, ray_angle, &vector);
+        draw_line2(vector, info);
+        // draw_wall_strip(info, x, dist, ray_angle);
+        ray_count++;
+        printf("ray count : %d\n", ray_count);
     }
 
-    // Draw the central ray for visualization (optional)
-    // visual_raycast(info->player->vector.start, player_angle, &vector);
-    // draw_line2(vector, info);
-    // drawcircle(vector.end.x, vector.end.y, 13, info->mlx);
+    visual_raycast(info->player->vector.start, player_angle, &vector);
+    drawcircle(vector.end.x, vector.end.y, 13, info->mlx);
 
     player_angle += 0.1;
     if (player_angle > 2 * M_PI) player_angle -= 2 * M_PI;
