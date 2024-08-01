@@ -32,6 +32,14 @@ typedef struct s_vector {
     double  len;
 } t_vector;
 
+typedef struct s_img {
+  void *img;
+  char *addr;
+  int bpp;
+  int line_length;
+  int endian;
+} t_img;
+
 typedef struct s_game_vars {
     t_point draw_cursor;
     t_point player_position;
@@ -42,6 +50,7 @@ typedef struct s_game_vars {
 typedef struct s_player {
   double dirX, dirY;     // Player's direction vector
   double planeX, planeY; // Camera plane
+    double angle;
   t_point spawn;
   t_comp player_dir;
   t_point position;
@@ -76,6 +85,7 @@ typedef struct s_info {
   t_map *map; // could have multiple maps
   t_player *player;
   t_game *vars;
+  t_img img;
   // maybe a game var struct could be implemented
   // int win_x; drawing function shouldnt rely on info struct, they should be
   // stand alone. int win_y; better defined as macros
@@ -83,13 +93,7 @@ typedef struct s_info {
 } t_info;
 
 
-typedef struct s_img {
-  void *img;
-  char *addr;
-  int bits_per_pixel;
-  int line_length;
-  int endian;
-} t_img;
+
 
 typedef struct s_texture {
   t_img *img;

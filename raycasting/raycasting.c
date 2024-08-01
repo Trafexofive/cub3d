@@ -127,7 +127,7 @@ void renderer(t_info *info) {
   t_mlx *mlx = info->mlx;
   // fprintf(stderr,"mlx = %p\n", mlx->mlx);
   // menu->mlx = mlx;
-  clear_window(mlx);
+  // clear_window(mlx);
 
   // gui_entry_point(menu);
   // fps(map);

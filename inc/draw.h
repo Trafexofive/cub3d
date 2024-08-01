@@ -21,6 +21,7 @@ void circle_octants(int centerX, int centerY, int x, int y, t_mlx *mlx);
 void drawcircle(int centerx, int centery, int radius, t_mlx *mlx);
 void draw_anyline(t_map *, t_point , t_point);
 void    test(t_map *);
+void    put_pixel(t_img *img, t_point pixel, int color);
 
 
 //##########################################################################

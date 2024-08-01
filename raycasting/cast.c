@@ -9,21 +9,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-#define MAP_W 8
-#define MAP_H 8
-#define SCREEN_W (MAP_W * TILE_SIZE * 1.7)
-#define SCREEN_H (MAP_H * TILE_SIZE * 1.7)
-
-int world_map[MAP_H][MAP_W] = {
-    {1, 1, 1, 1, 1, 1, 1, 1},
-    {1, 0, 0, 0, 0, 0, 0, 1},
-    {1, 0, 1, 1, 0, 1, 0, 1},
-    {1, 0, 0, 0, 0, 0, 0, 1},
-    {1, 0, 1, 0, 0, 1, 0, 1},
-    {1, 0, 1, 0, 0, 1, 0, 1},
-    {1, 0, 1, 0, 0, 0, 0, 1},
-    {1, 1, 1, 1, 1, 1, 1, 1}
-};
+#define MAP_W 18
+#define MAP_H 18
 
 void draw_line2(t_vector vector, t_info *info) {
     int x1 = vector.start.x;
@@ -33,9 +20,18 @@ void draw_line2(t_vector vector, t_info *info) {
     int dx = abs(x2 - x1), sx = x1 < x2 ? 1 : -1;
     int dy = -abs(y2 - y1), sy = y1 < y2 ? 1 : -1;
     int err = dx + dy, e2;
+    t_img *image = &info->img;
+    t_point point;
+
+    point.x = 0;
+    point.y = 0;
 
     while (1) {
-        mlx_pixel_put(info->mlx->mlx, info->mlx->mlx_win, x1, y1, COLOR);
+        // mlx_pixel_put(info->mlx->mlx, info->img.addr, x1, y1, COLOR);
+        point.x = x1;
+        point.y = y1;
+        put_pixel(image, point, COLOR);
+        // image.addr[y1 * (image.line_length / 4) + x1] = COLOR;
         if (x1 == x2 && y1 == y2)
             break;
         e2 = 2 * err;
@@ -50,13 +46,14 @@ void draw_line2(t_vector vector, t_info *info) {
     }
 }
 
-double visual_raycast(t_point pos, double angle, t_vector *vector) {
+double visual_raycast(t_point pos, double angle, t_vector *vector, t_info *info) {
     t_point dir = {cos(angle), sin(angle)};
     t_point ray_step = {fabs(TILE_SIZE / dir.x), fabs(TILE_SIZE / dir.y)};
     int map_x = (int)(pos.x / TILE_SIZE);
     int map_y = (int)(pos.y / TILE_SIZE);
     t_point ray_len;
     t_point step;
+    char **map = info->map->map; 
 
     if (dir.x < 0) {
         step.x = -1;
@@ -86,7 +83,7 @@ double visual_raycast(t_point pos, double angle, t_vector *vector) {
             ray_len.y += ray_step.y;
         }
         if (map_x >= 0 && map_x < MAP_W && map_y >= 0 && map_y < MAP_H &&
-            world_map[map_y][map_x] > 0) {
+            map[map_y][map_x] != '0') {
             hit = 1;
         }
     }
@@ -101,9 +98,10 @@ double visual_raycast(t_point pos, double angle, t_vector *vector) {
 }
 
 void render_map(t_info *info) {
+    char **map = info->map->map;
     for (int y = 0; y < MAP_H; y++) {
         for (int x = 0; x < MAP_W; x++) {
-            if (world_map[y][x] == 1) {
+            if (map[y][x] == '1') {
                 for (int dy = 0; dy < TILE_SIZE; dy++) {
                     for (int dx = 0; dx < TILE_SIZE; dx++) {
                         mlx_pixel_put(info->mlx->mlx, info->mlx->mlx_win,
@@ -140,31 +138,33 @@ void test_cast(t_info *info) {
         info->player->vector.start.y = 4.5 * TILE_SIZE;
         info->player->vector.len = -2;
     }
+    t_player *player = info->player;
 
-    static double player_angle = 0.1;
+    player->angle = 0.1;
     t_vector vector;
-    // double dist;
+    double dist;
     int ray_count = 0;
 
-    render_map(info);
+    // render_map(info);
 
-    double fov = M_PI / 1.3;  // 60 degree field of view
+    double fov = M_PI / 1.5;  // 60 degree field of view
     for (int x = 0; x < SCREEN_WIDTH; x++) {
-        double ray_angle = player_angle - fov / 2 + (x / (double)SCREEN_WIDTH) * fov;
-        visual_raycast(info->player->vector.start, ray_angle, &vector);
-        draw_line2(vector, info);
+        double ray_angle = player->angle - fov / 2 + (x / (double)SCREEN_WIDTH) * fov;
+        dist = visual_raycast(info->player->vector.start, ray_angle, &vector, info);
+        dist = dist;
+        // draw_line2(vector, info);
         // draw_wall_strip(info, x, dist, ray_angle);
         ray_count++;
         printf("ray count : %d\n", ray_count);
     }
 
-    visual_raycast(info->player->vector.start, player_angle, &vector);
-    drawcircle(vector.end.x, vector.end.y, 13, info->mlx);
+    // visual_raycast(info->player->vector.start, player_angle, &vector);
+    // drawcircle(vector.end.x, vector.end.y, 13, info->mlx);
 
-    player_angle += 0.1;
-    if (player_angle > 2 * M_PI) player_angle -= 2 * M_PI;
+    player->angle += 0.1;
+    if (player->angle> 2 * M_PI) player->angle-= 2 * M_PI;
 
-    printf("p angle : %f\n", player_angle);
+    printf("p angle : %f\n", player->angle);
     usleep(150000);
     clear_window(info->mlx);
 }
