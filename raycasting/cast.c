@@ -139,20 +139,42 @@ double visual_raycast(t_point pos, double angle, t_vector *vector,
   return dist;
 }
 
+// void render_map(t_info *info) {
+//   t_img *image = &info->img;
+//   t_point point;
+//
+//   char **map = info->map->map;
+//   for (point.y = 0; point.y < MAP_H; point.y++) {
+//     for (point.x = 0; point.x < MAP_W; point.x++) {
+//       if (map[(int)point.y][(int)point.x] == '1') {
+//         for (int dy = 0; dy < TILE_SIZE; dy++) {
+//           for (int dx = 0; dx < TILE_SIZE; dx++) {
+//             put_pixel(image, point, COLOR);
+//           }
+//         }
+//       }
+//     }
+//   }
+// }
+
 void render_map(t_info *info) {
+  t_img *image = &info->img;
+  t_point point;
+
   char **map = info->map->map;
   for (int y = 0; y < MAP_H; y++) {
     for (int x = 0; x < MAP_W; x++) {
       if (map[y][x] == '1') {
         for (int dy = 0; dy < TILE_SIZE; dy++) {
           for (int dx = 0; dx < TILE_SIZE; dx++) {
-            mlx_pixel_put(info->mlx->mlx, info->mlx->mlx_win,
-                          x * TILE_SIZE + dx, y * TILE_SIZE + dy, COLOR);
-          }
+            point.x = x * TILE_SIZE + dx;
+            point.y = y * TILE_SIZE + dy;
+          put_pixel(image, point, COLOR);
         }
       }
     }
   }
+}
 }
 
 void draw_wall_strip(t_info *info, int x, double dist, double angle) {
@@ -222,4 +244,3 @@ void test_cast(t_info *info) {
   // printf("p angle : %f\n", player->angle);
   // usleep(150000);
 }
-
