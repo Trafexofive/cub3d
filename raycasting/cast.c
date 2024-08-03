@@ -40,6 +40,10 @@ void draw_line2(t_vector vector, t_info *info) {
     put_pixel(image, point, COLOR);
     if (x1 == x2 && y1 == y2)
       break;
+    if (x1 >= SCREEN_WIDTH || x2 >= SCREEN_WIDTH)
+      break;
+    if (y1 >= SCREEN_HEIGHT|| y2 >= SCREEN_HEIGHT)
+      break;
     e2 = 2 * err;
     if (e2 >= dy) {
       err += dy;
@@ -161,20 +165,49 @@ void render_map(t_info *info) {
   t_point point;
 
   char **map = info->map->map;
-  for (int y = 0; y < MAP_H; y++) {
-    for (int x = 0; x < MAP_W; x++) {
+  int y = 0;
+  while (map[y]) {
+    int x = 0;
+    while (map[y][x]) {
       if (map[y][x] == '1') {
-        for (int dy = 0; dy < TILE_SIZE; dy++) {
-          for (int dx = 0; dx < TILE_SIZE; dx++) {
-            point.x = x * TILE_SIZE + dx;
-            point.y = y * TILE_SIZE + dy;
+        int dy = 0;
+        while (dy < MAP_TILE_SIZE) {
+          int dx = 0;
+          while (dx < MAP_TILE_SIZE) {
+            point.x = x * MAP_TILE_SIZE + dx;
+            point.y = y * MAP_TILE_SIZE + dy;
             put_pixel(image, point, COLOR);
+            dx++;
           }
+          dy++;
         }
       }
+      x++;
     }
+    y++;
   }
 }
+
+
+// void render_map(t_info *info) {
+//   t_img *image = &info->img;
+//   t_point point;
+//
+//   char **map = info->map->map;
+//   for (int y = 0; y < MAP_H; y++) {
+//     for (int x = 0; x < MAP_W; x++) {
+//       if (map[y][x] == '1') {
+//         for (int dy = 0; dy < TILE_SIZE; dy++) {
+//           for (int dx = 0; dx < TILE_SIZE; dx++) {
+//             point.x = x * TILE_SIZE + dx;
+//             point.y = y * TILE_SIZE + dy;
+//             put_pixel(image, point, COLOR);
+//           }
+//         }
+//       }
+//     }
+//   }
+// }
 
 void draw_wall_strip(t_info *info, int x, double dist, double angle) {
   t_img *image = &info->img;
@@ -233,23 +266,24 @@ void test_cast(t_info *info) {
 
   clear_image(info);
 
-  // render_map(info);
-
-  fill_image(info, GREEN);
+  // fill_image(info, GREEN);
   double fov = M_PI / 1.5; // 60 degree field of view
   for (int x = 0; x < SCREEN_WIDTH; x++) {
     double ray_angle =
         player->angle - fov / 2 + (x / (double)SCREEN_WIDTH) * fov;
     dist = visual_raycast(info->player->vector.start, ray_angle, &vector, info);
-    // draw_line2(vector, info);
-    draw_wall_strip(info, x, dist, ray_angle);
+    dist = dist;
+    draw_line2(vector, info);
+    // printf("vector start = %f, %f\n", vector.start.x, vector.start.y);
+    // draw_wall_strip(info, x, dist, ray_angle);
   }
+  render_map(info);
 
   // visual_raycast(info->player->vector.start, player_angle, &vector);
   // drawcircle(vector.end.x, vector.end.y, 13, info->mlx);
 
-  if (player->angle > 2 * M_PI)
-    player->angle -= 2 * M_PI;
+  // if (player->angle > 2 * M_PI)
+  //   player->angle -= 2 * M_PI;
 
   // printf("p angle : %f\n", player->angle);
   // usleep(150000);

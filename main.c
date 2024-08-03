@@ -30,38 +30,69 @@ void free_all(t_info *info) {
   free(info->map);
 }
 
-int is_valid_position(t_info *info, double x, double y) {
-  int map_x = (int)(x / TILE_SIZE);
-  int map_y = (int)(y / TILE_SIZE);
 
-  if (map_x < 0 || map_x >= 10 || map_y < 0 || map_y >= 40) {
-    return 0; // Out of bounds
-  }
-
-  return (info->map->map[map_y][map_x] == '0'); // '0' represents empty space
+int is_wall(t_info *info, int x, int y) {
+  if (x < 0 || x >= 20|| y < 0 || y >= 40)
+    return 1; // Treat out of bounds as walls
+  return (info->map->map[y][x] == '1');
 }
 
 void update_player_position(t_info *info, double move_speed,
                             double strafe_speed) {
-    t_player *player = info->player;
+  t_player *player = info->player;
   double move_x = cos(player->angle) * move_speed;
   double move_y = sin(player->angle) * move_speed;
 
   double strafe_x = cos(player->angle + M_PI / 2) * strafe_speed;
   double strafe_y = sin(player->angle + M_PI / 2) * strafe_speed;
 
+  int current_tile_x = (int)(player->vector.start.x / TILE_SIZE);
+  int current_tile_y = (int)(player->vector.start.y / TILE_SIZE);
+
   double new_x = player->vector.start.x + move_x + strafe_x;
   double new_y = player->vector.start.y + move_y + strafe_y;
+  int new_tile_x = (int)(new_x / TILE_SIZE);
+  int new_tile_y = (int)(new_y / TILE_SIZE);
 
-  // if (is_valid_position(info, new_x, new_y)) {
+  // Check collision in X direction
+  if (current_tile_x != new_tile_x) {
+    int check_x = (move_x + strafe_x > 0) ? new_tile_x : current_tile_x;
+    if (!is_wall(info, check_x, current_tile_y) &&
+        !is_wall(info, check_x,
+                 current_tile_y + (int)(player->vector.start.y + PLAYER_SIZE / 2) /
+                                      (int)TILE_SIZE % 1) &&
+        !is_wall(info, check_x,
+                 current_tile_y + (int)(player->vector.start.y - PLAYER_SIZE / 2) /
+                                      TILE_SIZE % 1)) {
+      player->vector.start.x = new_x;
+    }
+  } else {
     player->vector.start.x = new_x;
+  }
+
+  // Check collision in Y direction
+  if (current_tile_y != new_tile_y) {
+    int check_y = (move_y + strafe_y > 0) ? new_tile_y : current_tile_y;
+    if (!is_wall(info, current_tile_x, check_y) &&
+        !is_wall(info,
+                 current_tile_x +
+                     (int)(player->vector.start.x + PLAYER_SIZE / 2) / TILE_SIZE % 1,
+                 check_y) &&
+        !is_wall(info,
+                 current_tile_x +
+                     (int)(player->vector.start.x - PLAYER_SIZE / 2) / TILE_SIZE % 1,
+                 check_y)) {
+      player->vector.start.y = new_y;
+    }
+  } else {
     player->vector.start.y = new_y;
-  // }
+  }
 }
 
 void handle_player_movement(t_info *info, int key) {
-  double move_speed = 5.0; // Adjust this value to change movement speed
-  // double rotation_speed = 0.1; // Adjust this value to change rotation speed
+  double move_speed = 5.0;     // Adjust this value to change movement speed
+  double rotation_speed = 0.1; // Adjust this value to change rotation speed
+  t_player *player = info->player;
 
   if (key == W_KEY)
     update_player_position(info, move_speed, 0);
@@ -71,42 +102,33 @@ void handle_player_movement(t_info *info, int key) {
     update_player_position(info, 0, -move_speed);
   if (key == D_KEY)
     update_player_position(info, 0, move_speed);
-
-  // if (info->keys[LEFT_KEY]) {
-  //     player->angle -= rotation_speed;
-  //     if (player->angle < 0) player->angle += 2 * M_PI;
-  // }
-  // if (info->keys[RIGHT_KEY]) {
-  //     player->angle += rotation_speed;
-  //     if (player->angle > 2 * M_PI) player->angle -= 2 * M_PI;
-  // }
+  if (key == RIGHT_KEY) {
+    player->angle += rotation_speed;
+    if (player->angle < 0)
+      player->angle += 2 * M_PI;
+  }
+  if (key == LEFT_KEY) {
+    player->angle -= rotation_speed;
+    if (player->angle > 2 * M_PI)
+      player->angle -= 2 * M_PI;
+  }
 }
 
-// void player_move_w(t_player *player) { player->vector.start.y -= MOVE_SPEED; }
-// void player_move_s(t_player *player) { player->vector.start.y += MOVE_SPEED; }
-// void player_move_a(t_player *player) { player->vector.start.x -= MOVE_SPEED; }
-// void player_move_d(t_player *player) { player->vector.start.x += MOVE_SPEED; }
+// void player_move_w(t_player *player) { player->vector.start.y -= MOVE_SPEED;
+// } void player_move_s(t_player *player) { player->vector.start.y +=
+// MOVE_SPEED; } void player_move_a(t_player *player) { player->vector.start.x
+// -= MOVE_SPEED; } void player_move_d(t_player *player) {
+// player->vector.start.x += MOVE_SPEED; }
 
-void player_look_left(t_player *player) {
+void player_look_left(t_player *player) { player->angle -= 0.1; }
 
-  player->angle -= 0.1;
-}
-
-void player_look_right(t_player *player) {
-
-  player->angle += 0.1;
-}
+void player_look_right(t_player *player) { player->angle += 0.1; }
 //
 void key_hook(int key, t_info *info) {
   // printf("key value = %X\n", key);
   // printf("decimal key value = %d\n", key);
-  t_player *player = info->player;
 
-  if (key == RIGHT_KEY)
-    player_look_right(player);
-  else if (key == LEFT_KEY)
-    player_look_left(player);
-  else if (key == ESC_KEY)
+  if (key == ESC_KEY)
     free_all(info);
   else {
     handle_player_movement(info, key);
@@ -127,7 +149,6 @@ void init_minimap(t_map *map, const char *map_path) {
   map->map = malloc(20 * sizeof(char *));
   while (1) {
     map->map[i] = get_next_line(fd);
-    printf("%s", map->map[i]);
     if (map->map[i] == NULL)
       break;
     i++;

@@ -30,9 +30,11 @@ typedef enum s_keys {
 #define COLOR 0xFF5733
 #define GREEN 0x00FF4D
 #define VER false
+#define PLAYER_SIZE 10.0
 #define HOR true
 #define FPS 100000
 #define TILE_SIZE 128
+#define MAP_TILE_SIZE 10
 #define MOVE_SPEED 2
 #define HIT_BOX 10
 #define SCALE_FACTOR 0.7
