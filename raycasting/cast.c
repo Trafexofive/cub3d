@@ -35,7 +35,6 @@ void draw_line2(t_vector vector, t_info *info) {
   point.y = 0;
 
   while (1) {
-    // mlx_pixel_put(info->mlx->mlx, info->img.addr, x1, y1, COLOR);
     point.x = x1;
     point.y = y1;
     put_pixel(image, point, COLOR);
@@ -169,12 +168,12 @@ void render_map(t_info *info) {
           for (int dx = 0; dx < TILE_SIZE; dx++) {
             point.x = x * TILE_SIZE + dx;
             point.y = y * TILE_SIZE + dy;
-          put_pixel(image, point, COLOR);
+            put_pixel(image, point, COLOR);
+          }
         }
       }
     }
   }
-}
 }
 
 void draw_wall_strip(t_info *info, int x, double dist, double angle) {
@@ -194,8 +193,7 @@ void draw_wall_strip(t_info *info, int x, double dist, double angle) {
   int shade = (int)(dist / TILE_SIZE * 25);
   if (shade > 255)
     shade = 255;
-  color =
-      (color & 0xFFFFFF) | (shade << 24); 
+  color = (color & 0xFFFFFF) | (shade << 24);
 
   point.x = x;
   for (int y = draw_start; y <= draw_end; y++) {
@@ -204,27 +202,46 @@ void draw_wall_strip(t_info *info, int x, double dist, double angle) {
   }
 }
 
+void set_player_spawn(t_info *info) {
+  char **map = info->map->map;
+  int i = 0;
+  int j = 0;
+
+  while (map[j]) {
+    while (map[j][i]) {
+      if (map[j][i] == 'N' || map[j][i] == 'S' || map[j][i] == 'W' ||
+          map[j][i] == 'E') {
+        info->player->vector.start.x = i * TILE_SIZE;
+        info->player->vector.start.y = j * TILE_SIZE;
+        break;
+      }
+      i++;
+    }
+    i = 0;
+    j++;
+  }
+}
+
 void test_cast(t_info *info) {
   if (info->player->vector.len == -1) {
-    info->player->vector.start.x = 4.5 * TILE_SIZE;
-    info->player->vector.start.y = 4.5 * TILE_SIZE;
+    set_player_spawn(info);
     info->player->vector.len = -2;
   }
   t_player *player = info->player;
-
-  clear_image(info);
+  double dist;
   t_vector vector;
 
-  // render_map(info);
-  double dist;
+  clear_image(info);
 
+  // render_map(info);
+
+  fill_image(info, GREEN);
   double fov = M_PI / 1.5; // 60 degree field of view
   for (int x = 0; x < SCREEN_WIDTH; x++) {
     double ray_angle =
         player->angle - fov / 2 + (x / (double)SCREEN_WIDTH) * fov;
     dist = visual_raycast(info->player->vector.start, ray_angle, &vector, info);
     // draw_line2(vector, info);
-    dist = dist;
     draw_wall_strip(info, x, dist, ray_angle);
   }
 

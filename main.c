@@ -60,7 +60,7 @@ void update_player_position(t_info *info, double move_speed,
 }
 
 void handle_player_movement(t_info *info, int key) {
-  double move_speed = 5.0;
+  double move_speed = 5.0; // Adjust this value to change movement speed
   // double rotation_speed = 0.1; // Adjust this value to change rotation speed
 
   if (key == W_KEY)
@@ -81,6 +81,11 @@ void handle_player_movement(t_info *info, int key) {
   //     if (player->angle > 2 * M_PI) player->angle -= 2 * M_PI;
   // }
 }
+
+// void player_move_w(t_player *player) { player->vector.start.y -= MOVE_SPEED; }
+// void player_move_s(t_player *player) { player->vector.start.y += MOVE_SPEED; }
+// void player_move_a(t_player *player) { player->vector.start.x -= MOVE_SPEED; }
+// void player_move_d(t_player *player) { player->vector.start.x += MOVE_SPEED; }
 
 void player_look_left(t_player *player) {
 

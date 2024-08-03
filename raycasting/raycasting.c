@@ -30,50 +30,7 @@ void print_point(t_point point) {
   printf("y = %f\n", point.y);
 }
 
-// void map_tile_morph(t_info *info) {
-//   int i = 0;
-//   int j = 0;
-//   t_mlx *mlx;
-//   t_point draw_pos;
-//   t_map *map = info->map;
-//
-//   draw_pos.x = 0;
-//   draw_pos.y = 0;
-//
-//   mlx = info->mlx;
-//
-//   int len = TILE_SIZE;
-//   int tmp = draw_pos.x;
-//
-//   while (map->map[i]) {
-//
-//     while (map->map[i][j]) {
-//       if (map->map[i][j] == '1') {
-//
-//         draw_tile(mlx, len, draw_pos);
-//
-//       } else if (map->map[i][j] == 'N' || map->map[i][j] == 'W' ||
-//                  map->map[i][j] == 'S' || map->map[i][j] == 'E') {
-//         if (map->player->spawned == false) {
-//           map->player->spawn.x = draw_pos.x + (len / 2);
-//           map->player->spawn.y = draw_pos.y + (len / 2);
-//           update_player_dir(map, i, j);
-//           render_player(map);
-//           map->player->spawned = true;
-//         }
-//       }
-//       draw_pos.x += len;
-//       j++;
-//     }
-//     // print_point(info->draw_pos);
-//     draw_pos.y += len;
-//     draw_pos.x = tmp;
-//     i++;
-//     j = 0;
-//   }
-// }
 
-// void    load_textures(t_texture *textures);
 
 void fps(t_map *map) {
   static int frames = 0;
@@ -96,15 +53,6 @@ void reset_player_info(t_player *player) {
     
 }
 
-// void cast_rays(t_map *map) {
-//   // int w = SCREEN_WIDTH;
-//   // double posX = 22, posY = 12;      // x and y start position
-//   // double dirX = -1, dirY = 0;       // initial direction vector
-//   // double planeX = 0, planeY = 0.66; // the 2d raycaster version of camera
-//   // plane t_point camera; int x = 0;
-//   //
-//   // camera.x = 2 * x / w - 1;
-// }
 
 void raycaster(t_info *info) { 
     // t_player    *player = info->player;
@@ -126,7 +74,6 @@ void renderer(t_info *info) {
   // map->player = player;
   // menu = map->current_menu;
   t_mlx *mlx = info->mlx;
-  clear_window(mlx);
   // fprintf(stderr,"mlx = %p\n", mlx->mlx);
   // menu->mlx = mlx;
   // clear_window(mlx);

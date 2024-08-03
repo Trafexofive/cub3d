@@ -52,6 +52,7 @@ typedef struct s_player {
   double planeX, planeY; // Camera plane
     double angle;
   t_point spawn;
+  // double fov;
   t_comp player_dir;
   t_point position;
   t_vector last_ray;
