@@ -62,7 +62,6 @@ typedef struct s_player {
 
 // rename to compositioning struct, map should only contain map related content
 typedef struct s_map {
-  // reconstruction of the map struct needed only relevent info should stay.
   t_player *player;
   t_mlx *mlx;
   char **map;

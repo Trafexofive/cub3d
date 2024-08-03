@@ -9,8 +9,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-#define MAP_W 30
-#define MAP_H 30
+#define MAP_W 40
+#define MAP_H 40
 
 // double  angle_add(double angle, double angle_to_add)
 // {
@@ -195,7 +195,7 @@ void draw_wall_strip(t_info *info, int x, double dist, double angle) {
   if (shade > 255)
     shade = 255;
   color =
-      (color & 0xFFFFFF) | (shade << 24); // Assuming COLOR is in ARGB format
+      (color & 0xFFFFFF) | (shade << 24); 
 
   point.x = x;
   for (int y = draw_start; y <= draw_end; y++) {
@@ -214,23 +214,16 @@ void test_cast(t_info *info) {
 
   clear_image(info);
   t_vector vector;
-  // int ray_count = 0;
 
   // render_map(info);
   double dist;
 
-  t_vector test;
-  test.start.x = 500;
-  test.start.y = 500;
-  test.end.x = 1000;
-  test.end.y = 1000;
-  draw_line2(test, info);
   double fov = M_PI / 1.5; // 60 degree field of view
   for (int x = 0; x < SCREEN_WIDTH; x++) {
     double ray_angle =
         player->angle - fov / 2 + (x / (double)SCREEN_WIDTH) * fov;
     dist = visual_raycast(info->player->vector.start, ray_angle, &vector, info);
-    draw_line2(vector, info);
+    // draw_line2(vector, info);
     dist = dist;
     draw_wall_strip(info, x, dist, ray_angle);
   }

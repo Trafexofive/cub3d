@@ -30,48 +30,48 @@ void print_point(t_point point) {
   printf("y = %f\n", point.y);
 }
 
-void map_tile_morph(t_info *info) {
-  int i = 0;
-  int j = 0;
-  t_mlx *mlx;
-  t_point draw_pos;
-  t_map *map = info->map;
-
-  draw_pos.x = 0;
-  draw_pos.y = 0;
-
-  mlx = info->mlx;
-
-  int len = TILE_SIZE;
-  int tmp = draw_pos.x;
-
-  while (map->map[i]) {
-
-    while (map->map[i][j]) {
-      if (map->map[i][j] == '1') {
-
-        draw_tile(mlx, len, draw_pos);
-
-      } else if (map->map[i][j] == 'N' || map->map[i][j] == 'W' ||
-                 map->map[i][j] == 'S' || map->map[i][j] == 'E') {
-        if (map->player->spawned == false) {
-          map->player->spawn.x = draw_pos.x + (len / 2);
-          map->player->spawn.y = draw_pos.y + (len / 2);
-          update_player_dir(map, i, j);
-          render_player(map);
-          map->player->spawned = true;
-        }
-      }
-      draw_pos.x += len;
-      j++;
-    }
-    // print_point(info->draw_pos);
-    draw_pos.y += len;
-    draw_pos.x = tmp;
-    i++;
-    j = 0;
-  }
-}
+// void map_tile_morph(t_info *info) {
+//   int i = 0;
+//   int j = 0;
+//   t_mlx *mlx;
+//   t_point draw_pos;
+//   t_map *map = info->map;
+//
+//   draw_pos.x = 0;
+//   draw_pos.y = 0;
+//
+//   mlx = info->mlx;
+//
+//   int len = TILE_SIZE;
+//   int tmp = draw_pos.x;
+//
+//   while (map->map[i]) {
+//
+//     while (map->map[i][j]) {
+//       if (map->map[i][j] == '1') {
+//
+//         draw_tile(mlx, len, draw_pos);
+//
+//       } else if (map->map[i][j] == 'N' || map->map[i][j] == 'W' ||
+//                  map->map[i][j] == 'S' || map->map[i][j] == 'E') {
+//         if (map->player->spawned == false) {
+//           map->player->spawn.x = draw_pos.x + (len / 2);
+//           map->player->spawn.y = draw_pos.y + (len / 2);
+//           update_player_dir(map, i, j);
+//           render_player(map);
+//           map->player->spawned = true;
+//         }
+//       }
+//       draw_pos.x += len;
+//       j++;
+//     }
+//     // print_point(info->draw_pos);
+//     draw_pos.y += len;
+//     draw_pos.x = tmp;
+//     i++;
+//     j = 0;
+//   }
+// }
 
 // void    load_textures(t_texture *textures);
 

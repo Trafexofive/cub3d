@@ -30,66 +30,71 @@ void free_all(t_info *info) {
   free(info->map);
 }
 
-void update_player_position(t_player *player, double move_speed, double strafe_speed) {
-    double move_x = cos(player->angle) * move_speed;
-    double move_y = sin(player->angle) * move_speed;
-    double strafe_x = cos(player->angle + M_PI/2) * strafe_speed;
-    double strafe_y = sin(player->angle + M_PI/2) * strafe_speed;
+int is_valid_position(t_info *info, double x, double y) {
+  int map_x = (int)(x / TILE_SIZE);
+  int map_y = (int)(y / TILE_SIZE);
 
-    player->vector.start.x += move_x + strafe_x;
-    player->vector.start.y += move_y + strafe_y;
+  if (map_x < 0 || map_x >= 10 || map_y < 0 || map_y >= 40) {
+    return 0; // Out of bounds
+  }
+
+  return (info->map->map[map_y][map_x] == '0'); // '0' represents empty space
 }
 
-void handle_player_movement(t_player *player, int key) {
-    double move_speed = 5.0; // Adjust this value to change movement speed
-    // double rotation_speed = 0.1; // Adjust this value to change rotation speed
+void update_player_position(t_info *info, double move_speed,
+                            double strafe_speed) {
+    t_player *player = info->player;
+  double move_x = cos(player->angle) * move_speed;
+  double move_y = sin(player->angle) * move_speed;
 
-    if (key == W_KEY)
-        update_player_position(player, move_speed, 0);
-    if (key == S_KEY)
-        update_player_position(player, -move_speed, 0);
-    if (key == A_KEY)
-        update_player_position(player, 0, -move_speed);
-    if (key == D_KEY)
-        update_player_position(player, 0, move_speed);
-    
-    // if (info->keys[LEFT_KEY]) {
-    //     player->angle -= rotation_speed;
-    //     if (player->angle < 0) player->angle += 2 * M_PI;
-    // }
-    // if (info->keys[RIGHT_KEY]) {
-    //     player->angle += rotation_speed;
-    //     if (player->angle > 2 * M_PI) player->angle -= 2 * M_PI;
-    // }
+  double strafe_x = cos(player->angle + M_PI / 2) * strafe_speed;
+  double strafe_y = sin(player->angle + M_PI / 2) * strafe_speed;
 
-    // Add any additional key handling here if needed
-    // For example:
-    // if (info->keys[J_KEY]) { ... }
-    // if (info->keys[K_KEY]) { ... }
-    // if (info->keys[ESC_KEY]) { ... }
+  double new_x = player->vector.start.x + move_x + strafe_x;
+  double new_y = player->vector.start.y + move_y + strafe_y;
+
+  // if (is_valid_position(info, new_x, new_y)) {
+    player->vector.start.x = new_x;
+    player->vector.start.y = new_y;
+  // }
 }
 
-void player_move_w(t_player *player) { player->vector.start.y -= MOVE_SPEED; }
-void player_move_s(t_player *player) { player->vector.start.y += MOVE_SPEED; }
-void player_move_a(t_player *player) { player->vector.start.x -= MOVE_SPEED; }
-void player_move_d(t_player *player) { player->vector.start.x += MOVE_SPEED; }
+void handle_player_movement(t_info *info, int key) {
+  double move_speed = 5.0;
+  // double rotation_speed = 0.1; // Adjust this value to change rotation speed
+
+  if (key == W_KEY)
+    update_player_position(info, move_speed, 0);
+  if (key == S_KEY)
+    update_player_position(info, -move_speed, 0);
+  if (key == A_KEY)
+    update_player_position(info, 0, -move_speed);
+  if (key == D_KEY)
+    update_player_position(info, 0, move_speed);
+
+  // if (info->keys[LEFT_KEY]) {
+  //     player->angle -= rotation_speed;
+  //     if (player->angle < 0) player->angle += 2 * M_PI;
+  // }
+  // if (info->keys[RIGHT_KEY]) {
+  //     player->angle += rotation_speed;
+  //     if (player->angle > 2 * M_PI) player->angle -= 2 * M_PI;
+  // }
+}
 
 void player_look_left(t_player *player) {
 
-  // if (player->angle > 2 * M_PI)
-    player->angle -= 0.1;
+  player->angle -= 0.1;
 }
 
 void player_look_right(t_player *player) {
 
-  // if (player->angle <= 2 * M_PI)
-    // player->angle += 2 * M_PI;
-    player->angle += 0.1;
+  player->angle += 0.1;
 }
 //
 void key_hook(int key, t_info *info) {
-  printf("key value = %X\n", key);
-  printf("decimal key value = %d\n", key);
+  // printf("key value = %X\n", key);
+  // printf("decimal key value = %d\n", key);
   t_player *player = info->player;
 
   if (key == RIGHT_KEY)
@@ -99,11 +104,10 @@ void key_hook(int key, t_info *info) {
   else if (key == ESC_KEY)
     free_all(info);
   else {
-      handle_player_movement(player, key);
-
+    handle_player_movement(info, key);
   }
 }
-//
+
 // make map an arr to make it possible creating multiple windows and pulling
 // them by index
 void new_window(t_mlx *mlx) {
@@ -138,7 +142,6 @@ int get_offset(t_img image, t_point pixel) {
   return (offset);
 }
 
-
 bool game_init(t_info *info) {
 
   // t_menu *menu;
@@ -152,9 +155,7 @@ bool game_init(t_info *info) {
 
   t_img image;
 
-
   new_window(info->mlx);
-
 
   image.img = mlx_new_image(mlx->mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
   if (image.img == NULL)
@@ -167,15 +168,15 @@ bool game_init(t_info *info) {
 
   // mlx_do_sync(map->info->mlx);
   init_minimap(map, "maps/map.cub");
-  mlx_loop_hook(mlx->mlx, (void *)renderer, info);
+  mlx_hook(mlx->mlx_win, 2, 1L << 0, (void *)key_hook, info);
   mlx_hook(mlx->mlx_win, 17, 0, (void *)free_all, info);
-  mlx_key_hook(mlx->mlx_win, (void *)key_hook, info);
+  // mlx_key_hook(mlx->mlx_win, (void *)key_hook, info);
   // mlx_key_hook(mlx->mlx_win, (void *)navigation_key_hook, menu);
   // clear_window(mlx);
+  mlx_loop_hook(mlx->mlx, (void *)renderer, info);
   mlx_loop(mlx->mlx);
   return true;
 }
-
 
 void init_mlx(t_mlx *mlx) { mlx->mlx = mlx_init(); }
 
@@ -194,7 +195,6 @@ t_info *vars_init() {
   info->mlx = mlx;
   info->map = map;
 
-  // info_init(info);
   info->player = player_init();
   info->player->vector.len = -1;
   return (info);
