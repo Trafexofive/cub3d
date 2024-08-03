@@ -42,7 +42,7 @@ void draw_line2(t_vector vector, t_info *info) {
       break;
     if (x1 >= SCREEN_WIDTH || x2 >= SCREEN_WIDTH)
       break;
-    if (y1 >= SCREEN_HEIGHT|| y2 >= SCREEN_HEIGHT)
+    if (y1 >= SCREEN_HEIGHT || y2 >= SCREEN_HEIGHT)
       break;
     e2 = 2 * err;
     if (e2 >= dy) {
@@ -188,7 +188,6 @@ void render_map(t_info *info) {
   }
 }
 
-
 // void render_map(t_info *info) {
 //   t_img *image = &info->img;
 //   t_point point;
@@ -273,11 +272,11 @@ void test_cast(t_info *info) {
         player->angle - fov / 2 + (x / (double)SCREEN_WIDTH) * fov;
     dist = visual_raycast(info->player->vector.start, ray_angle, &vector, info);
     dist = dist;
-    draw_line2(vector, info);
+    draw_line2(player->vector, info);
     // printf("vector start = %f, %f\n", vector.start.x, vector.start.y);
     // draw_wall_strip(info, x, dist, ray_angle);
   }
-  render_map(info);
+  // render_map(info);
 
   // visual_raycast(info->player->vector.start, player_angle, &vector);
   // drawcircle(vector.end.x, vector.end.y, 13, info->mlx);
