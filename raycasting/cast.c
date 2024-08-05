@@ -149,7 +149,7 @@ double raycast(t_point pos, double angle, t_vector *vector, t_info *info) {
 
   int hit = 0;
   double dist = 0;
-  while (!hit && map_x >= 0 && map_x < MAP_W && map_y >= 0 && map_y < MAP_H) {
+  while (!hit && map_x >= 0 && map_y >= 0 ) {
     if (ray_len.x < ray_len.y) {
       map_x += step.x;
       dist = ray_len.x;
@@ -159,8 +159,10 @@ double raycast(t_point pos, double angle, t_vector *vector, t_info *info) {
       dist = ray_len.y;
       ray_len.y += ray_step.y;
     }
-    if (map_x >= 0 && map_x < MAP_W && map_y >= 0 && map_y < MAP_H) {
-      if (map[map_y][map_x] != '0' && map[map_y][map_x] != 'N' && map[map_y][map_x] != 'S' && map[map_y][map_x] != 'W' && map[map_y][map_x] != 'E') {
+    if (map_x >= 0 && map_y >= 0) {
+      if (map[map_y][map_x] != '0' && map[map_y][map_x] != 'N' &&
+          map[map_y][map_x] != 'S' && map[map_y][map_x] != 'W' &&
+          map[map_y][map_x] != 'E') {
         hit = 1;
       }
     }
@@ -196,6 +198,10 @@ void render_map(t_info *info) {
           }
           dy++;
         }
+      } else {
+        point.x = info->player->vector.start.x / MAP_TILE_SIZE;
+        point.y = info->player->vector.start.y / MAP_TILE_SIZE;
+        put_pixel(image, point, GREEN);
       }
       x++;
     }
@@ -207,7 +213,6 @@ void draw_wall_strip(t_info *info, int x, double dist, double angle) {
   t_img *image = &info->img;
   t_point point;
 
-  // Remove fish-eye effect by adjusting the distance
   double corrected_dist = dist * cos(angle - info->player->angle);
 
   double wall_height = (SCREEN_HEIGHT / corrected_dist) * TILE_SIZE;
@@ -274,10 +279,11 @@ void test_cast(t_info *info) {
     draw_wall_strip(info, x, dist, ray_angle);
   }
   render_map(info);
-  // put_pixel(info->img.img, player->vector.start, GREEN); // COLOR_WALL for
-  // walls render_player(info); // needs to be implemented with new pixel put
-
-  // drawcircle(vector.end.x, vector.end.y, 13, info->mlx);
+  // drawcircle(vector.start.x / MAP_TILE_SIZE, vector.start.y / MAP_TILE_SIZE, 13,
+  //            info->mlx);
+  // put_pixel(info->img.img, player->vector.start, GREEN); //
+  // COLOR_WALL for walls render_player(info); // needs to be implemented with
+  // new pixel put
 
   if (player->angle > 2 * M_PI)
     player->angle -= 2 * M_PI;

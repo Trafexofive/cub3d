@@ -26,11 +26,18 @@ void free_all(t_info *info) {
   mlx_win = info->mlx->mlx_win;
 
   mlx_destroy_window(mlx, mlx_win);
-  free(info);
-  free(info->player);
   free_arr(info->map->map);
   free(info->map);
+  free(info->player);
+  free(info);
+  exit(EXIT_FAILURE);
 }
+
+// int is_wall(t_info *info, int x, int y) {
+//     if (x < 0 || x >= MAP_W || y < 0 || y >= MAP_H)
+//         return 1;
+//     return (info->map->map[y][x] == '1');
+// }
 
 int is_wall(t_info *info, int x, int y) {
   // if (x < 0 || x >= 40 || y < 0 || y >= 40)
@@ -38,7 +45,7 @@ int is_wall(t_info *info, int x, int y) {
   return (info->map->map[y][x] == '1');
 }
 
-#define COLLISION_MARGIN 5 // Adjust this value as needed
+#define COLLISION_MARGIN 7// Adjust this value as needed
 
 int sgn(double x) { return (x > 0) - (x < 0); }
 
@@ -133,7 +140,6 @@ void init_minimap(t_map *map, const char *map_path) {
     map->map[i] = get_next_line(fd);
     if (map->map[i] == NULL)
       break;
-    printf("%s\n", map->map[i]);
     i++;
   }
   close(fd);
@@ -176,9 +182,7 @@ bool game_init(t_info *info) {
   // mlx_do_sync(map->info->mlx);
   init_minimap(map, "maps/map.cub");
   mlx_hook(mlx->mlx_win, 2, 1L << 0, (void *)key_hook, info);
-  mlx_hook(mlx->mlx_win, 17, 0, (void *)free_all, info);
-  // mlx_key_hook(mlx->mlx_win, (void *)key_hook, info);
-  // mlx_key_hook(mlx->mlx_win, (void *)navigation_key_hook, menu);
+  // mlx_hook(mlx->mlx_win, 17, 0, (void *)free_all, info);
   mlx_loop_hook(mlx->mlx, (void *)renderer, info);
   mlx_loop(mlx->mlx);
   return true;
