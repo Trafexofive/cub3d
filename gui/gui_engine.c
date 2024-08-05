@@ -130,7 +130,6 @@ bool render_ui(t_menu *menu) {
   return (true);
 }
 
-//
 
 void menu_init(t_menu *menu, t_mlx *mlx) {
   menu->next = NULL;
