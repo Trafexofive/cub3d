@@ -72,6 +72,39 @@ void fill_image(t_info *info, int color) {
     point.y += 1;
   }
 }
+void put_floor_color(t_info *info, int color) {
+  t_img *image = &info->img;
+  t_point point;
+
+  point.x = 0;
+  point.y = SCREEN_HEIGHT / 2;
+  while (point.y < SCREEN_HEIGHT) {
+
+    while (point.x < SCREEN_WIDTH) {
+      put_pixel(image, point, color);
+      point.x += 1;
+    }
+    point.x = 0;
+    point.y += 1;
+  }
+}
+
+void put_skye_color(t_info *info, int color) {
+  t_img *image = &info->img;
+  t_point point;
+
+  point.x = 0;
+  point.y = 0;
+  while (point.y < SCREEN_HEIGHT / 2) {
+
+    while (point.x < SCREEN_WIDTH) {
+      put_pixel(image, point, color);
+      point.x += 1;
+    }
+    point.x = 0;
+    point.y += 1;
+  }
+}
 
 void clear_image(t_info *info) {
   t_img *image = &info->img;
@@ -126,9 +159,10 @@ double raycast(t_point pos, double angle, t_vector *vector, t_info *info) {
       dist = ray_len.y;
       ray_len.y += ray_step.y;
     }
-    if (map_x >= 0 && map_x < MAP_W && map_y >= 0 && map_y < MAP_H &&
-        map[map_y][map_x] != '0') {
-      hit = 1;
+    if (map_x >= 0 && map_x < MAP_W && map_y >= 0 && map_y < MAP_H) {
+      if (map[map_y][map_x] != '0' && map[map_y][map_x] != 'N' && map[map_y][map_x] != 'S' && map[map_y][map_x] != 'W' && map[map_y][map_x] != 'E') {
+        hit = 1;
+      }
     }
   }
 
@@ -157,7 +191,7 @@ void render_map(t_info *info) {
           while (dx < MAP_TILE_SIZE) {
             point.x = x * MAP_TILE_SIZE + dx;
             point.y = y * MAP_TILE_SIZE + dy;
-            put_pixel(image, point, COLOR); 
+            put_pixel(image, point, COLOR);
             dx++;
           }
           dy++;
@@ -220,7 +254,6 @@ void set_player_spawn(t_info *info) {
 void test_cast(t_info *info) {
   if (info->player->vector.len == -1) {
     set_player_spawn(info);
-    puts("This function doesn't need newline.");
     info->player->vector.len = -2;
   }
   t_player *player = info->player;
@@ -229,6 +262,8 @@ void test_cast(t_info *info) {
   clear_image(info);
 
   // fill_image(info, GREEN);
+  put_floor_color(info, GREEN);
+  put_skye_color(info, 0x000FA);
   double fov = M_PI / 1.7;
   for (int x = 0; x < SCREEN_WIDTH; x++) {
     double ray_angle =
@@ -239,8 +274,8 @@ void test_cast(t_info *info) {
     draw_wall_strip(info, x, dist, ray_angle);
   }
   render_map(info);
-  // put_pixel(info->img.img, player->vector.start, GREEN); // COLOR_WALL for walls
-  // render_player(info); // needs to be implemented with new pixel put
+  // put_pixel(info->img.img, player->vector.start, GREEN); // COLOR_WALL for
+  // walls render_player(info); // needs to be implemented with new pixel put
 
   // drawcircle(vector.end.x, vector.end.y, 13, info->mlx);
 

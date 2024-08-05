@@ -5,7 +5,7 @@
 #include "inc/struct.h"
 #include "inc/utils.h"
 #include "mlx_linux/mlx.h"
-#include "parse/parse/cub.h"
+// #include "parse/parse/cub.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -93,7 +93,7 @@ void update_player_position(t_info *info, double move_speed,
 }
 
 void handle_player_movement(t_info *info, int key) {
-  double move_speed = 5.0;
+  double move_speed = 1.0;
   double rotation_speed = 0.1;
   t_player *player = info->player;
 
@@ -117,10 +117,6 @@ void handle_player_movement(t_info *info, int key) {
   }
 }
 
-void player_look_left(t_player *player) { player->angle -= 0.1; }
-
-void player_look_right(t_player *player) { player->angle += 0.1; }
-//
 void key_hook(int key, t_info *info) {
   // printf("key value = %X\n", key);
   // printf("decimal key value = %d\n", key);
@@ -146,6 +142,7 @@ void init_minimap(t_map *map, const char *map_path) {
     map->map[i] = get_next_line(fd);
     if (map->map[i] == NULL)
       break;
+    printf("%s\n", map->map[i]);
     i++;
   }
   close(fd);
@@ -200,13 +197,14 @@ void init_mlx(t_mlx *mlx) { mlx->mlx = mlx_init(); }
 
 t_info *vars_init(int ac, char **av) {
 
-    t_data *data;
+    // t_data *data;
     
   t_info *info;
   t_map *map;
   t_mlx *mlx;
 
-  data = parse_entry(ac, av);
+  (void) av, (void)ac;
+  // data = parse_entry(ac, av);
   info = malloc(sizeof(t_info));
   map = malloc(sizeof(t_map));
   mlx = malloc(sizeof(t_mlx));
@@ -216,7 +214,7 @@ t_info *vars_init(int ac, char **av) {
   info->mlx = mlx;
   info->map = map;
 
-  map->map = data->map;
+  // map->map = data->map;
   info->player = player_init();
   return (info);
 }
