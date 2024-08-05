@@ -5,6 +5,7 @@
 #include "inc/struct.h"
 #include "inc/utils.h"
 #include "mlx_linux/mlx.h"
+#include <math.h>
 // #include "parse/parse/cub.h"
 #include <stdio.h>
 #include <stdlib.h>

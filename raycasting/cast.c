@@ -264,7 +264,7 @@ void test_cast(t_info *info) {
   // fill_image(info, GREEN);
   put_floor_color(info, GREEN);
   put_skye_color(info, 0x000FA);
-  double fov = M_PI / 1.7;
+  double fov = player->fov;
   for (int x = 0; x < SCREEN_WIDTH; x++) {
     double ray_angle =
         player->angle - fov / 2 + (x / (double)SCREEN_WIDTH) * fov;

@@ -1,6 +1,7 @@
 
 
 #include "../inc/utils.h"
+#include <math.h>
 
 t_map load_map_data(t_map *map);
 
@@ -11,13 +12,8 @@ t_player *player_init(void) {
   player->position.x = 0;
   player->position.y = 0;
   player->spawned = false;
+  player->fov = M_PI / 2.5;
   player->vector.len = -1;
   return (player);
 }
 
-// void info_init(t_info *info) {
-//
-//
-//
-//   return;
-// }
