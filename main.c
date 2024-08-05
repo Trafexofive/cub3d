@@ -5,6 +5,7 @@
 #include "inc/struct.h"
 #include "inc/utils.h"
 #include "mlx_linux/mlx.h"
+#include "parse/parse/cub.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -30,10 +31,9 @@ void free_all(t_info *info) {
   free(info->map);
 }
 
-
 int is_wall(t_info *info, int x, int y) {
-  if (x < 0 || x >= 20|| y < 0 || y >= 40)
-    return 1; // Treat out of bounds as walls
+  if (x < 0 || x >= 20 || y < 0 || y >= 40)
+    return 1;
   return (info->map->map[y][x] == '1');
 }
 
@@ -59,28 +59,31 @@ void update_player_position(t_info *info, double move_speed,
     int check_x = (move_x + strafe_x > 0) ? new_tile_x : current_tile_x;
     if (!is_wall(info, check_x, current_tile_y) &&
         !is_wall(info, check_x,
-                 current_tile_y + (int)(player->vector.start.y + PLAYER_SIZE / 2) /
-                                      (int)TILE_SIZE % 1) &&
+                 current_tile_y +
+                     (int)(player->vector.start.y + PLAYER_SIZE / 2) /
+                         (int)TILE_SIZE % 1) &&
         !is_wall(info, check_x,
-                 current_tile_y + (int)(player->vector.start.y - PLAYER_SIZE / 2) /
-                                      TILE_SIZE % 1)) {
+                 current_tile_y +
+                     (int)(player->vector.start.y - PLAYER_SIZE / 2) /
+                         TILE_SIZE % 1)) {
       player->vector.start.x = new_x;
     }
   } else {
     player->vector.start.x = new_x;
   }
 
-  // Check collision in Y direction
   if (current_tile_y != new_tile_y) {
     int check_y = (move_y + strafe_y > 0) ? new_tile_y : current_tile_y;
     if (!is_wall(info, current_tile_x, check_y) &&
         !is_wall(info,
                  current_tile_x +
-                     (int)(player->vector.start.x + PLAYER_SIZE / 2) / TILE_SIZE % 1,
+                     (int)(player->vector.start.x + PLAYER_SIZE / 2) /
+                         TILE_SIZE % 1,
                  check_y) &&
         !is_wall(info,
                  current_tile_x +
-                     (int)(player->vector.start.x - PLAYER_SIZE / 2) / TILE_SIZE % 1,
+                     (int)(player->vector.start.x - PLAYER_SIZE / 2) /
+                         TILE_SIZE % 1,
                  check_y)) {
       player->vector.start.y = new_y;
     }
@@ -90,8 +93,8 @@ void update_player_position(t_info *info, double move_speed,
 }
 
 void handle_player_movement(t_info *info, int key) {
-  double move_speed = 5.0;     // Adjust this value to change movement speed
-  double rotation_speed = 0.1; // Adjust this value to change rotation speed
+  double move_speed = 5.0;
+  double rotation_speed = 0.1;
   t_player *player = info->player;
 
   if (key == W_KEY)
@@ -114,12 +117,6 @@ void handle_player_movement(t_info *info, int key) {
   }
 }
 
-// void player_move_w(t_player *player) { player->vector.start.y -= MOVE_SPEED;
-// } void player_move_s(t_player *player) { player->vector.start.y +=
-// MOVE_SPEED; } void player_move_a(t_player *player) { player->vector.start.x
-// -= MOVE_SPEED; } void player_move_d(t_player *player) {
-// player->vector.start.x += MOVE_SPEED; }
-
 void player_look_left(t_player *player) { player->angle -= 0.1; }
 
 void player_look_right(t_player *player) { player->angle += 0.1; }
@@ -135,8 +132,6 @@ void key_hook(int key, t_info *info) {
   }
 }
 
-// make map an arr to make it possible creating multiple windows and pulling
-// them by index
 void new_window(t_mlx *mlx) {
 
   mlx->mlx_win = mlx_new_window(mlx->mlx, SCREEN_WIDTH, SCREEN_HEIGHT, "Cub3d");
@@ -146,7 +141,7 @@ void init_minimap(t_map *map, const char *map_path) {
   int i = 0;
   (void)map_path;
   int fd = open(map_path, O_RDONLY);
-  map->map = malloc(20 * sizeof(char *));
+  map->map = malloc(50 * sizeof(char *));
   while (1) {
     map->map[i] = get_next_line(fd);
     if (map->map[i] == NULL)
@@ -190,15 +185,12 @@ bool game_init(t_info *info) {
                                  &image.endian);
   info->img = image;
 
-  // assign RGB value to a pixel
-
   // mlx_do_sync(map->info->mlx);
   init_minimap(map, "maps/map.cub");
   mlx_hook(mlx->mlx_win, 2, 1L << 0, (void *)key_hook, info);
   mlx_hook(mlx->mlx_win, 17, 0, (void *)free_all, info);
   // mlx_key_hook(mlx->mlx_win, (void *)key_hook, info);
   // mlx_key_hook(mlx->mlx_win, (void *)navigation_key_hook, menu);
-  // clear_window(mlx);
   mlx_loop_hook(mlx->mlx, (void *)renderer, info);
   mlx_loop(mlx->mlx);
   return true;
@@ -206,12 +198,15 @@ bool game_init(t_info *info) {
 
 void init_mlx(t_mlx *mlx) { mlx->mlx = mlx_init(); }
 
-t_info *vars_init() {
+t_info *vars_init(int ac, char **av) {
 
+    t_data *data;
+    
   t_info *info;
   t_map *map;
   t_mlx *mlx;
 
+  data = parse_entry(ac, av);
   info = malloc(sizeof(t_info));
   map = malloc(sizeof(t_map));
   mlx = malloc(sizeof(t_mlx));
@@ -221,12 +216,12 @@ t_info *vars_init() {
   info->mlx = mlx;
   info->map = map;
 
+  map->map = data->map;
   info->player = player_init();
-  info->player->vector.len = -1;
   return (info);
 }
 
-int main() {
-  game_init(vars_init());
+int main(int ac, char **av) {
+  game_init(vars_init(ac, av));
   return 1;
 }

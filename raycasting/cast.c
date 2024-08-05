@@ -90,8 +90,7 @@ void clear_image(t_info *info) {
   }
 }
 
-double visual_raycast(t_point pos, double angle, t_vector *vector,
-                      t_info *info) {
+double raycast(t_point pos, double angle, t_vector *vector, t_info *info) {
   t_point dir = {cos(angle), sin(angle)};
   t_point ray_step = {fabs(TILE_SIZE / dir.x), fabs(TILE_SIZE / dir.y)};
   int map_x = (int)(pos.x / TILE_SIZE);
@@ -142,24 +141,6 @@ double visual_raycast(t_point pos, double angle, t_vector *vector,
   return dist;
 }
 
-// void render_map(t_info *info) {
-//   t_img *image = &info->img;
-//   t_point point;
-//
-//   char **map = info->map->map;
-//   for (point.y = 0; point.y < MAP_H; point.y++) {
-//     for (point.x = 0; point.x < MAP_W; point.x++) {
-//       if (map[(int)point.y][(int)point.x] == '1') {
-//         for (int dy = 0; dy < TILE_SIZE; dy++) {
-//           for (int dx = 0; dx < TILE_SIZE; dx++) {
-//             put_pixel(image, point, COLOR);
-//           }
-//         }
-//       }
-//     }
-//   }
-// }
-
 void render_map(t_info *info) {
   t_img *image = &info->img;
   t_point point;
@@ -176,7 +157,7 @@ void render_map(t_info *info) {
           while (dx < MAP_TILE_SIZE) {
             point.x = x * MAP_TILE_SIZE + dx;
             point.y = y * MAP_TILE_SIZE + dy;
-            put_pixel(image, point, COLOR);
+            put_pixel(image, point, COLOR); 
             dx++;
           }
           dy++;
@@ -188,32 +169,14 @@ void render_map(t_info *info) {
   }
 }
 
-// void render_map(t_info *info) {
-//   t_img *image = &info->img;
-//   t_point point;
-//
-//   char **map = info->map->map;
-//   for (int y = 0; y < MAP_H; y++) {
-//     for (int x = 0; x < MAP_W; x++) {
-//       if (map[y][x] == '1') {
-//         for (int dy = 0; dy < TILE_SIZE; dy++) {
-//           for (int dx = 0; dx < TILE_SIZE; dx++) {
-//             point.x = x * TILE_SIZE + dx;
-//             point.y = y * TILE_SIZE + dy;
-//             put_pixel(image, point, COLOR);
-//           }
-//         }
-//       }
-//     }
-//   }
-// }
-
 void draw_wall_strip(t_info *info, int x, double dist, double angle) {
   t_img *image = &info->img;
   t_point point;
 
-  (void)angle;
-  double wall_height = (SCREEN_HEIGHT / dist) * TILE_SIZE;
+  // Remove fish-eye effect by adjusting the distance
+  double corrected_dist = dist * cos(angle - info->player->angle);
+
+  double wall_height = (SCREEN_HEIGHT / corrected_dist) * TILE_SIZE;
   int draw_start = (SCREEN_HEIGHT - wall_height) / 2;
   if (draw_start < 0)
     draw_start = 0;
@@ -222,7 +185,7 @@ void draw_wall_strip(t_info *info, int x, double dist, double angle) {
     draw_end = SCREEN_HEIGHT - 1;
 
   int color = COLOR;
-  int shade = (int)(dist / TILE_SIZE * 25);
+  int shade = (int)(corrected_dist / TILE_SIZE * 25);
   if (shade > 255)
     shade = 255;
   color = (color & 0xFFFFFF) | (shade << 24);
@@ -230,7 +193,7 @@ void draw_wall_strip(t_info *info, int x, double dist, double angle) {
   point.x = x;
   for (int y = draw_start; y <= draw_end; y++) {
     point.y = y;
-    put_pixel(image, point, COLOR);
+    put_pixel(image, point, color);
   }
 }
 
@@ -243,9 +206,9 @@ void set_player_spawn(t_info *info) {
     while (map[j][i]) {
       if (map[j][i] == 'N' || map[j][i] == 'S' || map[j][i] == 'W' ||
           map[j][i] == 'E') {
-        info->player->vector.start.x = i * TILE_SIZE;
-        info->player->vector.start.y = j * TILE_SIZE;
-        break;
+        info->player->vector.start.x = i * TILE_SIZE + TILE_SIZE / 2;
+        info->player->vector.start.y = j * TILE_SIZE + TILE_SIZE / 2;
+        return;
       }
       i++;
     }
@@ -257,33 +220,32 @@ void set_player_spawn(t_info *info) {
 void test_cast(t_info *info) {
   if (info->player->vector.len == -1) {
     set_player_spawn(info);
+    puts("This function doesn't need newline.");
     info->player->vector.len = -2;
   }
   t_player *player = info->player;
   double dist;
   t_vector vector;
-
   clear_image(info);
 
   // fill_image(info, GREEN);
-  double fov = M_PI / 1.5; // 60 degree field of view
+  double fov = M_PI / 1.7;
   for (int x = 0; x < SCREEN_WIDTH; x++) {
     double ray_angle =
         player->angle - fov / 2 + (x / (double)SCREEN_WIDTH) * fov;
-    dist = visual_raycast(info->player->vector.start, ray_angle, &vector, info);
+    dist = raycast(info->player->vector.start, ray_angle, &vector, info);
     dist = dist;
-    draw_line2(player->vector, info);
     // printf("vector start = %f, %f\n", vector.start.x, vector.start.y);
-    // draw_wall_strip(info, x, dist, ray_angle);
+    draw_wall_strip(info, x, dist, ray_angle);
   }
-  // render_map(info);
+  render_map(info);
+  // put_pixel(info->img.img, player->vector.start, GREEN); // COLOR_WALL for walls
+  // render_player(info); // needs to be implemented with new pixel put
 
-  // visual_raycast(info->player->vector.start, player_angle, &vector);
   // drawcircle(vector.end.x, vector.end.y, 13, info->mlx);
 
-  // if (player->angle > 2 * M_PI)
-  //   player->angle -= 2 * M_PI;
+  if (player->angle > 2 * M_PI)
+    player->angle -= 2 * M_PI;
 
   // printf("p angle : %f\n", player->angle);
-  // usleep(150000);
 }

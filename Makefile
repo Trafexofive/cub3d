@@ -26,6 +26,9 @@ all: library $(NAME)
 library:
 	@make -C ./lib/libft
 
+parse:
+	@make -C ./parse
+
 ifeq ($(OS), Linux)
     $(NAME): $(OBJS) $(LIBFT)
 		$(CC) $(OBJS) $(LIBFT) -Lmlx_linux -lmlx_Linux -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz -o $(NAME)

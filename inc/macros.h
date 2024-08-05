@@ -33,13 +33,13 @@ typedef enum s_keys {
 #define PLAYER_SIZE 10.0
 #define HOR true
 #define FPS 100000
-#define TILE_SIZE 128
+#define TILE_SIZE 32
 #define MAP_TILE_SIZE 10
 #define MOVE_SPEED 2
 #define HIT_BOX 10
 #define SCALE_FACTOR 0.7
 #define SCREEN_WIDTH 1980
-#define SCREEN_HEIGHT 1280
+#define SCREEN_HEIGHT 1080
 #define DEFAULT_ELEMENT_WIDTH 300
 #define DEFAULT_ELEMENT_HEIGHT 100
 #endif

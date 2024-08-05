@@ -8,9 +8,8 @@
 #include "../lib/libft/libft.h"
 #include <stdio.h>
 
-
-void render_player(t_map *map) {
-  drawcircle(map->player->spawn.x, map->player->spawn.y, HIT_BOX, map->mlx);
+void render_player(t_info *info) {
+  drawcircle(info->player->vector.start.x, info->player->vector.start.y, HIT_BOX, info->mlx);
 }
 
 void update_player_dir(t_map *map, int i, int j) {

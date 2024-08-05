@@ -15,7 +15,7 @@ bool put_pixel(t_img *data, t_point pixel, int color) {
     *(unsigned int *)dst = color;
   }
   else {
-      printf("[DEBUG] : Out of bounds\n");
+      printf("[DEBUG] : Out of bounds at {%d, %d}\n", x, y);
       return false;
   }
   return true;

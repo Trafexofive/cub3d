@@ -31,22 +31,22 @@ t_data	*parse_entry(int ac, char **av)
 	return (map_data);
 }
 
-int	main(int ac, char **av)
-{
-	t_data	*map_data;
-
-	atexit(f);
-	map_data = parse_entry(ac, av);
-	printf("%s\n", map_data->no_tex);
-	printf("%s\n", map_data->so_tex);
-	printf("%s\n", map_data->ea_tex);
-	printf("%s\n", map_data->we_tex);
-	printf("%X\n", map_data->color_c);
-	printf("%X\n", map_data->color_f);
-	char **gg = map_data->map;
-	int	i = 0;
-	while (gg[i++])
-		printf("%s\n", gg[i]);
-	return (0);
-}
+// int	main(int ac, char **av)
+// {
+// 	t_data	*map_data;
+//
+// 	atexit(f);
+// 	map_data = parse_entry(ac, av);
+// 	printf("%s\n", map_data->no_tex);
+// 	printf("%s\n", map_data->so_tex);
+// 	printf("%s\n", map_data->ea_tex);
+// 	printf("%s\n", map_data->we_tex);
+// 	printf("%X\n", map_data->color_c);
+// 	printf("%X\n", map_data->color_f);
+// 	char **gg = map_data->map;
+// 	int	i = 0;
+// 	while (gg[i++])
+// 		printf("%s\n", gg[i]);
+// 	return (0);
+// }
 

@@ -24,6 +24,8 @@ void    test(t_map *);
 bool    put_pixel(t_img *img, t_point pixel, int color);
 
 
+void render_player(t_info *info) ;
+
 //##########################################################################
 // Vector arithmetic
 
