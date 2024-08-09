@@ -10,6 +10,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <unistd.h>
+
 // #include <fcntl.h>
 
 typedef enum {
@@ -71,6 +72,7 @@ typedef struct s_map {
   bool debug;
 
 } t_map;
+
 // for spawnables (enemies / players)
 //  typedef struct s_entities {
 //
@@ -82,6 +84,7 @@ typedef struct s_info {
   // t_point player_pos; player info in player struct
   // t_point draw_pos; irrelevent to infop
   t_mlx *mlx;
+  char  wall_side;
   t_map *map; // could have multiple maps
   t_player *player;
   t_game *vars;
